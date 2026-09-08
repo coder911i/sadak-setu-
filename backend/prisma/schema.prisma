@@ -1,0 +1,594 @@
+// Sadak Setu - Production Database Schema (PostgreSQL / NeonDB)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// --------------------------------------------------------
+// ENUMS
+// --------------------------------------------------------
+
+enum Role {
+  ADMIN
+  ROAD_INSPECTOR
+  MAINTENANCE_TEAM
+  AUTHORITY
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum RoadStatus {
+  OPERATIONAL
+  UNDER_MAINTENANCE
+  CRITICAL_CONDITION
+  SURVEY_REQUIRED
+  DECOMMISSIONED
+}
+
+enum InspectionType {
+  ROUTINE_SURVEY
+  CITIZEN_REPORT_FOLLOWUP
+  POST_MONSOON_AUDIT
+  EMERGENCY_ASSESSMENT
+  CONTRACTOR_VERIFICATION
+}
+
+enum InspectionStatus {
+  SCHEDULED
+  IN_PROGRESS
+  ANALYZING
+  COMPLETED
+  CANCELLED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum DamageType {
+  POTHOLE
+  CRACK
+  SURFACE_DAMAGE
+  EDGE_DAMAGE
+}
+
+enum DamageSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum DetectionSource {
+  AI
+  INSPECTOR
+  SENSOR
+  HYBRID
+}
+
+enum PriorityLevel {
+  IMMEDIATE
+  HIGH
+  MONITOR
+}
+
+enum MaintenanceStatus {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  REPAIR_SUBMITTED
+  AI_VERIFICATION
+  VERIFIED
+  CLOSED
+  RETURNED_TO_TEAM
+  REOPENED
+}
+
+enum VerificationStatus {
+  VERIFIED
+  NOT_VERIFIED
+  REVIEW_REQUIRED
+}
+
+enum DeviceType {
+  SMARTPHONE
+  ESP32_SENSOR
+  DASHCAM_AI
+  OBU_TELEMATICS
+}
+
+enum DeviceStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+  OFFLINE
+}
+
+enum ReportType {
+  ROAD_HEALTH
+  MAINTENANCE_SUMMARY
+  DAMAGE_AUDIT
+  VERIFICATION_REPORT
+}
+
+// --------------------------------------------------------
+// AUTHENTICATION & ACCESS CONTROL
+// --------------------------------------------------------
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  fullName     String
+  phone        String?
+  role         Role       @default(ROAD_INSPECTOR)
+  status       UserStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  // Relationships
+  inspections     Inspection[]               @relation("InspectorInspections")
+  createdCases    MaintenanceCase[]          @relation("CaseCreator")
+  assignedCases   MaintenanceCase[]          @relation("AssignedTeam")
+  statusChanges   MaintenanceStatusHistory[] @relation("StatusChanger")
+  evidenceUploads RepairEvidence[]           @relation("EvidenceUploader")
+  manualOverrides VerificationResult[]       @relation("ManualOverrideBy")
+  assignedRecords MaintenanceAssignment[]    @relation("AssignmentAssigner")
+  teamAssignments MaintenanceAssignment[]    @relation("TeamAssignments")
+  auditLogs       AuditLog[]
+  notifications   Notification[]
+  refreshTokens   RefreshToken[]
+  reports         Report[]
+
+  @@index([email])
+  @@index([role])
+  @@index([status])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tokenHash])
+}
+
+// --------------------------------------------------------
+// ROAD INFRASTRUCTURE
+// --------------------------------------------------------
+
+model Road {
+  id           String     @id @default(uuid())
+  roadCode     String     @unique
+  name         String
+  state        String
+  district     String
+  block        String?
+  village      String?
+  lengthKm     Float      @default(0.0)
+  latitude     Float
+  longitude    Float
+  routeGeoJson Json?
+  status       RoadStatus @default(OPERATIONAL)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  // Relationships
+  segments         RoadSegment[]
+  inspections      Inspection[]
+  maintenanceCases MaintenanceCase[]
+  healthScores     RoadHealthScore[]
+
+  @@index([roadCode])
+  @@index([state, district])
+  @@index([status])
+}
+
+model RoadSegment {
+  id            String     @id @default(uuid())
+  roadId        String
+  segmentCode   String
+  chainageStart Float // in meters from road origin
+  chainageEnd   Float // in meters from road origin
+  surfaceType   String     @default("ASPHALT")
+  laneCount     Int        @default(2)
+  geometry      Json?
+  status        RoadStatus @default(OPERATIONAL)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  road             Road              @relation(fields: [roadId], references: [id], onDelete: Cascade)
+  maintenanceCases MaintenanceCase[]
+  healthScores     RoadHealthScore[]
+
+  @@unique([roadId, segmentCode])
+  @@index([roadId])
+  @@index([chainageStart, chainageEnd])
+}
+
+// --------------------------------------------------------
+// INSPECTIONS & MEDIA INGESTION
+// --------------------------------------------------------
+
+model Inspection {
+  id                  String           @id @default(uuid())
+  roadId              String
+  inspectorId         String
+  inspectionType      InspectionType   @default(ROUTINE_SURVEY)
+  status              InspectionStatus @default(SCHEDULED)
+  startedAt           DateTime?
+  completedAt         DateTime?
+  totalDistanceMeters Float            @default(0.0)
+  remarks             String?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  // Relationships
+  road        Road              @relation(fields: [roadId], references: [id], onDelete: Cascade)
+  inspector   User              @relation("InspectorInspections", fields: [inspectorId], references: [id])
+  mediaAssets MediaAsset[]
+  detections  DamageDetection[]
+  telemetry   DeviceTelemetry[]
+
+  @@index([roadId])
+  @@index([inspectorId])
+  @@index([status])
+  @@index([startedAt])
+}
+
+model MediaAsset {
+  id           String    @id @default(uuid())
+  inspectionId String
+  type         MediaType @default(IMAGE)
+  url          String
+  storageKey   String
+  thumbnailUrl String?
+  mimeType     String
+  sizeBytes    Int
+  capturedAt   DateTime  @default(now())
+  latitude     Float?
+  longitude    Float?
+  chainage     Float?
+  checksum     String?
+  metadata     Json?
+  createdAt    DateTime  @default(now())
+
+  inspection Inspection        @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  detections DamageDetection[]
+
+  @@index([inspectionId])
+  @@index([capturedAt])
+}
+
+// --------------------------------------------------------
+// DAMAGE DETECTION & AI ANALYSIS
+// --------------------------------------------------------
+
+model DamageDetection {
+  id           String          @id @default(uuid())
+  inspectionId String
+  mediaId      String?
+  damageType   DamageType
+  severity     DamageSeverity
+  confidence   Float
+  boundingBox  Json? // { x, y, width, height }
+  latitude     Float?
+  longitude    Float?
+  chainage     Float?
+  source       DetectionSource @default(AI)
+  isCorrected  Boolean         @default(false)
+  correctedBy  String?
+  correctedAt  DateTime?
+  notes        String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  inspection       Inspection        @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  mediaAsset       MediaAsset?       @relation(fields: [mediaId], references: [id], onDelete: SetNull)
+  maintenanceCases MaintenanceCase[]
+
+  @@index([inspectionId])
+  @@index([mediaId])
+  @@index([damageType])
+  @@index([severity])
+  @@index([latitude, longitude])
+  @@index([chainage])
+}
+
+// --------------------------------------------------------
+// ROAD HEALTH SCORING
+// --------------------------------------------------------
+
+model RoadHealthScore {
+  id             String   @id @default(uuid())
+  roadId         String
+  segmentId      String?
+  score          Float // 0.0 (Worst/Destructed) to 100.0 (Pristine)
+  severityIndex  Float    @default(0.0)
+  densityIndex   Float    @default(0.0)
+  vibrationIndex Float    @default(0.0)
+  locationIndex  Float    @default(0.0)
+  formulaVersion String   @default("1.0.0-prototype")
+  details        Json?
+  calculatedAt   DateTime @default(now())
+
+  road    Road         @relation(fields: [roadId], references: [id], onDelete: Cascade)
+  segment RoadSegment? @relation(fields: [segmentId], references: [id], onDelete: SetNull)
+
+  @@index([roadId])
+  @@index([segmentId])
+  @@index([calculatedAt])
+}
+
+// --------------------------------------------------------
+// MAINTENANCE & VERIFICATION STATE MACHINE
+// --------------------------------------------------------
+
+model MaintenanceCase {
+  id                     String            @id @default(uuid())
+  caseNumber             String            @unique
+  roadId                 String
+  segmentId              String?
+  damageId               String?
+  priority               PriorityLevel     @default(HIGH)
+  priorityScore          Float             @default(0.0)
+  priorityReason         String?
+  recommendedAction      String?
+  status                 MaintenanceStatus @default(OPEN)
+  assignedTeamId         String?
+  assignedById           String?
+  assignedAt             DateTime?
+  expectedCompletionDate DateTime?
+  createdById            String
+  description            String
+  closedAt               DateTime?
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
+
+  road          Road                       @relation(fields: [roadId], references: [id], onDelete: Cascade)
+  segment       RoadSegment?               @relation(fields: [segmentId], references: [id], onDelete: SetNull)
+  damage        DamageDetection?           @relation(fields: [damageId], references: [id], onDelete: SetNull)
+  createdBy     User                       @relation("CaseCreator", fields: [createdById], references: [id])
+  assignedTeam  User?                      @relation("AssignedTeam", fields: [assignedTeamId], references: [id])
+  assignments   MaintenanceAssignment[]
+  statusHistory MaintenanceStatusHistory[]
+  evidence      RepairEvidence[]
+  verification  VerificationResult?
+
+  @@index([roadId])
+  @@index([damageId])
+  @@index([assignedTeamId])
+  @@index([status])
+  @@index([priority])
+  @@index([createdAt])
+}
+
+model MaintenanceAssignment {
+  id                String   @id @default(uuid())
+  maintenanceCaseId String
+  teamId            String
+  assignedById      String
+  assignedAt        DateTime @default(now())
+  status            String   @default("ACTIVE")
+  notes             String?
+
+  maintenanceCase MaintenanceCase @relation(fields: [maintenanceCaseId], references: [id], onDelete: Cascade)
+  team            User            @relation("TeamAssignments", fields: [teamId], references: [id])
+  assigner        User            @relation("AssignmentAssigner", fields: [assignedById], references: [id])
+
+  @@index([maintenanceCaseId])
+  @@index([teamId])
+}
+
+model MaintenanceStatusHistory {
+  id                String            @id @default(uuid())
+  maintenanceCaseId String
+  previousStatus    MaintenanceStatus
+  newStatus         MaintenanceStatus
+  changedById       String
+  reason            String?
+  timestamp         DateTime          @default(now())
+
+  maintenanceCase MaintenanceCase @relation(fields: [maintenanceCaseId], references: [id], onDelete: Cascade)
+  changedBy       User            @relation("StatusChanger", fields: [changedById], references: [id])
+
+  @@index([maintenanceCaseId])
+  @@index([timestamp])
+}
+
+model RepairEvidence {
+  id                String   @id @default(uuid())
+  maintenanceCaseId String
+  evidenceType      String // BEFORE, AFTER, IN_PROGRESS
+  mediaUrl          String
+  storageKey        String
+  capturedAt        DateTime @default(now())
+  latitude          Float?
+  longitude         Float?
+  notes             String?
+  uploadedById      String
+  createdAt         DateTime @default(now())
+
+  maintenanceCase MaintenanceCase @relation(fields: [maintenanceCaseId], references: [id], onDelete: Cascade)
+  uploadedBy      User            @relation("EvidenceUploader", fields: [uploadedById], references: [id])
+
+  @@index([maintenanceCaseId])
+  @@index([evidenceType])
+}
+
+model VerificationResult {
+  id                String             @id @default(uuid())
+  maintenanceCaseId String             @unique
+  beforeMediaUrl    String
+  afterMediaUrl     String
+  result            VerificationStatus @default(REVIEW_REQUIRED)
+  confidence        Float
+  reason            String
+  visualSimilarity  Float?
+  defectReduction   Float? // Percentage of defect eradicated (0 - 100)
+  verifiedAt        DateTime           @default(now())
+  verifiedBy        String // "AI_MODEL_YOLO_V8" or supervisor name
+  isManualOverride  Boolean            @default(false)
+  overrideReason    String?
+  overrideById      String?
+  overrideAt        DateTime?
+
+  maintenanceCase MaintenanceCase @relation(fields: [maintenanceCaseId], references: [id], onDelete: Cascade)
+  overrideBy      User?           @relation("ManualOverrideBy", fields: [overrideById], references: [id])
+
+  @@index([maintenanceCaseId])
+  @@index([result])
+  @@index([verifiedAt])
+}
+
+// --------------------------------------------------------
+// IOT & SENSOR TELEMETRY
+// --------------------------------------------------------
+
+model Device {
+  id              String       @id @default(uuid())
+  deviceCode      String       @unique
+  name            String
+  type            DeviceType   @default(SMARTPHONE)
+  status          DeviceStatus @default(ACTIVE)
+  firmwareVersion String?
+  apiKeyHash      String?
+  lastSeenAt      DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  telemetry          DeviceTelemetry[]
+  telemetryProcessed TelemetryProcessed[]
+
+  @@index([deviceCode])
+  @@index([status])
+}
+
+model DeviceTelemetry {
+  id                 String   @id @default(uuid())
+  deviceId           String
+  inspectionId       String?
+  timestamp          DateTime @default(now())
+  latitude           Float
+  longitude          Float
+  speed              Float    @default(0.0)
+  accelerometerX     Float    @default(0.0)
+  accelerometerY     Float    @default(0.0)
+  accelerometerZ     Float    @default(0.0)
+  gyroX              Float    @default(0.0)
+  gyroY              Float    @default(0.0)
+  gyroZ              Float    @default(0.0)
+  vibrationIntensity Float    @default(0.0)
+
+  device     Device      @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  inspection Inspection? @relation(fields: [inspectionId], references: [id], onDelete: SetNull)
+
+  @@index([deviceId])
+  @@index([inspectionId])
+  @@index([timestamp])
+}
+
+// --------------------------------------------------------
+// PROCESSED TELEMETRY FEATURES
+// --------------------------------------------------------
+
+model TelemetryProcessed {
+  id                    String   @id @default(uuid())
+  deviceId              String
+  timestamp             DateTime @default(now())
+  latitude              Float
+  longitude             Float
+  speed                 Float    @default(0.0)
+  accelerationMagnitude Float    @default(0.0)
+  gyroMagnitude         Float    @default(0.0)
+  ultrasonicDiff        Float?
+  // JSON blob containing windowed statistical features (mean, median, min, max, rms, variance, stddev, peak)
+  windowStats           Json?
+
+  device Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  @@index([deviceId])
+  @@index([timestamp])
+}
+
+// --------------------------------------------------------
+// NOTIFICATIONS & AUDIT LOGS & SYSTEM
+// --------------------------------------------------------
+
+model Notification {
+  id        String    @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      String    @default("INFO") // INFO, WARNING, ALERT, SUCCESS
+  isRead    Boolean   @default(false)
+  readAt    DateTime?
+  metadata  Json?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+model Report {
+  id          String     @id @default(uuid())
+  title       String
+  type        ReportType @default(ROAD_HEALTH)
+  format      String     @default("JSON") // JSON, CSV, PDF
+  fileUrl     String?
+  parameters  Json?
+  createdById String
+  createdAt   DateTime   @default(now())
+
+  createdBy User @relation(fields: [createdById], references: [id])
+
+  @@index([createdById])
+  @@index([type])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  ipAddress String?
+  timestamp DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([timestamp])
+}
+
+model SystemConfiguration {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String // JSON string
+  description String?
+  updatedAt   DateTime @updatedAt
+  updatedById String?
+
+  @@index([key])
+}

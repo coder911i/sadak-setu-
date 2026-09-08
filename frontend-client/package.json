@@ -1,0 +1,14 @@
+{
+  "name": "@sadak-setu/frontend-client",
+  "version": "1.0.0",
+  "description": "Type-safe API Client SDK for Sadak Setu Frontend Application",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
