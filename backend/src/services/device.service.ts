@@ -2,7 +2,7 @@ import { deviceRepository } from '../repositories/device.repository';
 import { auditRepository } from '../repositories/audit.repository';
 import { DeviceAdapter, RawTelemetryPayload } from '../integrations/iot/device-adapter';
 import { IotMockGenerator } from '../integrations/iot/iot-mock';
-import { DeviceStatus, DeviceType } from '@prisma/client';
+import { DeviceStatus, DeviceType, Prisma } from '@prisma/client';
 import { FeatureExtractor } from '../services/telemetry/feature-extractor';
 import { telemetryProcessedRepository } from '../repositories/telemetry-processed.repository';
 
@@ -81,7 +81,7 @@ export class DeviceService {
     // Feature extraction
     const extracted = FeatureExtractor.extract(normalized, payload);
     await telemetryProcessedRepository.create({
-      deviceId,
+      device: { connect: { id: deviceId } },
       timestamp: normalized.timestamp,
       latitude: normalized.latitude,
       longitude: normalized.longitude,
@@ -89,7 +89,8 @@ export class DeviceService {
       accelerationMagnitude: extracted.accelerationMagnitude,
       gyroMagnitude: extracted.gyroMagnitude,
       ultrasonicDiff: extracted.ultrasonicDiff,
-      windowStats: extracted.windowStats,
+      // Prisma Json? rejects JS null; use DbNull for SQL NULL
+      windowStats: extracted.windowStats ?? Prisma.DbNull,
     });
 
     return rawTelemetry;

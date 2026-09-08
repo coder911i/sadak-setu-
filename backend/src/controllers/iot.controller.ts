@@ -3,13 +3,14 @@ import { ApiResponse } from '../utils/api-response';
 import { deviceService } from '../services/device.service';
 import { telemetryPayloadSchema } from '../validators/telemetry.validator';
 import { prisma } from '../config/database';
+import { PasswordUtil } from '../utils/password';
 
 export class IoTController {
   /**
    * POST /api/v1/iot/telemetry
    * Ingest raw telemetry from ESP32 devices.
    * Performs:
-   *   • JWT‑less device authentication via `deviceId` & secret (placeholder for now).
+   *   • JWT‑less device authentication via `deviceId` & `X-Device-Secret` (bcrypt vs `apiKeyHash`).
    *   • Zod validation of payload.
    *   • Idempotency check – if a record with the same deviceId && timestamp exists, returns it.
    *   • Stores raw telemetry via DeviceService.
@@ -23,14 +24,17 @@ export class IoTController {
       }
       const payload = parseResult.data;
 
-      // Simple device credential check – expect a header X-Device-Secret matching stored secret.
-      // In production, replace with a secure lookup.
-      const deviceSecret = req.headers['x-device-secret'] as string | undefined;
-      if (!deviceSecret) {
+      // Device credential check – X-Device-Secret compared against stored apiKeyHash.
+      const deviceSecret = req.headers['x-device-secret'];
+      if (typeof deviceSecret !== 'string' || deviceSecret.length === 0) {
         return ApiResponse.unauthorized(res, 'Missing device secret');
       }
       const device = await prisma.device.findUnique({ where: { deviceCode: payload.deviceId } });
-      if (!device || device.secret !== deviceSecret) {
+      if (!device?.apiKeyHash) {
+        return ApiResponse.unauthorized(res, 'Invalid device credentials');
+      }
+      const isValidSecret = await PasswordUtil.compare(deviceSecret, device.apiKeyHash);
+      if (!isValidSecret) {
         return ApiResponse.unauthorized(res, 'Invalid device credentials');
       }
 
