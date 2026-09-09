@@ -108,7 +108,7 @@ export class HealthScoreService {
         densityIndex: parseFloat(densityIndex.toFixed(1)),
         vibrationIndex: parseFloat(vibrationIndex.toFixed(1)),
         locationIndex: parseFloat(locationFactor.toFixed(1)),
-        formulaVersion: '1.0.0-prototype-calibrated',
+        formulaVersion: '1.0.0-prototype',
         details: {
           weightsUsed: {
             severity: weights.severity,

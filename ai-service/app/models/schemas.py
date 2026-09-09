@@ -50,7 +50,7 @@ class VideoInferRequest(BaseModel):
 
 class AnalysisResponse(BaseModel):
     analysisId: str
-    source: str = "LIVE_YOLO_V8"
+    source: str  # set explicitly by caller; reflects actual engine (model stem or "mock-0.0")
     mediaUrl: str
     inferenceTimeMs: float
     detections: List[DetectionItem]

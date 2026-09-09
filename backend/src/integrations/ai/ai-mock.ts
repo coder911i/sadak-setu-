@@ -20,7 +20,7 @@ export interface AiDetectionResult {
 
 export interface AiAnalysisResponse {
   analysisId: string;
-  source: 'MOCK_ENGINE' | 'LIVE_YOLO_V8';
+  source: string;
   mediaUrl: string;
   detections: AiDetectionResult[];
   inferenceTimeMs: number;

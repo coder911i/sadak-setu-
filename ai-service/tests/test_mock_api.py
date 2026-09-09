@@ -52,3 +52,19 @@ def test_infer_image_mock_canonical_schema(client):
     assert parsed.processingTimeMs >= 0
     assert parsed.requestId
 
+
+def test_ready_live_missing_weights(monkeypatch):
+    from app.config import settings
+    monkeypatch.setattr(settings, "AI_MODE", "live")
+    monkeypatch.setattr(settings, "YOLO_MODEL_PATH", "non_existent_weights.pt")
+    from inference.model_loader import ModelLoader
+    ModelLoader._model = None
+    ModelLoader._model_path = None
+
+    client = TestClient(app)
+    res = client.get("/ready")
+    assert res.status_code == 503
+    body = res.json()
+    assert body["ready"] is False
+    assert "error" in body
+

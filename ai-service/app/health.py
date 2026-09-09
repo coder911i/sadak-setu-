@@ -20,6 +20,6 @@ def readiness():
             return JSONResponse(
                 content={"ready": True, "modelVersion": ModelLoader.get_version()}
             )
-        except FileNotFoundError as e:
+        except Exception as e:
             return JSONResponse(status_code=503, content={"ready": False, "error": str(e)})
     return JSONResponse(content={"ready": True, "mode": "mock"})

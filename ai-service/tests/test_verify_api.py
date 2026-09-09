@@ -90,4 +90,6 @@ def test_infer_image_without_gps(client):
     )
     assert res.status_code == 200
     body = res.json()
-    assert body["source"] == "LIVE_YOLO_V8"
+    # In mock mode, source reflects detector.model_version which is "mock-0.0"
+    # It must NOT claim LIVE_YOLO_V8 when running mock
+    assert body["source"] == "mock-0.0"

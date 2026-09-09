@@ -1,0 +1,71 @@
+services:
+  # ─── Backend API (Render Web Service — Node.js) ───────────────────────────
+  - type: web
+    name: sadak-setu-backend
+    runtime: node
+    region: singapore
+    plan: starter
+    rootDir: backend
+    buildCommand: npm ci && npx prisma generate && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "5000"
+      - key: DATABASE_URL
+        sync: false   # set manually in Render dashboard (NeonDB connection string)
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: "15m"
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: "7d"
+      - key: AI_MODE
+        value: live    # Set to mock if AI service not deployed yet
+      - key: AI_SERVICE_URL
+        sync: false   # Set to deployed AI service URL
+      - key: AI_TIMEOUT_MS
+        value: "20000"
+      - key: IOT_MODE
+        value: live
+      - key: STORAGE_PROVIDER
+        value: local   # Change to r2 or s3 when cloud bucket is ready
+      - key: CORS_ORIGIN
+        sync: false   # Set to frontend Vercel URL
+      # Scoring weights — configurable, not hardcoded
+      - key: SCORE_WEIGHT_SEVERITY
+        value: "0.40"
+      - key: SCORE_WEIGHT_DENSITY
+        value: "0.30"
+      - key: SCORE_WEIGHT_VIBRATION
+        value: "0.20"
+      - key: SCORE_WEIGHT_LOCATION
+        value: "0.10"
+
+  # ─── AI Microservice (Render Web Service — Python/Docker) ─────────────────
+  # Deployed as a separate Render service; Docker is OPTIONAL (can use native Python)
+  - type: web
+    name: sadak-setu-ai-service
+    runtime: docker
+    region: singapore
+    plan: starter       # Upgrade to standard for faster inference
+    rootDir: ai-service
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: AI_MODE
+        value: mock      # Change to live when YOLO weights are available at YOLO_MODEL_PATH
+      - key: YOLO_MODEL_PATH
+        sync: false      # Absolute path to .pt file inside container, or leave unset for mock
+      - key: YOLO_DEVICE
+        value: cpu
+      - key: YOLO_CONF_THRESHOLD
+        value: "0.25"
+      - key: YOLO_IOU_THRESHOLD
+        value: "0.45"
+      - key: YOLO_IMAGE_SIZE
+        value: "640"
