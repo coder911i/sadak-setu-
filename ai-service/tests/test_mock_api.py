@@ -41,7 +41,7 @@ def test_ready_mock(client):
 
 def test_infer_image_mock_canonical_schema(client):
     res = client.post(
-        "/infer/image",
+        "/infer/upload/image",
         files={"file": ("road.png", _png_bytes(), "image/png")},
     )
     assert res.status_code == 200
@@ -51,3 +51,4 @@ def test_infer_image_mock_canonical_schema(client):
     assert parsed.detections == []
     assert parsed.processingTimeMs >= 0
     assert parsed.requestId
+

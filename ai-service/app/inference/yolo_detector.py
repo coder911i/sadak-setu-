@@ -1,6 +1,6 @@
 import uuid
 from typing import List, Optional
-from app.models.schemas import DetectionItem, DamageTypeEnum, BoundingBox, GeoLocation
+from app.models.schemas import DetectionItem, DamageTypeEnum, DamageSeverityEnum, BoundingBox, GeoLocation
 from app.inference.severity_estimator import SeverityEstimator
 
 class YoloDetector:
