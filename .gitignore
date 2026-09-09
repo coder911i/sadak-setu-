@@ -1,3 +1,14 @@
 node_modules/
 .env
+.env.*
+!.env.example
 .DS_Store
+dist/
+build/
+*.pyc
+__pycache__/
+.pytest_cache/
+uploads/
+*.pt
+*.onnx
+firmware/config.h
