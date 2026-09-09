@@ -8,6 +8,8 @@ export type DamageSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 export type PriorityLevel = 'IMMEDIATE' | 'HIGH' | 'MONITOR';
 export type MaintenanceStatus = 'OPEN' | 'ASSIGNED' | 'IN_PROGRESS' | 'REPAIR_SUBMITTED' | 'AI_VERIFICATION' | 'VERIFIED' | 'CLOSED' | 'RETURNED_TO_TEAM' | 'REOPENED';
 export type VerificationStatus = 'VERIFIED' | 'NOT_VERIFIED' | 'REVIEW_REQUIRED';
+export type DeviceType = 'SMARTPHONE' | 'ESP32_SENSOR' | 'DASHCAM_AI' | 'OBU_TELEMATICS';
+export type DeviceStatus = 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE' | 'OFFLINE';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -127,4 +129,33 @@ export interface VerificationResult {
   verifiedAt: string;
   verifiedBy: string;
   isManualOverride: boolean;
+}
+
+export interface Device {
+  id: string;
+  deviceCode: string;
+  name: string;
+  type: DeviceType;
+  status: DeviceStatus;
+  firmwareVersion?: string;
+  lastSeenAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DeviceTelemetry {
+  id: string;
+  deviceId: string;
+  inspectionId?: string;
+  timestamp: string;
+  latitude: number;
+  longitude: number;
+  speed: number;
+  accelerometerX: number;
+  accelerometerY: number;
+  accelerometerZ: number;
+  gyroX: number;
+  gyroY: number;
+  gyroZ: number;
+  vibrationIntensity: number;
 }

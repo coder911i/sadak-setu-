@@ -1,4 +1,9 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import { config } from './index';
+
+const host = config.env === 'production' ? process.env.HOST || '0.0.0.0' : 'localhost';
+const protocol = config.env === 'production' ? (process.env.USE_HTTPS === 'true' ? 'https' : 'http') : 'http';
+const serverUrl = `${protocol}://${host}:${config.port}${config.apiPrefix}`;
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -14,8 +19,8 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000/api/v1',
-        description: 'Development Server',
+        url: serverUrl,
+        description: config.env === 'production' ? 'Production Server' : 'Development Server',
       },
     ],
     components: {

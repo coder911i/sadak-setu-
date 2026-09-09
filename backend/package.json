@@ -4,13 +4,14 @@
   "description": "Sadak Setu - AI-Powered Road Health & Maintenance Intelligence System Backend",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "prisma generate && ts-node-dev --respawn --transpile-only src/server.ts",
+    "prebuild": "prisma generate",
     "build": "tsc",
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "ts-node src/prisma/seed.ts",
-    "test": "vitest run",
+    "test": "prisma generate && vitest run",
     "test:watch": "vitest"
   },
   "keywords": [

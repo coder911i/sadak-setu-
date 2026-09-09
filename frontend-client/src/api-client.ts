@@ -12,7 +12,8 @@ export class ApiClient {
     setToken: (token: string) => void;
     onUnauthorized?: () => void;
   }) {
-    this.baseUrl = options.baseUrl || 'http://localhost:5000/api/v1';
+    const envBaseUrl = typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_API_URL;
+    this.baseUrl = options.baseUrl || envBaseUrl || '/api/v1';
     this.tokenGetter = options.getToken;
     this.tokenSetter = options.setToken;
     this.onUnauthorized = options.onUnauthorized;

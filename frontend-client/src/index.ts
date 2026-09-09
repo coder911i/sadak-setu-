@@ -7,6 +7,8 @@ import {
   DamageDetection,
   MaintenanceCase,
   VerificationResult,
+  Device,
+  DeviceTelemetry,
 } from './types';
 
 export * from './types';
@@ -96,5 +98,42 @@ export class SadakSetuSdk {
     damage: () => this.client.get<any>('/analytics/damage'),
     maintenance: () => this.client.get<any>('/analytics/maintenance'),
     verification: () => this.client.get<any>('/analytics/verification'),
+  };
+
+  // Devices & Telemetry (IoT)
+  devices = {
+    list: (query?: Record<string, any>) => this.client.get<Device[]>('/devices', query),
+    getById: (id: string) => this.client.get<Device>(`/devices/${id}`),
+    create: (data: { deviceCode: string; name: string; type?: string; firmwareVersion?: string }) =>
+      this.client.post<Device>('/devices', data),
+    ingestTelemetry: (deviceId: string, data: {
+      inspectionId?: string;
+      timestamp?: string;
+      latitude: number;
+      longitude: number;
+      speed?: number;
+      accelerometerX?: number;
+      accelerometerY?: number;
+      accelerometerZ?: number;
+      gyroX?: number;
+      gyroY?: number;
+      gyroZ?: number;
+      vibrationIntensity?: number;
+    }) => this.client.post<DeviceTelemetry>(`/devices/${deviceId}/telemetry`, data),
+    getTelemetry: (deviceId: string, query?: { inspectionId?: string; limit?: number }) =>
+      this.client.get<DeviceTelemetry[]>(`/devices/${deviceId}/telemetry`, query),
+    simulateTelemetry: (deviceId: string, data?: {
+      latitude?: number;
+      longitude?: number;
+      count?: number;
+      inspectionId?: string;
+    }) => this.client.post<DeviceTelemetry[]>(`/devices/${deviceId}/simulate`, data || {}),
+  };
+
+  // Verification (Before/After Repair Check)
+  verification = {
+    getByCaseId: (caseId: string) => this.client.get<VerificationResult>(`/verification/${caseId}`),
+    override: (caseId: string, data: { action: 'APPROVE' | 'REJECT' | 'RETURN_TO_TEAM'; reason: string }) =>
+      this.client.post<MaintenanceCase>(`/verification/${caseId}/override`, data),
   };
 }

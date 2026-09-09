@@ -21,10 +21,14 @@ export const createApp = (): Express => {
   app.use(
     cors({
       origin: (origin, callback) => {
-        if (!origin || config.corsOrigin.includes(origin) || config.corsOrigin.includes('*')) {
+        const allowedAll = config.corsOrigin.includes('*');
+        const isAllowed = !origin || allowedAll || config.corsOrigin.includes(origin);
+        if (isAllowed) {
+          callback(null, true);
+        } else if (config.env === 'development') {
           callback(null, true);
         } else {
-          callback(null, true); // Allow during development
+          callback(new Error(`CORS policy: Origin ${origin} is not allowed`), false);
         }
       },
       credentials: true,
