@@ -6,7 +6,9 @@ export const createDeviceSchema = z.object({
   name: z.string().min(2, 'Device name required'),
   type: z.nativeEnum(DeviceType).default(DeviceType.SMARTPHONE),
   firmwareVersion: z.string().optional(),
+  apiKey: z.string().min(6, 'API key / secret must be at least 6 characters').optional(),
 });
+
 
 export const updateDeviceSchema = z.object({
   name: z.string().optional(),

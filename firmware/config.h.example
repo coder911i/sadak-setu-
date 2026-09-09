@@ -1,0 +1,53 @@
+#ifndef SADAK_SETU_CONFIG_H
+#define SADAK_SETU_CONFIG_H
+
+// ==============================================================================
+// Sadak Setu — ESP32 Telematics Firmware Configuration
+// Copy this file to "config.h" and enter your local Wi-Fi & Device credentials.
+// DO NOT COMMIT "config.h" WITH REAL SECRETS.
+// ==============================================================================
+
+// --- Wi-Fi Settings ---
+#define WIFI_SSID             "YOUR_WIFI_SSID"
+#define WIFI_PASSWORD         "YOUR_WIFI_PASSWORD"
+#define WIFI_CONNECT_TIMEOUT  20000 // 20 seconds connection timeout
+
+// --- Backend Ingestion Server Settings ---
+// For local testing on LAN: e.g. "http://192.168.1.100:5000/api/v1/iot/telemetry"
+// For production HTTPS: e.g. "https://api.sadaksetu.gov.in/api/v1/iot/telemetry"
+#define BACKEND_TELEMETRY_URL "http://192.168.1.100:5000/api/v1/iot/telemetry"
+#define HTTP_REQUEST_TIMEOUT  8000  // 8 seconds request timeout
+
+// --- Device Authentication Credentials ---
+// Must match a registered Device record in NeonDB
+#define DEVICE_ID             "ESP32-SURV-001"
+#define DEVICE_SECRET         "your_device_secret_token"
+
+// --- Telemetry Sampling Rate ---
+#define TELEMETRY_INTERVAL_MS 1000  // Ingest sample every 1000ms (1 Hz)
+
+// ==============================================================================
+// GPIO Pin Mapping (ESP32 Node 38-Pin / 30-Pin DevKit)
+// ==============================================================================
+
+// --- MPU6050 6-DOF IMU (I2C) ---
+#define I2C_SDA_PIN           21
+#define I2C_SCL_PIN           22
+
+// --- NEO-6M GPS Module (HardwareSerial 2) ---
+#define GPS_RX_PIN            16   // ESP32 RX2 connected to GPS TX
+#define GPS_TX_PIN            17   // ESP32 TX2 connected to GPS RX
+#define GPS_BAUDRATE          9600
+
+// --- HC-SR04 Ultrasonic Sensor 1 (Road Profile Left) ---
+#define TRIG_PIN_1            5
+#define ECHO_PIN_1            18
+
+// --- HC-SR04 Ultrasonic Sensor 2 (Road Profile Right) ---
+#define TRIG_PIN_2            19
+#define ECHO_PIN_2            23
+
+// --- Status Indicator LED ---
+#define STATUS_LED_PIN        2    // Onboard DevKit LED
+
+#endif // SADAK_SETU_CONFIG_H

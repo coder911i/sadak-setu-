@@ -12,6 +12,7 @@ import analyticsRoutes from './analytics.routes';
 import reportRoutes from './report.routes';
 import notificationRoutes from './notification.routes';
 import adminRoutes from './admin.routes';
+import iotRoutes from './iot.routes';
 
 const apiRouter = Router();
 
@@ -28,5 +29,7 @@ apiRouter.use('/analytics', analyticsRoutes);
 apiRouter.use('/reports', reportRoutes);
 apiRouter.use('/notifications', notificationRoutes);
 apiRouter.use('/admin', adminRoutes);
+apiRouter.use('/iot', iotRoutes);
 
 export default apiRouter;
+

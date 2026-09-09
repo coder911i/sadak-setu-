@@ -26,4 +26,6 @@ ai-service/models/road-damage/**
 *.onnx
 *.engine
 *.torchscript
+firmware/config.h
+!firmware/config.h.example
 
