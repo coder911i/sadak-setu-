@@ -1,10 +1,10 @@
-import os
-from fastapi import Depends
 from .config import settings
-from ..inference.yolo_detector import YOLODetector, MockDetector
+from inference.yolo_detector import YOLODetector
+from inference.mock_detector import MockDetector
 
-# Singleton pattern: load once per process
+# Singleton: one detector instance per process
 _detector_instance = None
+
 
 def get_detector():
     global _detector_instance

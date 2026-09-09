@@ -1,22 +1,19 @@
 import os
-from pydantic import BaseSettings, Field, validator
 
-class Settings(BaseSettings):
-    AI_MODE: str = Field('mock', env='AI_MODE')
-    YOLO_MODEL_PATH: str = Field('', env='YOLO_MODEL_PATH')
-    YOLO_DEVICE: str = Field('cpu', env='YOLO_DEVICE')
-    YOLO_CONF_THRESHOLD: float = Field(0.25, env='YOLO_CONF_THRESHOLD')
-    YOLO_IOU_THRESHOLD: float = Field(0.45, env='YOLO_IOU_THRESHOLD')
-    YOLO_IMAGE_SIZE: int = Field(640, env='YOLO_IMAGE_SIZE')
 
-    @validator('AI_MODE')
-    def mode_must_be_mock_or_live(cls, v):
-        if v not in {'mock', 'live'}:
+class Settings:
+    """Environment-backed settings for the AI microservice."""
+
+    def __init__(self) -> None:
+        mode = os.getenv("AI_MODE", "mock").strip().lower()
+        if mode not in {"mock", "live"}:
             raise ValueError('AI_MODE must be "mock" or "live"')
-        return v
+        self.AI_MODE: str = mode
+        self.YOLO_MODEL_PATH: str = os.getenv("YOLO_MODEL_PATH", "").strip()
+        self.YOLO_DEVICE: str = os.getenv("YOLO_DEVICE", "cpu").strip() or "cpu"
+        self.YOLO_CONF_THRESHOLD: float = float(os.getenv("YOLO_CONF_THRESHOLD", "0.25"))
+        self.YOLO_IOU_THRESHOLD: float = float(os.getenv("YOLO_IOU_THRESHOLD", "0.45"))
+        self.YOLO_IMAGE_SIZE: int = int(os.getenv("YOLO_IMAGE_SIZE", "640"))
 
-    class Config:
-        env_file = '.env'
-        case_sensitive = False
 
 settings = Settings()

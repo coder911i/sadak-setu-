@@ -19,6 +19,11 @@ venv/
 *.pem
 *.key
 ai-service/tmp/
+ai-service/models/road-damage/**
+!ai-service/models/road-damage/README.md
 *.pt
 *.pth
 *.onnx
+*.engine
+*.torchscript
+

@@ -17,7 +17,7 @@ async def preprocess_video(file: UploadFile) -> str:
     if size_mb > MAX_VIDEO_SIZE_MB:
         raise HTTPException(status_code=400, detail='Video file too large')
     # Save to temporary location
-    tmp_dir = Path('ai-service/tmp')
+    tmp_dir = Path("tmp")
     tmp_dir.mkdir(parents=True, exist_ok=True)
     video_path = tmp_dir / f"tmp_{uuid.uuid4().hex}.mp4"
     video_path.write_bytes(content)
