@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="roadGrad" x1="24" y1="4" x2="24" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0284C7"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="aiGlow" x1="12" y1="12" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="12" fill="#0C1626"/>
+  <rect x="1" y="1" width="46" height="46" rx="11" stroke="#1E293B" stroke-width="2"/>
+  <path d="M14 40L20 12H28L34 40H14Z" fill="url(#roadGrad)" fill-opacity="0.8"/>
+  <path d="M14 40L20 12H28L34 40" stroke="#38BDF8" stroke-width="1.5" stroke-opacity="0.6"/>
+  <line x1="24" y1="15" x2="24" y2="20" stroke="#F8FAFC" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="24" y1="24" x2="24" y2="30" stroke="#F8FAFC" stroke-width="2" stroke-linecap="round"/>
+  <line x1="24" y1="34" x2="24" y2="40" stroke="#F8FAFC" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M10 24C10 16.268 16.268 10 24 10C31.732 10 38 16.268 38 24" stroke="url(#aiGlow)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 3"/>
+  <circle cx="24" cy="10" r="3" fill="#F59E0B" stroke="#0C1626" stroke-width="1.5"/>
+  <circle cx="12" cy="22" r="2.5" fill="#38BDF8" stroke="#0C1626" stroke-width="1.5"/>
+  <circle cx="36" cy="22" r="2.5" fill="#38BDF8" stroke="#0C1626" stroke-width="1.5"/>
+</svg>

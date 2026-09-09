@@ -1,0 +1,216 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-page: #f2f6f3;
+    --bg-sidebar: #ffffff;
+    --bg-header: #ffffff;
+    --bg-card: #ffffff;
+    --border-default: #ddeae0;
+    --text-primary: #1a3825;
+    --text-secondary: #4a6b55;
+    --text-muted: #7a9a83;
+    --brand-primary: #1a5c38;
+    --brand-light: #e8f5ee;
+    --accent-warning: #d97706;
+    --accent-danger: #dc2626;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased overflow-x-hidden min-h-screen;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  /* ===================== CARD STYLES ===================== */
+  .card-base {
+    @apply bg-white rounded-2xl border border-[#ddeae0] shadow-card;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-2xl border border-[#ddeae0] shadow-elevated;
+  }
+
+  /* ===================== BADGE STYLES ===================== */
+  .badge-immediate {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200;
+  }
+
+  .badge-high {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200;
+  }
+
+  .badge-monitor {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200;
+  }
+
+  .badge-good {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200;
+  }
+}
+
+/* ===================== SCROLLBAR ===================== */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f2f6f3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b5ccbc;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7dc19a;
+}
+
+/* ===================== LEAFLET MAP ===================== */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  z-index: 10;
+  background-color: #e8f0eb !important;
+}
+
+.leaflet-tile {
+  filter: brightness(1.02) contrast(1.05) saturate(1.1) hue-rotate(5deg);
+}
+
+/* Leaflet Popup Custom Styling — Light Theme */
+.leaflet-popup-content-wrapper {
+  background-color: #ffffff !important;
+  color: #1a3825 !important;
+  border: 1px solid #ddeae0 !important;
+  border-radius: 0.875rem !important;
+  box-shadow: 0 8px 24px rgba(15, 55, 32, 0.14) !important;
+}
+
+.leaflet-popup-tip {
+  background-color: #ffffff !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px 16px !important;
+}
+
+/* Pulse markers for map */
+.pulse-marker-critical::before {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: rgba(220, 38, 38, 0.35);
+  border-radius: 50%;
+  animation: pulse-ring 1.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.pulse-marker-warning::before {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: rgba(217, 119, 6, 0.35);
+  border-radius: 50%;
+  animation: pulse-ring 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out both;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out both;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out both;
+}
+
+/* ===================== FORM INPUTS ===================== */
+.input-base {
+  @apply w-full bg-white border border-[#ddeae0] rounded-xl px-3.5 py-2.5 text-sm text-[#1a3825]
+         placeholder:text-[#7a9a83] focus:outline-none focus:ring-2 focus:ring-brand-500/30
+         focus:border-brand-400 transition-all;
+}
+
+select.input-base option {
+  background: #ffffff;
+  color: #1a3825;
+}
+
+/* ===================== TABLE ===================== */
+.table-row-hover:hover {
+  background-color: #f4f7f5;
+}
+
+/* ===================== RECHARTS ===================== */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: #ffffff !important;
+  border: 1px solid #ddeae0 !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 12px rgba(15, 55, 32, 0.10) !important;
+}
+
+/* ===================== SIDEBAR ACTIVE INDICATOR ===================== */
+.nav-active-indicator {
+  background: linear-gradient(135deg, #1a5c38, #2d8a5a);
+}
+
+/* ===================== GRADIENT HEADER ===================== */
+.page-header-gradient {
+  background: linear-gradient(135deg, #1a5c38 0%, #2d8a5a 50%, #155637 100%);
+}
+
+/* ===================== HEALTH SCORE GRADIENT ===================== */
+.score-excellent { color: #16a34a; }
+.score-good      { color: #65a30d; }
+.score-fair      { color: #d97706; }
+.score-poor      { color: #ea580c; }
+.score-critical  { color: #dc2626; }
+
+/* ===================== PRINT STYLES ===================== */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; color: black; }
+}
