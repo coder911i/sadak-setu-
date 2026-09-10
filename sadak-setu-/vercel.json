@@ -1,13 +1,19 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "buildCommand": "npm --prefix ../frontend-client ci && npm --prefix ../frontend-client run build && npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": "vite",
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://sadak-setu-backend.onrender.com/api/v1",
-    "VITE_API_URL": "https://sadak-setu-backend.onrender.com/api/v1"
+    "NEXT_PUBLIC_API_URL": "https://sadak-setu-620p.onrender.com/api/v1",
+    "VITE_API_URL": "https://sadak-setu-620p.onrender.com/api/v1"
   },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
