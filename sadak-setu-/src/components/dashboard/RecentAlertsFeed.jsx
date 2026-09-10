@@ -71,7 +71,7 @@ export function RecentAlertsFeed() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-0 divide-y divide-[#ddeae0] flex-1 overflow-y-auto">
+      <CardContent className="p-0 divide-y divide-line flex-1 overflow-y-auto">
         {alerts.map((alert) => {
           const config = levelConfig[alert.level];
           const Icon = config.icon;
@@ -87,16 +87,16 @@ export function RecentAlertsFeed() {
                   </div>
 
                   <div className="min-w-0 space-y-0.5">
-                    <h5 className="font-bold text-xs text-[#1a3825] group-hover:text-brand-700 transition-colors leading-tight">
+                    <h5 className="font-bold text-xs text-ink-900 group-hover:text-brand-700 transition-colors leading-tight">
                       {alert.title}
                     </h5>
                     <div className="text-[11px] font-mono text-brand-600 font-semibold">{alert.location}</div>
-                    <p className="text-[11px] text-[#4a6b55] leading-snug">{alert.description}</p>
+                    <p className="text-[11px] text-ink-600 leading-snug">{alert.description}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-[10px] text-[#7a9a83] font-mono pt-1">
+              <div className="flex items-center justify-between text-[10px] text-ink-400 font-mono pt-1">
                 <span>{formatRelativeTime(alert.timestamp)}</span>
                 <span className={`${config.actionColor} group-hover:underline flex items-center gap-0.5 font-semibold`}>
                   {alert.action} →

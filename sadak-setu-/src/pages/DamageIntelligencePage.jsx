@@ -81,19 +81,19 @@ export function DamageIntelligencePage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Top Welcome Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <BrainCircuit className="w-6 h-6 text-brand-400" />
+          <h1 className="text-title3 sm:text-title2 font-semibold text-ink-900 tracking-tight flex items-center gap-2">
+            <BrainCircuit className="w-6 h-6 text-brand-600" />
             <span>AI Damage Intelligence &amp; Hotspot Analytics</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-footnote sm:text-subhead text-ink-500 mt-1 max-w-2xl">
             Machine-learned pavement distress categorization, depth-area failure clusters, and structural risk severity scoring.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-brand-950/60 border border-brand-800/60 text-xs font-mono text-brand-300">
-          <Sparkles className="w-4 h-4 text-brand-400 animate-pulse" />
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-brand-50 border border-brand-200 text-xs font-mono text-brand-700">
+          <Sparkles className="w-4 h-4 text-brand-600 animate-pulse" />
           <span>Neural Model: PavementNet-v4.8</span>
         </div>
       </div>
@@ -105,7 +105,7 @@ export function DamageIntelligencePage() {
           value={inspections.length}
           unit="Records"
           icon={Activity}
-          iconBg="bg-blue-500/10 text-blue-400 border-blue-500/20"
+          iconBg="bg-blue-500/10 text-blue-600 border-blue-500/20"
           subtext="Processed by Edge Nodes"
         />
 
@@ -114,7 +114,7 @@ export function DamageIntelligencePage() {
           value={criticalCount}
           unit="Spots"
           icon={Flame}
-          iconBg="bg-rose-500/10 text-rose-400 border-rose-500/20"
+          iconBg="bg-rose-500/10 text-rose-600 border-rose-500/20"
           trend="Immediate Hazard"
           trendDirection="down"
         />
@@ -123,7 +123,7 @@ export function DamageIntelligencePage() {
           title="Avg Neural Confidence"
           value={`${avgConfidence}%`}
           icon={Zap}
-          iconBg="bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+          iconBg="bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
           subtext="Optical + LiDAR Ensemble"
         />
 
@@ -132,7 +132,7 @@ export function DamageIntelligencePage() {
           value="Grade D"
           unit="High Vulnerability"
           icon={ShieldAlert}
-          iconBg="bg-amber-500/10 text-amber-400 border-amber-500/20"
+          iconBg="bg-amber-500/10 text-amber-600 border-amber-500/20"
           subtext="NH-48 & NH-66 Corridor"
         />
       </div>
@@ -176,13 +176,13 @@ export function DamageIntelligencePage() {
       {/* Main Analytical Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Scatter Chart: Length vs Depth vs Risk Severity */}
-        <Card className="lg:col-span-2 border-slate-800 bg-slate-900/90">
+        <Card className="lg:col-span-2 border-line bg-white">
           <CardHeader className="py-3 px-4">
             <div className="flex items-center justify-between w-full">
               <CardTitle icon={Gauge}>
                 Distress Dimensionality &amp; Depth Severity Matrix
               </CardTitle>
-              <span className="text-[10px] text-slate-400 font-mono">
+              <span className="text-[10px] text-ink-500 font-mono">
                 X: Length (cm) | Y: Depth (cm)
               </span>
             </div>
@@ -200,15 +200,15 @@ export function DamageIntelligencePage() {
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <div className="bg-slate-900 border border-slate-750 p-3 rounded-lg shadow-xl text-xs space-y-1">
-                          <p className="font-bold text-white flex items-center gap-2">
+                        <div className="bg-white border border-line p-3 rounded-lg shadow-xl text-xs space-y-1">
+                          <p className="font-bold text-ink-900 flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: getSeverityColor(data.severity) }} />
                             {data.name} ({data.road})
                           </p>
-                          <p className="text-slate-300 font-mono">Chainage: {data.chainage}</p>
-                          <p className="text-slate-400">Dimensions: {data.x}cm length &times; {data.y}cm depth</p>
-                          <p className="text-rose-400 font-bold font-mono">Collision Risk: {data.z}/100</p>
-                          <p className="text-emerald-400 font-mono">AI Confidence: {data.confidence}%</p>
+                          <p className="text-ink-700 font-mono">Chainage: {data.chainage}</p>
+                          <p className="text-ink-500">Dimensions: {data.x}cm length &times; {data.y}cm depth</p>
+                          <p className="text-rose-600 font-bold font-mono">Collision Risk: {data.z}/100</p>
+                          <p className="text-emerald-600 font-mono">AI Confidence: {data.confidence}%</p>
                         </div>
                       );
                     }
@@ -226,34 +226,34 @@ export function DamageIntelligencePage() {
         </Card>
 
         {/* Hotspot Vulnerability Ranking */}
-        <Card className="border-slate-800 bg-slate-900/90 flex flex-col">
+        <Card className="border-line bg-white flex flex-col">
           <CardHeader className="py-3 px-4">
             <CardTitle icon={Flame}>
               Corridor Hotspot Priority Matrix
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-0 divide-y divide-slate-800/60 flex-1 overflow-y-auto max-h-[340px]">
+          <CardContent className="p-0 divide-y divide-line flex-1 overflow-y-auto max-h-[340px]">
             {filteredDistress.map((item) => (
-              <div key={item.id} className="p-3.5 hover:bg-slate-800/40 transition-colors space-y-1.5">
+              <div key={item.id} className="p-3.5 hover:bg-surface-100 transition-colors space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-xs text-white">{item.defectType}</span>
+                  <span className="font-bold text-xs text-ink-900">{item.defectType}</span>
                   <span
                     className={`text-[10px] font-bold px-2 py-0.2 rounded border ${
                       item.severity === 'critical'
-                        ? 'bg-rose-950/80 text-rose-300 border-rose-800'
+                        ? 'bg-rose-50 text-rose-700 border-rose-200'
                         : item.severity === 'high'
-                        ? 'bg-orange-950/80 text-orange-300 border-orange-800'
-                        : 'bg-slate-800 text-slate-300 border-slate-700'
+                        ? 'bg-orange-50 text-orange-700 border-orange-200'
+                        : 'bg-surface-100 text-ink-700 border-line'
                     }`}
                   >
                     {item.severity.toUpperCase()}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-                  <span className="text-brand-400 font-semibold">{item.roadCode} ({item.chainage})</span>
-                  <span className="text-rose-400 font-bold">{item.riskScore}/100 Risk</span>
+                <div className="flex items-center justify-between text-[11px] font-mono text-ink-500">
+                  <span className="text-brand-600 font-semibold">{item.roadCode} ({item.chainage})</span>
+                  <span className="text-rose-600 font-bold">{item.riskScore}/100 Risk</span>
                 </div>
-                <p className="text-[10px] text-slate-400 line-clamp-1">{item.notes}</p>
+                <p className="text-[10px] text-ink-500 line-clamp-1">{item.notes}</p>
               </div>
             ))}
           </CardContent>

@@ -32,19 +32,19 @@ export function InspectionsPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <ScanEye className="w-6 h-6 text-brand-400" />
+          <h1 className="text-title3 sm:text-title2 font-semibold text-ink-900 tracking-tight flex items-center gap-2">
+            <ScanEye className="w-6 h-6 text-brand-600" />
             <span>AI Defect Detections &amp; Sensor Telemetry</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-footnote sm:text-subhead text-ink-500 mt-1 max-w-2xl">
             Real-time YOLOv10 edge vision inference, drone LiDAR surface mapping, and tri-axial accelerometer vibration telemetry.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-emerald-400">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-line text-xs font-mono text-emerald-600">
             <Cpu className="w-3.5 h-3.5 animate-pulse" />
             <span>AI Vision Engine: YOLOv10 High-Speed</span>
           </div>

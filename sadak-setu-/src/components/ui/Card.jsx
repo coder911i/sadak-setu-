@@ -3,13 +3,13 @@ import { cn } from '../../utils/cn';
 
 export function Card({ children, className, variant = 'default', hover = false, ...props }) {
   const variants = {
-    default:   'bg-white border-[#ddeae0] shadow-card',
-    elevated:  'bg-white border-[#ddeae0] shadow-elevated',
-    command:   'bg-white border-[#ddeae0] shadow-card backdrop-blur-md',
-    lightCard: 'bg-white border-[#ddeae0] shadow-card',
+    default:   'bg-white border-line shadow-card',
+    elevated:  'bg-white border-line shadow-elevated',
+    command:   'bg-white border-line shadow-card backdrop-blur-md',
+    lightCard: 'bg-white border-line shadow-card',
     highlight: 'bg-gradient-to-b from-brand-50 to-white border-brand-200 shadow-card',
     green:     'bg-brand-50 border-brand-200',
-    muted:     'bg-surface-50 border-[#ddeae0]',
+    muted:     'bg-surface-50 border-line',
   };
 
   return (
@@ -31,7 +31,7 @@ export function CardHeader({ children, className, action, ...props }) {
   return (
     <div
       className={cn(
-        'px-5 py-4 border-b border-[#ddeae0] flex items-center justify-between gap-4',
+        'px-5 py-4 border-b border-line flex items-center justify-between gap-4',
         className
       )}
       {...props}
@@ -45,7 +45,7 @@ export function CardHeader({ children, className, action, ...props }) {
 export function CardTitle({ children, className, icon: Icon, ...props }) {
   return (
     <h3
-      className={cn('text-sm font-bold text-[#1a3825] tracking-tight flex items-center gap-2', className)}
+      className={cn('text-sm font-bold text-ink-900 tracking-tight flex items-center gap-2', className)}
       {...props}
     >
       {Icon && <Icon className="w-4 h-4 text-brand-600 flex-shrink-0" />}
@@ -56,7 +56,7 @@ export function CardTitle({ children, className, icon: Icon, ...props }) {
 
 export function CardDescription({ children, className, ...props }) {
   return (
-    <p className={cn('text-xs text-[#7a9a83] leading-normal', className)} {...props}>
+    <p className={cn('text-xs text-ink-400 leading-normal', className)} {...props}>
       {children}
     </p>
   );
@@ -74,7 +74,7 @@ export function CardFooter({ children, className, ...props }) {
   return (
     <div
       className={cn(
-        'px-5 py-3.5 bg-surface-50 border-t border-[#ddeae0] rounded-b-2xl flex items-center justify-between gap-3 text-xs text-[#7a9a83]',
+        'px-5 py-3.5 bg-surface-50 border-t border-line rounded-b-2xl flex items-center justify-between gap-3 text-xs text-ink-400',
         className
       )}
       {...props}

@@ -69,18 +69,18 @@ export function RoadDetailPage() {
     if (priority === 'Immediate') {
       return {
         label: 'Critical Alert',
-        color: 'bg-rose-950/80 text-rose-300 border-rose-800',
+        color: 'bg-rose-50 text-rose-700 border-rose-200',
       };
     }
     if (priority === 'High') {
       return {
         label: 'Under Maintenance',
-        color: 'bg-amber-950/80 text-amber-300 border-amber-800',
+        color: 'bg-amber-50 text-amber-700 border-amber-200',
       };
     }
     return {
       label: 'Normal / Stable',
-      color: 'bg-emerald-950/80 text-emerald-300 border-emerald-800',
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     };
   };
 
@@ -100,15 +100,15 @@ export function RoadDetailPage() {
   return (
     <div className="space-y-6 animate-fade-in pb-12">
       {/* Top Header: Road Name, ID, District, Health Score, Priority, Status */}
-      <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl space-y-4">
+      <div className="p-5 rounded-2xl bg-white border border-line shadow-xl space-y-4">
         {/* Breadcrumb & Navigation */}
-        <div className="flex items-center justify-between text-xs text-slate-400">
-          <Link to="/roads" className="flex items-center gap-1 hover:text-brand-400 transition-colors">
+        <div className="flex items-center justify-between text-xs text-ink-500">
+          <Link to="/roads" className="flex items-center gap-1 hover:text-brand-600 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Road Monitoring
           </Link>
 
-          <span className="font-mono text-[10px] text-slate-500">
-            Road Registry ID: <strong className="text-slate-300">{road.id}</strong>
+          <span className="font-mono text-[10px] text-ink-400">
+            Road Registry ID: <strong className="text-ink-700">{road.id}</strong>
           </span>
         </div>
 
@@ -116,7 +116,7 @@ export function RoadDetailPage() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-1">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <span className="px-2.5 py-1 rounded-md bg-brand-500/20 border border-brand-500/30 text-brand-300 font-mono font-bold text-sm">
+              <span className="px-2.5 py-1 rounded-md bg-brand-500/20 border border-brand-500/30 text-brand-700 font-mono font-bold text-sm">
                 {road.code}
               </span>
               <PriorityBadge priority={road.priority} size="sm" />
@@ -125,28 +125,28 @@ export function RoadDetailPage() {
               </span>
             </div>
 
-            <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-ink-900 tracking-tight">
               {road.name}
             </h1>
 
-            <div className="flex items-center gap-2 text-xs text-slate-400 flex-wrap">
-              <span className="flex items-center gap-1 text-slate-300">
-                <MapPin className="w-3.5 h-3.5 text-slate-500" /> {road.district}, {road.state}
+            <div className="flex items-center gap-2 text-xs text-ink-500 flex-wrap">
+              <span className="flex items-center gap-1 text-ink-700">
+                <MapPin className="w-3.5 h-3.5 text-ink-400" /> {road.district}, {road.state}
               </span>
               <span>&bull;</span>
-              <span className="font-mono text-slate-300">{road.category}</span>
+              <span className="font-mono text-ink-700">{road.category}</span>
               <span>&bull;</span>
-              <span className="font-mono text-slate-300">{road.totalLengthKm} KM ({road.lanes} Lanes)</span>
+              <span className="font-mono text-ink-700">{road.totalLengthKm} KM ({road.lanes} Lanes)</span>
             </div>
           </div>
 
           {/* Current Health Score Pill */}
-          <div className="flex items-center gap-3 self-start lg:self-center p-3 rounded-xl bg-slate-950 border border-slate-800">
+          <div className="flex items-center gap-3 self-start lg:self-center p-3 rounded-xl bg-surface-50 border border-line">
             <div className="text-right">
-              <span className="text-[10px] uppercase font-mono text-slate-400 block font-bold">Health Score</span>
-              <span className="text-2xl font-extrabold font-mono text-white leading-none">
+              <span className="text-[10px] uppercase font-mono text-ink-500 block font-bold">Health Score</span>
+              <span className="text-2xl font-bold font-mono text-ink-900 leading-none">
                 {road.healthScore || road.pciScore}
-                <span className="text-xs font-normal text-slate-400">/100</span>
+                <span className="text-xs font-normal text-ink-500">/100</span>
               </span>
             </div>
             <HealthScoreBadge score={road.healthScore || road.pciScore} size="md" showBar={false} />
@@ -154,7 +154,7 @@ export function RoadDetailPage() {
         </div>
 
         {/* SECTION 8: ACTION BUTTONS TOOLBAR */}
-        <div className="pt-3 border-t border-slate-800 flex items-center justify-between flex-wrap gap-2.5">
+        <div className="pt-3 border-t border-line flex items-center justify-between flex-wrap gap-2.5">
           <div className="flex items-center gap-2 flex-wrap">
             <Button
               variant="primary"
@@ -197,7 +197,7 @@ export function RoadDetailPage() {
       </div>
 
       {/* SECTION 1: ROAD OVERVIEW */}
-      <Card className="bg-slate-900/90 border-slate-800">
+      <Card className="bg-white border-line">
         <CardHeader className="py-3 px-4">
           <CardTitle icon={Route}>
             1. Roadway Overview &amp; Alignment Data
@@ -207,50 +207,50 @@ export function RoadDetailPage() {
         <CardContent className="p-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
             {/* Start / End Location */}
-            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1 sm:col-span-2">
-              <span className="text-[10px] uppercase font-bold text-slate-400 font-mono">Corridor Alignment Span</span>
-              <div className="text-slate-100 font-semibold text-xs leading-snug">
+            <div className="p-3.5 rounded-xl bg-surface-50 border border-line space-y-1 sm:col-span-2">
+              <span className="text-[10px] uppercase font-bold text-ink-500 font-mono">Corridor Alignment Span</span>
+              <div className="text-ink-900 font-semibold text-xs leading-snug">
                 {startLocation} &rarr; {endLocation}
               </div>
-              <p className="text-[10px] text-slate-400 font-mono">
+              <p className="text-[10px] text-ink-500 font-mono">
                 Jurisdiction: {road.district} Highway Implementation Division ({road.state})
               </p>
             </div>
 
             {/* Total Length */}
-            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-              <span className="text-[10px] uppercase font-bold text-slate-400 font-mono">Total Length &amp; Lanes</span>
-              <div className="text-xl font-extrabold font-mono text-white">
-                {road.totalLengthKm} <span className="text-xs font-normal text-slate-400">KM</span>
+            <div className="p-3.5 rounded-xl bg-surface-50 border border-line space-y-1">
+              <span className="text-[10px] uppercase font-bold text-ink-500 font-mono">Total Length &amp; Lanes</span>
+              <div className="text-xl font-bold font-mono text-ink-900">
+                {road.totalLengthKm} <span className="text-xs font-normal text-ink-500">KM</span>
               </div>
-              <p className="text-[10px] text-slate-400 font-mono">{road.lanes} Dedicated Traffic Lanes</p>
+              <p className="text-[10px] text-ink-500 font-mono">{road.lanes} Dedicated Traffic Lanes</p>
             </div>
 
             {/* Last Inspection & Frequency */}
-            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-              <span className="text-[10px] uppercase font-bold text-slate-400 font-mono">Inspection Frequency</span>
-              <div className="text-xs font-bold text-emerald-400">
+            <div className="p-3.5 rounded-xl bg-surface-50 border border-line space-y-1">
+              <span className="text-[10px] uppercase font-bold text-ink-500 font-mono">Inspection Frequency</span>
+              <div className="text-xs font-bold text-emerald-600">
                 Bi-Weekly Autonomous Patrol
               </div>
-              <p className="text-[10px] text-slate-400 font-mono">
+              <p className="text-[10px] text-ink-500 font-mono">
                 Last: {formatRelativeTime(road.latestInspection || road.lastInspected)}
               </p>
             </div>
           </div>
 
           {/* Additional Road Tech Details */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 mt-3 border-t border-slate-800/80 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 mt-3 border-t border-line text-xs">
             <div>
-              <span className="text-slate-400 block text-[11px]">Surface Formulation:</span>
-              <strong className="text-slate-200">{road.surfaceType}</strong>
+              <span className="text-ink-500 block text-[11px]">Surface Formulation:</span>
+              <strong className="text-ink-900">{road.surfaceType}</strong>
             </div>
             <div>
-              <span className="text-slate-400 block text-[11px]">Traffic Intensity:</span>
-              <strong className="text-slate-200">{road.trafficDensity}</strong>
+              <span className="text-ink-500 block text-[11px]">Traffic Intensity:</span>
+              <strong className="text-ink-900">{road.trafficDensity}</strong>
             </div>
             <div>
-              <span className="text-slate-400 block text-[11px]">Maintenance Agency:</span>
-              <strong className="text-slate-200">{road.contractor}</strong>
+              <span className="text-ink-500 block text-[11px]">Maintenance Agency:</span>
+              <strong className="text-ink-900">{road.contractor}</strong>
             </div>
           </div>
         </CardContent>

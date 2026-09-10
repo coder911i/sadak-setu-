@@ -42,19 +42,19 @@ export function VerificationPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-brand-400" />
+          <h1 className="text-title3 sm:text-title2 font-semibold text-ink-900 tracking-tight flex items-center gap-2">
+            <ShieldCheck className="w-6 h-6 text-brand-600" />
             <span>Post-Repair Quality Verification &amp; AI Audits</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-footnote sm:text-subhead text-ink-500 mt-1 max-w-2xl">
             Before &amp; After optical patch validation, IRC-111 compaction density certification, and contractor compliance audits.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-950/60 border border-emerald-800/60 text-xs font-mono text-emerald-300">
-          <Award className="w-4 h-4 text-emerald-400" />
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-mono text-emerald-700">
+          <Award className="w-4 h-4 text-emerald-600" />
           <span>IRC:111 Compliance Standard Active</span>
         </div>
       </div>

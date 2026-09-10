@@ -56,8 +56,8 @@ export function CommandSearchModal({ isOpen, onClose }) {
       <div className="fixed inset-0 bg-black/25 backdrop-blur-sm" onClick={onClose} />
 
       {/* Search box */}
-      <div className="relative w-full max-w-2xl bg-white border border-[#ddeae0] rounded-2xl shadow-elevated overflow-hidden z-10 flex flex-col animate-fade-in">
-        <div className="p-4 border-b border-[#ddeae0] flex items-center gap-3">
+      <div className="relative w-full max-w-2xl bg-white border border-line rounded-2xl shadow-elevated overflow-hidden z-10 flex flex-col animate-fade-in">
+        <div className="p-4 border-b border-line flex items-center gap-3">
           <Search className="w-5 h-5 text-brand-600 flex-shrink-0" />
           <input
             autoFocus
@@ -65,14 +65,14 @@ export function CommandSearchModal({ isOpen, onClose }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Quick search highway corridors, defects, work orders, chainages..."
-            className="w-full bg-transparent text-sm text-[#1a3825] placeholder-[#7a9a83] focus:outline-none"
+            className="w-full bg-transparent text-sm text-ink-900 placeholder-[#7a9a83] focus:outline-none"
           />
-          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono font-semibold bg-surface-100 text-[#7a9a83] border border-[#ddeae0] rounded-lg">
+          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono font-semibold bg-surface-100 text-ink-400 border border-line rounded-lg">
             ESC
           </kbd>
           <button
             onClick={onClose}
-            className="text-[#7a9a83] hover:text-[#1a3825] transition-colors"
+            className="text-ink-400 hover:text-ink-900 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -82,7 +82,7 @@ export function CommandSearchModal({ isOpen, onClose }) {
           {/* Highway Corridors */}
           {filteredRoads.length > 0 && (
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#7a9a83] px-3 py-1">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-ink-400 px-3 py-1">
                 Highway Corridors
               </div>
               <div className="space-y-1 mt-1">
@@ -97,11 +97,11 @@ export function CommandSearchModal({ isOpen, onClose }) {
                         <MapPin className="w-4 h-4" />
                       </div>
                       <div className="truncate">
-                        <span className="font-semibold text-[#1a3825] font-mono">{road.code}</span>
-                        <span className="text-[#7a9a83] ml-2">{road.name}</span>
+                        <span className="font-semibold text-ink-900 font-mono">{road.code}</span>
+                        <span className="text-ink-400 ml-2">{road.name}</span>
                       </div>
                     </div>
-                    <span className="text-[11px] font-mono text-[#4a6b55]">PCI {road.pciScore}</span>
+                    <span className="text-[11px] font-mono text-ink-600">PCI {road.pciScore}</span>
                   </button>
                 ))}
               </div>
@@ -111,7 +111,7 @@ export function CommandSearchModal({ isOpen, onClose }) {
           {/* AI Defects */}
           {filteredDefects.length > 0 && (
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#7a9a83] px-3 py-1">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-ink-400 px-3 py-1">
                 AI Detected Defects
               </div>
               <div className="space-y-1 mt-1">
@@ -126,8 +126,8 @@ export function CommandSearchModal({ isOpen, onClose }) {
                         <AlertTriangle className="w-4 h-4" />
                       </div>
                       <div className="truncate">
-                        <span className="font-semibold text-[#1a3825]">{defect.defectType}</span>
-                        <span className="text-[#7a9a83] ml-2 font-mono">{defect.roadCode} ({defect.chainage})</span>
+                        <span className="font-semibold text-ink-900">{defect.defectType}</span>
+                        <span className="text-ink-400 ml-2 font-mono">{defect.roadCode} ({defect.chainage})</span>
                       </div>
                     </div>
                     <span className="text-[10px] text-red-700 font-bold bg-red-100 px-2 py-0.5 rounded-full border border-red-200">
@@ -142,7 +142,7 @@ export function CommandSearchModal({ isOpen, onClose }) {
           {/* Work Orders */}
           {filteredWorkOrders.length > 0 && (
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#7a9a83] px-3 py-1">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-ink-400 px-3 py-1">
                 Maintenance Work Orders
               </div>
               <div className="space-y-1 mt-1">
@@ -157,8 +157,8 @@ export function CommandSearchModal({ isOpen, onClose }) {
                         <Wrench className="w-4 h-4" />
                       </div>
                       <div className="truncate">
-                        <span className="font-semibold text-[#1a3825] font-mono">{wo.id}</span>
-                        <span className="text-[#7a9a83] ml-2">{wo.title}</span>
+                        <span className="font-semibold text-ink-900 font-mono">{wo.id}</span>
+                        <span className="text-ink-400 ml-2">{wo.title}</span>
                       </div>
                     </div>
                     <ArrowRight className="w-3.5 h-3.5 text-[#b5ccbc] group-hover:text-brand-600 transition-colors" />
@@ -169,7 +169,7 @@ export function CommandSearchModal({ isOpen, onClose }) {
           )}
 
           {filteredRoads.length === 0 && filteredDefects.length === 0 && filteredWorkOrders.length === 0 && (
-            <div className="py-8 text-center text-[#7a9a83]">
+            <div className="py-8 text-center text-ink-400">
               <FileText className="w-8 h-8 mx-auto mb-2 opacity-40" />
               <p>No matching records found for "{query}"</p>
             </div>
@@ -177,7 +177,7 @@ export function CommandSearchModal({ isOpen, onClose }) {
         </div>
 
         {/* Footer hint */}
-        <div className="px-4 py-2 border-t border-[#ddeae0] bg-surface-50 flex items-center gap-4 text-[10px] text-[#7a9a83] font-mono">
+        <div className="px-4 py-2 border-t border-line bg-surface-50 flex items-center gap-4 text-[10px] text-ink-400 font-mono">
           <span>↩ to select</span>
           <span>↑↓ navigate</span>
           <span>ESC to close</span>

@@ -14,18 +14,18 @@ export function RoadTable({ roads = [], loading = false }) {
     if (priority === 'Immediate') {
       return {
         label: 'Critical Alert',
-        color: 'bg-rose-950/80 text-rose-300 border-rose-800',
+        color: 'bg-rose-50 text-rose-700 border-rose-200',
       };
     }
     if (priority === 'High') {
       return {
         label: 'Under Maintenance',
-        color: 'bg-amber-950/80 text-amber-300 border-amber-800',
+        color: 'bg-amber-50 text-amber-700 border-amber-200',
       };
     }
     return {
       label: 'Normal / Stable',
-      color: 'bg-emerald-950/80 text-emerald-300 border-emerald-800',
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     };
   };
 
@@ -36,8 +36,8 @@ export function RoadTable({ roads = [], loading = false }) {
       width: '130px',
       render: (val, row) => (
         <div className="space-y-0.5">
-          <div className="font-mono font-bold text-brand-400 text-xs">{val}</div>
-          <div className="text-[10px] text-slate-500 font-mono truncate">{row.category}</div>
+          <div className="font-mono font-bold text-brand-600 text-xs">{val}</div>
+          <div className="text-[10px] text-ink-400 font-mono truncate">{row.category}</div>
         </div>
       ),
     },
@@ -46,8 +46,8 @@ export function RoadTable({ roads = [], loading = false }) {
       label: 'Road Name & Span',
       render: (val, row) => (
         <div className="space-y-0.5">
-          <div className="font-semibold text-slate-100">{val}</div>
-          <div className="text-[11px] text-slate-400 font-mono">
+          <div className="font-semibold text-ink-900">{val}</div>
+          <div className="text-[11px] text-ink-500 font-mono">
             {row.totalLengthKm} KM &bull; {row.lanes} Lanes ({row.surfaceType})
           </div>
         </div>
@@ -58,11 +58,11 @@ export function RoadTable({ roads = [], loading = false }) {
       label: 'District',
       width: '150px',
       render: (val, row) => (
-        <div className="text-xs text-slate-300">
+        <div className="text-xs text-ink-700">
           <div className="font-semibold flex items-center gap-1">
-            <MapPin className="w-3 h-3 text-slate-500" /> {val}
+            <MapPin className="w-3 h-3 text-ink-400" /> {val}
           </div>
-          <div className="text-[10px] text-slate-500">{row.state}</div>
+          <div className="text-[10px] text-ink-400">{row.state}</div>
         </div>
       ),
     },
@@ -86,10 +86,10 @@ export function RoadTable({ roads = [], loading = false }) {
       width: '130px',
       render: (val, row) => (
         <div className="space-y-0.5">
-          <span className={`font-mono font-bold text-xs ${val > 10 ? 'text-rose-400' : 'text-slate-200'}`}>
+          <span className={`font-mono font-bold text-xs ${val > 10 ? 'text-rose-600' : 'text-ink-900'}`}>
             {val || 0} Defects
           </span>
-          <div className="text-[10px] text-slate-500 font-mono">
+          <div className="text-[10px] text-ink-400 font-mono">
             {row.potholesCount || 0} Pot &bull; {row.cracksCount || 0} Crk
           </div>
         </div>
@@ -102,9 +102,9 @@ export function RoadTable({ roads = [], loading = false }) {
       render: (val, row) => {
         const timeVal = val || row.lastInspected;
         return (
-          <div className="text-xs text-slate-300">
+          <div className="text-xs text-ink-700">
             <div>{formatRelativeTime(timeVal)}</div>
-            <div className="text-[10px] text-slate-500 font-mono">{formatDate(timeVal)}</div>
+            <div className="text-[10px] text-ink-400 font-mono">{formatDate(timeVal)}</div>
           </div>
         );
       },

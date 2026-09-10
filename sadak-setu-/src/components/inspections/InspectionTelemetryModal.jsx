@@ -33,7 +33,7 @@ export function InspectionTelemetryModal({ defect, isOpen, onClose, onAssignWork
       size="xl"
       footer={
         <div className="flex items-center justify-between w-full">
-          <span className="text-xs text-slate-400 font-mono">
+          <span className="text-xs text-ink-500 font-mono">
             GPS: {defect.lat.toFixed(5)}° N, {defect.lng.toFixed(5)}° E
           </span>
           <div className="flex items-center gap-2">
@@ -58,7 +58,7 @@ export function InspectionTelemetryModal({ defect, isOpen, onClose, onAssignWork
     >
       <div className="space-y-6">
         {/* Visual Dashcam Simulated Frame with Bounding Box Overlay */}
-        <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-950 border border-slate-750 shadow-2xl flex items-center justify-center">
+        <div className="relative aspect-video rounded-xl overflow-hidden bg-surface-50 border border-line shadow-elevated flex items-center justify-center">
           {/* Simulated Dashcam Asphalt Road Texture */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900 to-slate-800 opacity-90" />
           
@@ -83,75 +83,75 @@ export function InspectionTelemetryModal({ defect, isOpen, onClose, onAssignWork
                 <ShieldAlert className="w-3 h-3" /> {defect.defectType} ({defect.confidenceScore}%)
               </span>
             </div>
-            <div className="text-[10px] font-mono text-rose-200 bg-slate-950/80 px-1 rounded self-end">
+            <div className="text-[10px] font-mono text-rose-700 bg-surface-50 px-1 rounded self-end">
               Depth: {defect.dimensions?.depthCm}cm
             </div>
           </div>
 
           {/* Telemetry HUD overlay in top corners */}
-          <div className="absolute top-3 left-3 bg-slate-950/80 border border-slate-700 px-2.5 py-1 rounded text-[10px] font-mono text-slate-300 backdrop-blur-sm">
+          <div className="absolute top-3 left-3 bg-surface-50 border border-line px-2.5 py-1 rounded text-[10px] font-mono text-ink-700 backdrop-blur-sm">
             <span>SURVEY UNIT: <strong>{defect.source}</strong></span>
           </div>
-          <div className="absolute top-3 right-3 bg-slate-950/80 border border-slate-700 px-2.5 py-1 rounded text-[10px] font-mono text-emerald-400 backdrop-blur-sm flex items-center gap-1">
+          <div className="absolute top-3 right-3 bg-surface-50 border border-line px-2.5 py-1 rounded text-[10px] font-mono text-emerald-600 backdrop-blur-sm flex items-center gap-1">
             <Cpu className="w-3 h-3" /> YOLO-v10 Edge Inference
           </div>
-          <div className="absolute bottom-3 left-3 bg-slate-950/80 border border-slate-700 px-2.5 py-1 rounded text-[10px] font-mono text-slate-300 backdrop-blur-sm">
+          <div className="absolute bottom-3 left-3 bg-surface-50 border border-line px-2.5 py-1 rounded text-[10px] font-mono text-ink-700 backdrop-blur-sm">
             <span>TIME: {formatDate(defect.detectedAt, true)}</span>
           </div>
         </div>
 
         {/* 4-Column Sensor Metrics */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 flex items-center gap-1">
-              <Gauge className="w-3 h-3 text-amber-400" /> Defect Dimensions
+          <div className="p-3.5 rounded-xl bg-surface-50 border border-line space-y-1">
+            <span className="text-[10px] uppercase font-bold text-ink-500 flex items-center gap-1">
+              <Gauge className="w-3 h-3 text-amber-600" /> Defect Dimensions
             </span>
-            <div className="text-sm font-bold font-mono text-white">
+            <div className="text-sm font-bold font-mono text-ink-900">
               {defect.dimensions.lengthCm} &times; {defect.dimensions.widthCm} &times; {defect.dimensions.depthCm} cm
             </div>
-            <p className="text-[10px] text-slate-400 font-mono">Area: {defect.dimensions.areaSqM} m²</p>
+            <p className="text-[10px] text-ink-500 font-mono">Area: {defect.dimensions.areaSqM} m²</p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 flex items-center gap-1">
-              <Activity className="w-3 h-3 text-rose-400" /> Sensor G-Force Spike
+          <div className="p-3.5 rounded-xl bg-surface-50 border border-line space-y-1">
+            <span className="text-[10px] uppercase font-bold text-ink-500 flex items-center gap-1">
+              <Activity className="w-3 h-3 text-rose-600" /> Sensor G-Force Spike
             </span>
-            <div className="text-2xl font-bold font-mono text-rose-400">
-              {defect.sensorVibrationG} <span className="text-xs text-slate-400 font-normal">G</span>
+            <div className="text-2xl font-bold font-mono text-rose-600">
+              {defect.sensorVibrationG} <span className="text-xs text-ink-500 font-normal">G</span>
             </div>
-            <p className="text-[10px] text-slate-400">Normal Baseline: &lt; 0.8G</p>
+            <p className="text-[10px] text-ink-500">Normal Baseline: &lt; 0.8G</p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 flex items-center gap-1">
-              <Scale className="w-3 h-3 text-brand-400" /> AI Asphalt Volume
+          <div className="p-3.5 rounded-xl bg-surface-50 border border-line space-y-1">
+            <span className="text-[10px] uppercase font-bold text-ink-500 flex items-center gap-1">
+              <Scale className="w-3 h-3 text-brand-600" /> AI Asphalt Volume
             </span>
-            <div className="text-2xl font-bold font-mono text-brand-400">
-              {defect.estimatedPatchVolumeKg} <span className="text-xs text-slate-400 font-normal">KG</span>
+            <div className="text-2xl font-bold font-mono text-brand-600">
+              {defect.estimatedPatchVolumeKg} <span className="text-xs text-ink-500 font-normal">KG</span>
             </div>
-            <p className="text-[10px] text-slate-400">Ready Polymer Mix</p>
+            <p className="text-[10px] text-ink-500">Ready Polymer Mix</p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-slate-400 flex items-center gap-1">
-              <AlertTriangle className="w-3 h-3 text-amber-400" /> Collision Risk Index
+          <div className="p-3.5 rounded-xl bg-surface-50 border border-line space-y-1">
+            <span className="text-[10px] uppercase font-bold text-ink-500 flex items-center gap-1">
+              <AlertTriangle className="w-3 h-3 text-amber-600" /> Collision Risk Index
             </span>
-            <div className="text-2xl font-bold font-mono text-white">
-              {defect.riskScore}<span className="text-xs text-slate-400">/100</span>
+            <div className="text-2xl font-bold font-mono text-ink-900">
+              {defect.riskScore}<span className="text-xs text-ink-500">/100</span>
             </div>
-            <p className="text-[10px] text-rose-400 font-semibold">{defect.severity.toUpperCase()} Priority</p>
+            <p className="text-[10px] text-rose-600 font-semibold">{defect.severity.toUpperCase()} Priority</p>
           </div>
         </div>
 
         {/* Geological & Environmental Context */}
-        <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+        <div className="p-4 rounded-xl bg-surface-50 border border-line space-y-2 text-xs">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-200">AI Diagnostic Summary:</span>
-            <span className="text-slate-400 flex items-center gap-1">
-              <Sun className="w-3.5 h-3.5 text-amber-400" /> {defect.weatherCondition}
+            <span className="font-semibold text-ink-900">AI Diagnostic Summary:</span>
+            <span className="text-ink-500 flex items-center gap-1">
+              <Sun className="w-3.5 h-3.5 text-amber-600" /> {defect.weatherCondition}
             </span>
           </div>
-          <p className="text-slate-300 leading-relaxed bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+          <p className="text-ink-700 leading-relaxed bg-white p-3 rounded-lg border border-line">
             {defect.notes}
           </p>
         </div>

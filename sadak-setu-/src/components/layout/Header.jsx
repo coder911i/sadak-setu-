@@ -1,313 +1,254 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useRoads } from '../../hooks/useRoads';
 import { useToast } from '../../hooks/useToast';
 import { useAuth } from '../../context/AuthContext';
 import { ROAD_DIVISIONS } from '../../utils/constants';
+import { routeMetaFor } from './navigation';
+import { cn } from '../../utils/cn';
 import {
   Menu,
   Bell,
   Search,
-  Radio,
-  Clock,
-  ChevronRight,
   User,
   Shield,
-  Layers,
-  Sparkles,
   LogOut,
   X,
   Check,
   AlertTriangle,
+  ChevronDown,
 } from 'lucide-react';
 
-const ROUTE_TITLES = {
-  '/': { title: 'Command Center', subtitle: 'National Highway Health & Telemetry Hub' },
-  '/roads': { title: 'Roads & Corridors', subtitle: 'Pavement Inventory, IRI & Chainage Heatmaps' },
-  '/inspections': { title: 'AI Road Inspections', subtitle: 'Vision Sensor Detections & Vibration G-Force Data' },
-  '/damage-intelligence': { title: 'Damage Intelligence', subtitle: 'AI Failure Matrix & Structural Defect Hotspots' },
-  '/maintenance': { title: 'Maintenance Operations', subtitle: 'Work Order Kanban, Budget Sanctions & SLA Queue' },
-  '/verification': { title: 'Quality Verification', subtitle: 'Before/After Patch Verification & IRC:111 Audits' },
-  '/reports': { title: 'Reports & Forecasting', subtitle: 'Degradation Modeling & Regional Budget Dossiers' },
-  '/settings': { title: 'System Settings', subtitle: 'Edge AI Vision Calibration & Node Health' },
-};
+const NOTIFICATIONS = [
+  {
+    id: 1,
+    title: 'Critical pothole detected',
+    desc: 'NH-48 Km 62+400 — 9.5 cm depth',
+    time: '12m ago',
+    urgent: true,
+  },
+  {
+    id: 2,
+    title: 'Work order completed',
+    desc: 'WO-2026-0884 (NH-44 Palwal) moved to audit queue',
+    time: '45m ago',
+    urgent: false,
+  },
+  {
+    id: 3,
+    title: 'Drone scan synced',
+    desc: 'Point cloud updated for NE-1 Expressway',
+    time: '2h ago',
+    urgent: false,
+  },
+];
+
+const initialsOf = (name) =>
+  (name || 'Sadak Setu')
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 
 export function Header({ onOpenSearch, onToggleMobileSidebar }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedZone, setSelectedZone } = useRoads();
-  const { info, success } = useToast();
+  const { info } = useToast();
   const { user, logout } = useAuth();
 
-  const [timeStr, setTimeStr] = useState('');
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(3);
+  const [openMenu, setOpenMenu] = useState(null); // 'notifications' | 'profile'
+  const [unreadCount, setUnreadCount] = useState(NOTIFICATIONS.length);
+  const menuRef = useRef(null);
 
-  const routeMeta = ROUTE_TITLES[location.pathname] || {
-    title: 'Sadak Setu Command',
-    subtitle: 'Public Infrastructure Intelligence System',
-  };
+  const meta = routeMetaFor(location.pathname);
 
   useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTimeStr(
-        now.toLocaleTimeString('en-IN', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: false,
-          timeZone: 'Asia/Kolkata',
-        }) + ' IST'
-      );
+    if (!openMenu) return undefined;
+    const onPointerDown = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setOpenMenu(null);
     };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const notifications = [
-    {
-      id: 1,
-      title: 'Level-1 Critical Pothole',
-      desc: 'NH-48 Km 62+400 – 9.5cm depth (High collision hazard)',
-      time: '12m ago',
-      urgent: true,
-    },
-    {
-      id: 2,
-      title: 'Work Order Completed',
-      desc: 'WO-2026-0884 (NH-44 Palwal) moved to Quality Audit Queue',
-      time: '45m ago',
-      urgent: false,
-    },
-    {
-      id: 3,
-      title: 'Drone LiDAR Scan Synced',
-      desc: 'High-density point cloud updated for NE-1 Expressway',
-      time: '2h ago',
-      urgent: false,
-    },
-  ];
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setOpenMenu(null);
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [openMenu]);
 
   const handleLogout = async () => {
-    setShowProfileMenu(false);
+    setOpenMenu(null);
     try {
       await logout();
-      info('Session Terminated', 'Logged out from Sadak Setu Central Command Portal.');
-      navigate('/login');
+      info('Signed out', 'Your Sadak Setu session has ended.');
     } catch (error) {
       console.error('Logout error:', error);
-      // Force logout even if API call fails
+    } finally {
       navigate('/login');
     }
   };
 
   return (
-    <header className="sticky top-0 z-30 w-full bg-white border-b border-[#ddeae0] shadow-sm">
-      {/* Top Institutional Ribbon */}
-      <div
-        className="px-4 py-1.5 border-b border-[#ddeae0] flex items-center justify-between text-[11px]"
-        style={{ background: 'linear-gradient(135deg, #1a5c38 0%, #2d8a5a 100%)' }}
-      >
-        <div className="flex items-center gap-2 truncate">
-          <span className="inline-block w-2 h-2 rounded-full bg-emerald-300 animate-pulse flex-shrink-0" />
-          <span className="font-semibold tracking-wide text-white/90 truncate">
-            MINISTRY OF ROAD TRANSPORT &amp; HIGHWAYS (MoRTH) &bull; CENTRAL ROAD INTELLIGENCE DIVISION
-          </span>
-        </div>
-
-        <div className="hidden lg:flex items-center gap-4 font-mono text-[10px] flex-shrink-0 text-white/80">
-          <span className="flex items-center gap-1.5">
-            <Radio className="w-3 h-3 text-emerald-300 animate-pulse" />
-            AI TELEMETRY: ONLINE
-          </span>
-          <span className="text-white/40">|</span>
-          <span className="flex items-center gap-1.5">
-            <Clock className="w-3 h-3 text-white/70" />
-            {timeStr}
-          </span>
-        </div>
-      </div>
-
-      {/* Main Header Bar */}
-      <div className="px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
-        {/* Left Section: Mobile Menu + Page Title & Breadcrumb */}
-        <div className="flex items-center gap-3 min-w-0">
-          {/* Mobile Drawer Hamburger Button */}
+    <header className="sticky top-0 z-30 w-full bg-white/85 backdrop-blur-xl border-b border-line pt-safe">
+      <div className="h-14 px-3 sm:px-5 flex items-center justify-between gap-3" ref={menuRef}>
+        {/* Left: menu + page title */}
+        <div className="flex items-center gap-2.5 min-w-0">
           <button
             onClick={onToggleMobileSidebar}
-            className="p-2 rounded-xl bg-surface-50 text-[#4a6b55] hover:text-brand-700 hover:bg-brand-50 border border-[#ddeae0] transition-colors md:hidden cursor-pointer"
-            aria-label="Open navigation drawer"
+            className="md:hidden p-2 -ml-1 rounded-xl text-ink-600 hover:bg-surface-100 transition-colors"
+            aria-label="Open navigation"
           >
             <Menu className="w-5 h-5" />
           </button>
 
-          {/* Title & Breadcrumbs */}
-          <div className="min-w-0 space-y-0.5">
-            {/* Breadcrumb Navigation */}
-            <nav className="flex items-center gap-1 text-[11px] font-medium text-[#7a9a83]">
-              <Link to="/" className="hover:text-brand-600 transition-colors">
-                Sadak Setu
-              </Link>
-              <ChevronRight className="w-3 h-3 text-[#b5ccbc]" />
-              <span className="text-[#1a3825] font-semibold truncate">{routeMeta.title}</span>
-            </nav>
-
-            {/* Current Page Title */}
-            <h2 className="text-base sm:text-lg font-bold text-[#1a3825] tracking-tight leading-tight truncate">
-              {routeMeta.title}
-            </h2>
+          <div className="min-w-0">
+            <h1 className="text-headline font-semibold text-ink-900 tracking-tight truncate">{meta.title}</h1>
+            <p className="hidden sm:block text-caption text-ink-400 truncate">{meta.subtitle}</p>
           </div>
         </div>
 
-        {/* Right Section: Zone Selector, Search, Notifications, User Profile */}
-        <div className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
-          {/* Regional Zone Selector (Desktop) */}
-          <div className="hidden xl:flex items-center gap-2 bg-surface-50 border border-[#ddeae0] px-3 py-1.5 rounded-xl text-xs">
-            <Layers className="w-3.5 h-3.5 text-brand-600" />
-            <span className="text-[#7a9a83]">Zone:</span>
+        {/* Right: zone, search, notifications, profile */}
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          <label className="hidden xl:flex items-center gap-1.5 rounded-xl border border-line bg-surface-50 px-2.5 h-9 text-footnote">
+            <span className="text-ink-400">Zone</span>
             <select
               value={selectedZone}
               onChange={(e) => setSelectedZone(e.target.value)}
-              className="bg-transparent font-semibold text-[#1a3825] focus:outline-none cursor-pointer"
+              className="bg-transparent font-medium text-ink-900 focus:outline-none cursor-pointer max-w-[10rem] truncate"
+              aria-label="Regional zone"
             >
-              {ROAD_DIVISIONS.map((div) => (
-                <option key={div.id} value={div.id} className="bg-white text-[#1a3825]">
-                  {div.name}
+              {ROAD_DIVISIONS.map((division) => (
+                <option key={division.id} value={division.id}>
+                  {division.name}
                 </option>
               ))}
             </select>
-          </div>
+            <ChevronDown className="w-3.5 h-3.5 text-ink-400" aria-hidden="true" />
+          </label>
 
-          {/* Search Trigger Button */}
           <button
             onClick={onOpenSearch}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-50 border border-[#ddeae0] text-xs text-[#7a9a83] hover:text-brand-700 hover:border-brand-300 hover:bg-brand-50 transition-colors cursor-pointer"
-            title="Spotlight Search (Cmd+K)"
+            className="flex items-center gap-2 h-9 px-2.5 sm:px-3 rounded-xl border border-line bg-surface-50 text-footnote text-ink-500 hover:text-ink-900 hover:border-line-strong transition-colors"
+            aria-label="Search"
           >
-            <Search className="w-3.5 h-3.5 text-brand-600" />
-            <span className="hidden sm:inline">Search...</span>
-            <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-surface-100 text-[#7a9a83] border border-[#ddeae0] rounded">
+            <Search className="w-4 h-4 text-ink-400" aria-hidden="true" />
+            <span className="hidden lg:inline">Search</span>
+            <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-caption font-mono bg-white text-ink-400 border border-line rounded-md">
               ⌘K
             </kbd>
           </button>
 
-          {/* Notifications Dropdown */}
+          {/* Notifications */}
           <div className="relative">
             <button
               onClick={() => {
-                setShowNotifications(!showNotifications);
-                setShowProfileMenu(false);
+                setOpenMenu(openMenu === 'notifications' ? null : 'notifications');
                 setUnreadCount(0);
               }}
-              className="relative p-2 rounded-xl bg-surface-50 border border-[#ddeae0] text-[#4a6b55] hover:text-brand-700 hover:bg-brand-50 hover:border-brand-200 transition-colors cursor-pointer"
-              aria-label="Notifications"
+              className="relative w-9 h-9 flex items-center justify-center rounded-xl border border-line bg-surface-50 text-ink-600 hover:text-ink-900 transition-colors"
+              aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ''}`}
+              aria-expanded={openMenu === 'notifications'}
             >
               <Bell className="w-4 h-4" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-caption font-semibold flex items-center justify-center">
                   {unreadCount}
                 </span>
               )}
             </button>
 
-            {/* Notifications Popover */}
-            {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white border border-[#ddeae0] rounded-2xl shadow-elevated z-50 overflow-hidden animate-fade-in">
-                <div className="px-4 py-3 border-b border-[#ddeae0] flex items-center justify-between bg-surface-50">
-                  <div className="flex items-center gap-2">
-                    <h4 className="text-xs font-bold text-[#1a3825]">System Telemetry Alerts</h4>
-                    <span className="px-1.5 py-0.5 text-[10px] rounded-full bg-brand-100 text-brand-700 font-mono border border-brand-200">
-                      Live
-                    </span>
-                  </div>
+            {openMenu === 'notifications' && (
+              <div className="absolute right-0 mt-2 w-[min(22rem,calc(100vw-1.5rem))] bg-white border border-line rounded-2xl shadow-elevated overflow-hidden animate-scale-in z-50">
+                <div className="px-4 py-3 border-b border-line flex items-center justify-between bg-surface-50">
+                  <h2 className="text-subhead font-semibold text-ink-900">Alerts</h2>
                   <button
-                    onClick={() => setShowNotifications(false)}
-                    className="text-[#7a9a83] hover:text-[#1a3825] transition-colors"
+                    onClick={() => setOpenMenu(null)}
+                    className="p-1 rounded-lg text-ink-400 hover:text-ink-900 hover:bg-surface-100"
+                    aria-label="Close alerts"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
-
-                <div className="divide-y divide-[#ddeae0] max-h-80 overflow-y-auto">
-                  {notifications.map((n) => (
-                    <div
-                      key={n.id}
-                      className="p-3.5 hover:bg-surface-50 transition-colors flex items-start gap-3 cursor-pointer"
-                    >
-                      <div
-                        className={`p-1.5 rounded-lg flex-shrink-0 mt-0.5 ${
+                <ul className="divide-y divide-line max-h-80 overflow-y-auto">
+                  {NOTIFICATIONS.map((n) => (
+                    <li key={n.id} className="p-3.5 flex items-start gap-3 hover:bg-surface-50 transition-colors">
+                      <span
+                        className={cn(
+                          'p-1.5 rounded-lg flex-shrink-0 border',
                           n.urgent
-                            ? 'bg-red-50 text-red-600 border border-red-200'
-                            : 'bg-brand-50 text-brand-600 border border-brand-200'
-                        }`}
+                            ? 'bg-red-50 text-red-600 border-red-100'
+                            : 'bg-brand-50 text-brand-600 border-brand-100'
+                        )}
                       >
                         {n.urgent ? <AlertTriangle className="w-4 h-4" /> : <Check className="w-4 h-4" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-1">
-                          <p className="text-xs font-semibold text-[#1a3825] truncate">{n.title}</p>
-                          <span className="text-[10px] text-[#7a9a83] font-mono whitespace-nowrap">{n.time}</span>
-                        </div>
-                        <p className="text-[11px] text-[#4a6b55] mt-0.5 leading-snug">{n.desc}</p>
-                      </div>
-                    </div>
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-baseline justify-between gap-2">
+                          <span className="text-footnote font-semibold text-ink-900 truncate">{n.title}</span>
+                          <span className="text-caption text-ink-400 font-mono flex-shrink-0">{n.time}</span>
+                        </span>
+                        <span className="block text-caption text-ink-500 mt-0.5">{n.desc}</span>
+                      </span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             )}
           </div>
 
-          {/* User Profile Button with Popover */}
+          {/* Profile */}
           <div className="relative">
             <button
-              onClick={() => {
-                setShowProfileMenu(!showProfileMenu);
-                setShowNotifications(false);
-              }}
-              className="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-brand-50 transition-colors cursor-pointer border border-transparent hover:border-brand-200"
-              aria-label="User profile menu"
+              onClick={() => setOpenMenu(openMenu === 'profile' ? null : 'profile')}
+              className="flex items-center gap-2 h-9 pl-1 pr-1 sm:pr-2 rounded-xl hover:bg-surface-100 transition-colors"
+              aria-label="Account menu"
+              aria-expanded={openMenu === 'profile'}
             >
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white font-bold text-xs shadow-sm">
-                {user ? user.fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'AS'}
-              </div>
-              <div className="hidden md:block text-left">
-                <div className="text-xs font-bold text-[#1a3825] leading-tight">{user ? user.fullName : 'Loading...'}</div>
-                <div className="text-[10px] text-[#7a9a83]">{user ? user.role.replace('_', ' ') : 'Loading...'}</div>
-              </div>
+              <span className="w-8 h-8 rounded-xl bg-brand-100 text-brand-800 flex items-center justify-center text-footnote font-semibold">
+                {initialsOf(user?.fullName)}
+              </span>
+              <span className="hidden lg:block text-left max-w-[9rem]">
+                <span className="block text-footnote font-semibold text-ink-900 truncate">
+                  {user?.fullName || 'Account'}
+                </span>
+                <span className="block text-caption text-ink-400 truncate">
+                  {user?.role ? user.role.replace(/_/g, ' ') : ''}
+                </span>
+              </span>
             </button>
 
-            {/* Profile Dropdown Menu */}
-            {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-64 bg-white border border-[#ddeae0] rounded-2xl shadow-elevated z-50 overflow-hidden animate-fade-in text-xs">
-                <div className="p-3.5 bg-surface-50 border-b border-[#ddeae0]">
-                  <div className="font-bold text-[#1a3825]">{user ? user.fullName : 'Loading...'}</div>
-                  <div className="text-[#7a9a83] text-[11px]">{user ? user.email : 'Loading...'}</div>
-                  <div className="text-[10px] font-mono text-brand-600 mt-1 flex items-center gap-1">
-                    <Shield className="w-3 h-3" /> Role: {user ? user.role.replace('_', ' ') : 'Loading...'}
-                  </div>
+            {openMenu === 'profile' && (
+              <div className="absolute right-0 mt-2 w-64 bg-white border border-line rounded-2xl shadow-elevated overflow-hidden animate-scale-in z-50">
+                <div className="p-3.5 bg-surface-50 border-b border-line">
+                  <p className="text-subhead font-semibold text-ink-900 truncate">{user?.fullName || 'Account'}</p>
+                  <p className="text-caption text-ink-400 truncate">{user?.email}</p>
+                  {user?.role && (
+                    <p className="text-caption text-brand-700 mt-1 flex items-center gap-1">
+                      <Shield className="w-3 h-3" aria-hidden="true" /> {user.role.replace(/_/g, ' ')}
+                    </p>
+                  )}
                 </div>
-
-                <div className="p-1 space-y-0.5">
+                <div className="p-1.5">
                   <button
                     onClick={() => {
-                      setShowProfileMenu(false);
-                      success('Profile Verified', 'Sadak Setu credentials active & digitally signed.');
+                      setOpenMenu(null);
+                      navigate('/settings');
                     }}
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#4a6b55] hover:text-brand-700 hover:bg-brand-50 text-left transition-colors cursor-pointer"
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-subhead text-ink-700 hover:bg-surface-100 transition-colors"
                   >
-                    <User className="w-3.5 h-3.5 text-brand-600" />
-                    <span>Profile Information</span>
+                    <User className="w-4 h-4 text-ink-400" aria-hidden="true" />
+                    Profile & settings
                   </button>
-
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-600 hover:bg-red-50 text-left transition-colors cursor-pointer border-t border-[#ddeae0] mt-1"
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-subhead text-red-600 hover:bg-red-50 transition-colors"
                   >
-                    <LogOut className="w-3.5 h-3.5" />
-                    <span>Sign Out</span>
+                    <LogOut className="w-4 h-4" aria-hidden="true" />
+                    Sign out
                   </button>
                 </div>
               </div>

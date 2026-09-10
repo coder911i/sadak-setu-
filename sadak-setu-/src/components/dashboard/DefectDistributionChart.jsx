@@ -14,16 +14,16 @@ const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-slate-900 border border-slate-750 p-3 rounded-lg shadow-xl text-xs space-y-1">
-        <p className="font-bold text-white flex items-center gap-2">
+      <div className="bg-white border border-line p-3 rounded-lg shadow-xl text-xs space-y-1">
+        <p className="font-bold text-ink-900 flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: data.color }} />
           {data.name}
         </p>
-        <p className="text-slate-300 font-mono">
-          Count: <span className="font-bold text-white">{data.count}</span> ({data.percentage}%)
+        <p className="text-ink-700 font-mono">
+          Count: <span className="font-bold text-ink-900">{data.count}</span> ({data.percentage}%)
         </p>
-        <p className="text-slate-400">
-          Avg Severity Depth: <span className="text-slate-200">{data.avgDepthCm} cm</span>
+        <p className="text-ink-500">
+          Avg Severity Depth: <span className="text-ink-900">{data.avgDepthCm} cm</span>
         </p>
       </div>
     );
@@ -35,13 +35,13 @@ export function DefectDistributionChart() {
   const data = MOCK_ANALYTICS.defectBreakdown;
 
   return (
-    <Card className="flex flex-col h-full border-slate-800">
+    <Card className="flex flex-col h-full border-line">
       <CardHeader className="py-3 px-4">
         <div className="flex items-center justify-between w-full">
           <CardTitle icon={PieChartIcon}>
             AI Defect Classification Breakdown
           </CardTitle>
-          <span className="text-[10px] text-slate-400 font-mono">
+          <span className="text-[10px] text-ink-500 font-mono">
             375 Total Distresses
           </span>
         </div>
@@ -70,12 +70,12 @@ export function DefectDistributionChart() {
         </div>
 
         {/* Legend */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2 border-t border-slate-800 text-[11px]">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2 border-t border-line text-[11px]">
           {data.map((item) => (
-            <div key={item.name} className="flex items-center gap-1.5 text-slate-300">
+            <div key={item.name} className="flex items-center gap-1.5 text-ink-700">
               <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
               <span className="truncate">{item.name}</span>
-              <span className="font-mono text-[10px] text-slate-500 font-semibold">{item.percentage}%</span>
+              <span className="font-mono text-[10px] text-ink-400 font-semibold">{item.percentage}%</span>
             </div>
           ))}
         </div>

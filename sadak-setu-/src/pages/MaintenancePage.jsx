@@ -13,22 +13,22 @@ export function MaintenancePage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <Wrench className="w-6 h-6 text-brand-400" />
+          <h1 className="text-title3 sm:text-title2 font-semibold text-ink-900 tracking-tight flex items-center gap-2">
+            <Wrench className="w-6 h-6 text-brand-600" />
             <span>Highway Maintenance &amp; Work Order Operations</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-footnote sm:text-subhead text-ink-500 mt-1 max-w-2xl">
             End-to-end triage, budget sanctions, contractor assignment, SLA enforcement, and execution progress tracking.
           </p>
         </div>
 
         <button
           onClick={() => setShowCalculator(!showCalculator)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-850 text-xs font-semibold text-slate-300 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-line hover:bg-surface-100 text-xs font-semibold text-ink-700 transition-colors"
         >
-          <Calculator className="w-4 h-4 text-brand-400" />
+          <Calculator className="w-4 h-4 text-brand-600" />
           <span>{showCalculator ? 'Hide Cost Estimator' : 'Open AI Cost Estimator'}</span>
         </button>
       </div>

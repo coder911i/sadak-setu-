@@ -30,12 +30,12 @@ export function ProgressBar({
   return (
     <div className={cn('w-full space-y-1.5', className)}>
       {(showLabel || label) && (
-        <div className="flex items-center justify-between text-xs text-slate-300">
+        <div className="flex items-center justify-between text-xs text-ink-700">
           <span>{label}</span>
           <span className="font-mono font-semibold">{percentage}%</span>
         </div>
       )}
-      <div className={cn('w-full bg-slate-800 rounded-full overflow-hidden', sizes[size])}>
+      <div className={cn('w-full bg-surface-100 rounded-full overflow-hidden', sizes[size])}>
         <div
           className={cn('h-full rounded-full transition-all duration-500 ease-out', colors[color] || colors.brand)}
           style={{ width: `${percentage}%` }}

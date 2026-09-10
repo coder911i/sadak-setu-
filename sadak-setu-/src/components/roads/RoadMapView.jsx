@@ -18,7 +18,7 @@ const createDefectMarkerIcon = (severity) => {
     className: `relative ${pulseClass}`,
     html: `
       <div class="relative flex items-center justify-center w-5 h-5">
-        <div class="w-3.5 h-3.5 rounded-full ${colorClass} border-2 border-slate-900 shadow-md"></div>
+        <div class="w-3.5 h-3.5 rounded-full ${colorClass} border-2 border-line shadow-md"></div>
       </div>
     `,
     iconSize: [20, 20],
@@ -50,15 +50,15 @@ export function RoadMapView({ onSelectRoad }) {
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[650px]">
       {/* Left Corridor Selector Panel */}
       <div className="lg:col-span-1 flex flex-col gap-2 overflow-y-auto max-h-[650px] pr-1">
-        <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-2 sticky top-0 z-10 backdrop-blur-md">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-            <Layers className="w-3.5 h-3.5 text-brand-400" /> GIS Corridor Layers
+        <div className="p-3 rounded-xl bg-white border border-line space-y-2 sticky top-0 z-10 backdrop-blur-md">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-ink-500 flex items-center gap-2">
+            <Layers className="w-3.5 h-3.5 text-brand-600" /> GIS Corridor Layers
           </h4>
           <div className="flex items-center gap-1.5 text-xs">
             <button
               onClick={() => setFilterSeverity('all')}
               className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-colors flex-1 ${
-                filterSeverity === 'all' ? 'bg-brand-600 text-white' : 'bg-slate-800 text-slate-300'
+                filterSeverity === 'all' ? 'bg-brand-600 text-white' : 'bg-surface-100 text-ink-700'
               }`}
             >
               All
@@ -66,7 +66,7 @@ export function RoadMapView({ onSelectRoad }) {
             <button
               onClick={() => setFilterSeverity('critical')}
               className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-colors flex-1 ${
-                filterSeverity === 'critical' ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-300'
+                filterSeverity === 'critical' ? 'bg-rose-600 text-white' : 'bg-surface-100 text-ink-700'
               }`}
             >
               Critical Only
@@ -87,20 +87,20 @@ export function RoadMapView({ onSelectRoad }) {
               }}
               className={`p-3 rounded-xl border transition-all cursor-pointer space-y-1.5 ${
                 isSelected
-                  ? 'bg-brand-950/70 border-brand-500 shadow-md ring-1 ring-brand-500/50'
-                  : 'bg-slate-900/90 border-slate-800 hover:border-slate-700'
+                  ? 'bg-brand-50 border-brand-500 shadow-md ring-1 ring-brand-500/50'
+                  : 'bg-white border-line hover:border-line'
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono font-bold text-xs text-brand-400">{r.code}</span>
+                <span className="font-mono font-bold text-xs text-brand-600">{r.code}</span>
                 <span className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded border ${pciMeta.badgeClass}`}>
                   PCI {r.pciScore}
                 </span>
               </div>
-              <p className="text-xs font-semibold text-slate-200 truncate">{r.name}</p>
-              <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+              <p className="text-xs font-semibold text-ink-900 truncate">{r.name}</p>
+              <div className="flex items-center justify-between text-[10px] text-ink-500 font-mono">
                 <span>{r.totalLengthKm} KM ({r.lanes}L)</span>
-                <span className={r.criticalDefectsCount > 0 ? 'text-rose-400 font-bold' : 'text-slate-400'}>
+                <span className={r.criticalDefectsCount > 0 ? 'text-rose-600 font-bold' : 'text-ink-500'}>
                   {r.activeDefectsCount} Defects
                 </span>
               </div>
@@ -110,7 +110,7 @@ export function RoadMapView({ onSelectRoad }) {
       </div>
 
       {/* Main Leaflet Map Viewer */}
-      <div className="lg:col-span-3 rounded-xl overflow-hidden border border-slate-800 h-full relative">
+      <div className="lg:col-span-3 rounded-xl overflow-hidden border border-line h-full relative">
         <MapContainer
           center={defaultCenter}
           zoom={5}
@@ -143,10 +143,10 @@ export function RoadMapView({ onSelectRoad }) {
               >
                 <Popup>
                   <div className="p-2 space-y-1 text-xs">
-                    <span className="font-mono font-bold text-white text-sm">{road.code}</span>
-                    <p className="text-slate-300">{road.name}</p>
-                    <div className="text-[11px] text-slate-400 font-mono">
-                      PCI: <strong className="text-emerald-400">{road.pciScore}</strong> | Roughness: <strong>{road.iriScore} m/km</strong>
+                    <span className="font-mono font-bold text-ink-900 text-sm">{road.code}</span>
+                    <p className="text-ink-700">{road.name}</p>
+                    <div className="text-[11px] text-ink-500 font-mono">
+                      PCI: <strong className="text-emerald-600">{road.pciScore}</strong> | Roughness: <strong>{road.iriScore} m/km</strong>
                     </div>
                   </div>
                 </Popup>
@@ -162,11 +162,11 @@ export function RoadMapView({ onSelectRoad }) {
             >
               <Popup>
                 <div className="p-2 space-y-1 text-xs">
-                  <div className="font-bold text-rose-400 flex items-center gap-1">
+                  <div className="font-bold text-rose-600 flex items-center gap-1">
                     <ShieldAlert className="w-3.5 h-3.5" /> {defect.defectType}
                   </div>
-                  <div className="text-slate-300 font-mono">{defect.roadCode} ({defect.chainage})</div>
-                  <div className="text-[11px] text-slate-400">
+                  <div className="text-ink-700 font-mono">{defect.roadCode} ({defect.chainage})</div>
+                  <div className="text-[11px] text-ink-500">
                     Depth: <strong>{defect.dimensions.depthCm} cm</strong> | AI Conf: <strong>{defect.confidenceScore}%</strong>
                   </div>
                 </div>

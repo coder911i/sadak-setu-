@@ -8,19 +8,19 @@ export function PriorityBadge({ priority = 'Monitor', size = 'sm', className }) 
   const configs = {
     immediate: {
       label: 'Immediate',
-      badgeClass: 'bg-rose-950/80 text-rose-300 border-rose-800',
+      badgeClass: 'bg-rose-50 text-rose-700 border-rose-200',
       dotClass: 'bg-rose-500 animate-pulse',
       icon: AlertOctagon,
     },
     high: {
       label: 'High',
-      badgeClass: 'bg-orange-950/80 text-orange-300 border-orange-800',
+      badgeClass: 'bg-orange-50 text-orange-700 border-orange-200',
       dotClass: 'bg-orange-500',
       icon: AlertTriangle,
     },
     monitor: {
       label: 'Monitor',
-      badgeClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800',
+      badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
       dotClass: 'bg-emerald-500',
       icon: ShieldCheck,
     },

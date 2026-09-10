@@ -8,11 +8,11 @@ export function NotFoundPage() {
 
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center text-center p-6 space-y-4">
-      <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mb-2">
+      <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-600 mb-2">
         <AlertTriangle className="w-8 h-8" />
       </div>
-      <h1 className="text-3xl font-extrabold text-white font-mono">404 - Corridor Not Found</h1>
-      <p className="text-xs text-slate-400 max-w-md">
+      <h1 className="text-3xl font-bold text-ink-900 font-mono">404 - Corridor Not Found</h1>
+      <p className="text-xs text-ink-500 max-w-md">
         The requested highway route or telemetry resource does not exist in the Sadak Setu National Registry.
       </p>
       <div className="pt-2">

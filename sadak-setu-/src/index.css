@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,81 +6,162 @@
 
 @layer base {
   :root {
-    --bg-page: #f2f6f3;
+    --bg-page: #f4f7f5;
     --bg-sidebar: #ffffff;
     --bg-header: #ffffff;
     --bg-card: #ffffff;
-    --border-default: #ddeae0;
-    --text-primary: #1a3825;
+    --border-default: #e2ece5;
+    --text-primary: #12261a;
     --text-secondary: #4a6b55;
     --text-muted: #7a9a83;
-    --brand-primary: #1a5c38;
-    --brand-light: #e8f5ee;
+    --brand-primary: #1a6e45;
+    --brand-light: #eef7f1;
     --accent-warning: #d97706;
     --accent-danger: #dc2626;
+    --shell-header: 3.5rem;
+    --shell-tabbar: 4rem;
   }
 
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    @apply antialiased overflow-x-hidden min-h-screen;
+    @apply antialiased overflow-x-hidden min-h-screen text-body text-ink-900;
     background-color: var(--bg-page);
-    color: var(--text-primary);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', 'SF Pro Text', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
   }
 
   * {
     box-sizing: border-box;
   }
+
+  h1, h2, h3, h4 {
+    @apply text-ink-900;
+    text-wrap: balance;
+  }
+
+  /* Visible, consistent focus ring for keyboard users only. */
+  :focus-visible {
+    outline: 2px solid #2d8a5a;
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer components {
-  /* ===================== CARD STYLES ===================== */
+  /* ===================== SURFACES ===================== */
   .card-base {
-    @apply bg-white rounded-2xl border border-[#ddeae0] shadow-card;
+    @apply bg-white rounded-2xl border border-line shadow-card;
   }
 
   .card-elevated {
-    @apply bg-white rounded-2xl border border-[#ddeae0] shadow-elevated;
+    @apply bg-white rounded-2xl border border-line shadow-elevated;
+  }
+
+  /* Page content column: consistent max width and gutters. */
+  .content-shell {
+    @apply w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ===================== TYPOGRAPHY HELPERS ===================== */
+  .text-eyebrow {
+    @apply text-caption font-semibold uppercase tracking-wider text-ink-400;
   }
 
   /* ===================== BADGE STYLES ===================== */
   .badge-immediate {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-caption font-semibold bg-red-50 text-red-700 border border-red-200;
   }
 
   .badge-high {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-caption font-semibold bg-amber-50 text-amber-700 border border-amber-200;
   }
 
   .badge-monitor {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-caption font-semibold bg-blue-50 text-blue-700 border border-blue-200;
   }
 
   .badge-good {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-caption font-semibold bg-green-50 text-green-700 border border-green-200;
+  }
+
+  /* ===================== FORM INPUTS ===================== */
+  .input-base {
+    @apply w-full bg-white border border-line rounded-xl px-3.5 py-2.5 text-subhead text-ink-900
+           placeholder:text-ink-400 focus:outline-none focus:ring-4 focus:ring-brand-500/15
+           focus:border-brand-400 transition-all duration-150;
+  }
+
+  select.input-base option {
+    background: #ffffff;
+    color: #12261a;
+  }
+
+  /* Comfortable tap targets on touch devices. */
+  @media (pointer: coarse) {
+    .input-base {
+      @apply py-3 text-body;
+    }
+  }
+
+  /* Horizontal card rails used on mobile instead of cramped grids. */
+  .scroll-rail {
+    @apply flex gap-3 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 pb-1;
+    scrollbar-width: none;
+  }
+
+  .scroll-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll-rail > * {
+    @apply snap-start shrink-0;
+  }
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Pressed feedback for tappable surfaces. */
+  .press {
+    @apply transition-transform duration-100 ease-ios active:scale-[0.98];
   }
 }
 
 /* ===================== SCROLLBAR ===================== */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f2f6f3;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #b5ccbc;
+  background: #c7d8cd;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #7dc19a;
+  background: #8eaf99;
 }
 
 /* ===================== LEAFLET MAP ===================== */
@@ -90,19 +171,23 @@
   border-radius: 1rem;
   z-index: 10;
   background-color: #e8f0eb !important;
+  font-family: inherit !important;
 }
 
-.leaflet-tile {
-  filter: brightness(1.02) contrast(1.05) saturate(1.1) hue-rotate(5deg);
+.leaflet-control-container .leaflet-control {
+  border-radius: 0.75rem !important;
+  border: 1px solid #e2ece5 !important;
+  box-shadow: 0 4px 16px -8px rgba(15, 55, 32, 0.2) !important;
+  overflow: hidden;
 }
 
 /* Leaflet Popup Custom Styling — Light Theme */
 .leaflet-popup-content-wrapper {
   background-color: #ffffff !important;
-  color: #1a3825 !important;
-  border: 1px solid #ddeae0 !important;
-  border-radius: 0.875rem !important;
-  box-shadow: 0 8px 24px rgba(15, 55, 32, 0.14) !important;
+  color: #12261a !important;
+  border: 1px solid #e2ece5 !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 8px 32px -12px rgba(15, 55, 32, 0.24) !important;
 }
 
 .leaflet-popup-tip {
@@ -140,69 +225,54 @@
 }
 
 /* ===================== ANIMATIONS ===================== */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes slide-in-left {
-  from { opacity: 0; transform: translateX(-16px); }
+  from { opacity: 0; transform: translateX(-12px); }
   to   { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes scale-in {
-  from { opacity: 0; transform: scale(0.97); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.25s ease-out both;
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .animate-slide-in-left {
-  animation: slide-in-left 0.3s ease-out both;
+  animation: slide-in-left 0.26s cubic-bezier(0.32, 0.72, 0, 1) both;
 }
 
-.animate-scale-in {
-  animation: scale-in 0.2s ease-out both;
-}
-
-/* ===================== FORM INPUTS ===================== */
-.input-base {
-  @apply w-full bg-white border border-[#ddeae0] rounded-xl px-3.5 py-2.5 text-sm text-[#1a3825]
-         placeholder:text-[#7a9a83] focus:outline-none focus:ring-2 focus:ring-brand-500/30
-         focus:border-brand-400 transition-all;
-}
-
-select.input-base option {
-  background: #ffffff;
-  color: #1a3825;
+.animate-slide-in {
+  animation: slide-in 0.24s cubic-bezier(0.32, 0.72, 0, 1) both;
 }
 
 /* ===================== TABLE ===================== */
 .table-row-hover:hover {
-  background-color: #f4f7f5;
+  background-color: #f7faf8;
 }
 
 /* ===================== RECHARTS ===================== */
 .recharts-tooltip-wrapper .recharts-default-tooltip {
   background: #ffffff !important;
-  border: 1px solid #ddeae0 !important;
+  border: 1px solid #e2ece5 !important;
   border-radius: 0.75rem !important;
-  box-shadow: 0 4px 12px rgba(15, 55, 32, 0.10) !important;
+  box-shadow: 0 8px 24px -12px rgba(15, 55, 32, 0.2) !important;
+  font-size: 12px !important;
+}
+
+.recharts-cartesian-axis-tick text {
+  fill: #7a9a83 !important;
+  font-size: 11px !important;
 }
 
 /* ===================== SIDEBAR ACTIVE INDICATOR ===================== */
 .nav-active-indicator {
-  background: linear-gradient(135deg, #1a5c38, #2d8a5a);
+  background: linear-gradient(135deg, #1a6e45, #2d8a5a);
 }
 
 /* ===================== GRADIENT HEADER ===================== */
 .page-header-gradient {
-  background: linear-gradient(135deg, #1a5c38 0%, #2d8a5a 50%, #155637 100%);
+  background: linear-gradient(135deg, #124529 0%, #1a6e45 55%, #2d8a5a 100%);
 }
 
-/* ===================== HEALTH SCORE GRADIENT ===================== */
+/* ===================== HEALTH SCORE COLORS ===================== */
 .score-excellent { color: #16a34a; }
 .score-good      { color: #65a30d; }
 .score-fair      { color: #d97706; }

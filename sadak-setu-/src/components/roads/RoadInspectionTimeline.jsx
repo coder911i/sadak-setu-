@@ -38,7 +38,7 @@ export function RoadInspectionTimeline({ road }) {
   ];
 
   return (
-    <Card className="bg-slate-900/90 border-slate-800">
+    <Card className="bg-white border-line">
       <CardHeader className="py-3 px-4">
         <CardTitle icon={Calendar}>
           Telemetry Inspection History &amp; Survey Timeline
@@ -46,36 +46,36 @@ export function RoadInspectionTimeline({ road }) {
       </CardHeader>
 
       <CardContent className="p-4">
-        <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-800">
+        <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-surface-100">
           {history.map((item, idx) => (
             <div key={item.id} className="relative space-y-1 text-xs">
               {/* Dot */}
               <span
-                className={`absolute -left-6 top-1 w-3 h-3 rounded-full border-2 border-slate-900 ${
-                  idx === 0 ? 'bg-brand-500 ring-4 ring-brand-500/20' : 'bg-slate-700'
+                className={`absolute -left-6 top-1 w-3 h-3 rounded-full border-2 border-line ${
+                  idx === 0 ? 'bg-brand-500 ring-4 ring-brand-500/20' : 'bg-surface-200'
                 }`}
               />
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-white text-xs">{item.agency}</span>
-                  <span className="text-[10px] font-mono px-2 py-0.2 rounded bg-brand-950 text-brand-300 border border-brand-800">
+                  <span className="font-bold text-ink-900 text-xs">{item.agency}</span>
+                  <span className="text-[10px] font-mono px-2 py-0.2 rounded bg-brand-50 text-brand-700 border border-brand-200">
                     {item.method}
                   </span>
                 </div>
-                <span className="text-[10px] font-mono text-slate-400">
+                <span className="text-[10px] font-mono text-ink-500">
                   {formatDate(item.date, true)}
                 </span>
               </div>
 
-              <p className="text-slate-300 text-xs leading-relaxed">{item.findings}</p>
+              <p className="text-ink-700 text-xs leading-relaxed">{item.findings}</p>
 
-              <div className="flex items-center gap-4 text-[10px] font-mono text-slate-400 pt-1">
-                <span>Recorded Health: <strong className="text-emerald-400">{item.healthRecorded} / 100</strong></span>
+              <div className="flex items-center gap-4 text-[10px] font-mono text-ink-500 pt-1">
+                <span>Recorded Health: <strong className="text-emerald-600">{item.healthRecorded} / 100</strong></span>
                 <span>&bull;</span>
-                <span>Survey Speed: <strong className="text-slate-200">{item.speed}</strong></span>
+                <span>Survey Speed: <strong className="text-ink-900">{item.speed}</strong></span>
                 <span>&bull;</span>
-                <span className="text-emerald-400 font-semibold">{item.status}</span>
+                <span className="text-emerald-600 font-semibold">{item.status}</span>
               </div>
             </div>
           ))}

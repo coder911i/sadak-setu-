@@ -29,7 +29,7 @@ export function ExecutiveMetrics() {
         value={stats.totalKm ? stats.totalKm.toLocaleString('en-IN') : '1,360'}
         unit="KM"
         icon={Route}
-        iconBg="bg-blue-500/10 text-blue-400 border-blue-500/20"
+        iconBg="bg-blue-500/10 text-blue-600 border-blue-500/20"
         trend="+140 KM"
         trendDirection="up"
         trendLabel="Surveyed this week"
@@ -40,7 +40,7 @@ export function ExecutiveMetrics() {
         value={stats.avgPci || 74}
         unit="/ 100"
         icon={Activity}
-        iconBg="bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+        iconBg="bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
         progress={stats.avgPci || 74}
         subtext="Good Condition (Grade B+)"
       />
@@ -50,7 +50,7 @@ export function ExecutiveMetrics() {
         value={stats.criticalDefects || 14}
         unit="Spots"
         icon={AlertTriangle}
-        iconBg="bg-rose-500/10 text-rose-400 border-rose-500/20"
+        iconBg="bg-rose-500/10 text-rose-600 border-rose-500/20"
         trend="-4 Spots"
         trendDirection="up" // down is good for hazards, represented by green trend
         trendLabel="Resolved past 48h"
@@ -61,7 +61,7 @@ export function ExecutiveMetrics() {
         value={activeWorkOrdersCount || 4}
         unit="Orders"
         icon={Wrench}
-        iconBg="bg-amber-500/10 text-amber-400 border-amber-500/20"
+        iconBg="bg-amber-500/10 text-amber-600 border-amber-500/20"
         subtext="2 Orders near SLA deadline"
       />
 
@@ -69,7 +69,7 @@ export function ExecutiveMetrics() {
         title="Sanctioned Maintenance"
         value={formatCurrency(totalSanctioned || 4740000)}
         icon={Coins}
-        iconBg="bg-purple-500/10 text-purple-400 border-purple-500/20"
+        iconBg="bg-purple-500/10 text-purple-600 border-purple-500/20"
         trend="94.2%"
         trendDirection="neutral"
         trendLabel="Fund Utilization Rate"

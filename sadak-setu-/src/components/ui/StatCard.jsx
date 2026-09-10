@@ -20,7 +20,7 @@ export function StatCard({
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-2xl bg-white border border-[#ddeae0] p-5 shadow-card transition-all hover:shadow-card-hover hover:-translate-y-0.5',
+        'relative overflow-hidden rounded-2xl bg-white border border-line p-5 shadow-card transition-all hover:shadow-card-hover hover:-translate-y-0.5',
         className
       )}
     >
@@ -31,12 +31,12 @@ export function StatCard({
 
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
-          <p className="text-xs font-semibold text-[#7a9a83] uppercase tracking-wider">{title}</p>
+          <p className="text-xs font-semibold text-ink-400 uppercase tracking-wider">{title}</p>
           <div className="flex items-baseline gap-1.5 pt-1">
-            <h4 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1a3825] font-mono">
+            <h4 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink-900 font-mono">
               {value}
             </h4>
-            {unit && <span className="text-xs font-medium text-[#7a9a83]">{unit}</span>}
+            {unit && <span className="text-xs font-medium text-ink-400">{unit}</span>}
           </div>
         </div>
 
@@ -63,7 +63,7 @@ export function StatCard({
       )}
 
       {/* Footer / Trend line */}
-      <div className="mt-3.5 flex items-center justify-between text-xs pt-1 border-t border-[#ddeae0]">
+      <div className="mt-3.5 flex items-center justify-between text-xs pt-1 border-t border-line">
         {trend && (
           <div className="flex items-center gap-1.5">
             <span
@@ -71,7 +71,7 @@ export function StatCard({
                 'inline-flex items-center gap-0.5 font-semibold text-[11px] px-1.5 py-0.5 rounded-lg',
                 trendDirection === 'up'      && 'text-green-700 bg-green-100',
                 trendDirection === 'down'    && 'text-red-700 bg-red-100',
-                trendDirection === 'neutral' && 'text-[#4a6b55] bg-surface-100'
+                trendDirection === 'neutral' && 'text-ink-600 bg-surface-100'
               )}
             >
               {trendDirection === 'up'      && <TrendingUp className="w-3 h-3" />}
@@ -79,14 +79,17 @@ export function StatCard({
               {trendDirection === 'neutral' && <Minus className="w-3 h-3" />}
               {trend}
             </span>
-            {trendLabel && <span className="text-[#7a9a83] text-[11px] truncate">{trendLabel}</span>}
+            {trendLabel && <span className="text-ink-400 text-[11px] truncate">{trendLabel}</span>}
           </div>
         )}
 
-        {subtext && !trend && <span className="text-[#7a9a83] text-[11px] truncate">{subtext}</span>}
+        {subtext && !trend && <span className="text-ink-400 text-[11px] truncate">{subtext}</span>}
 
         {badge && <div className="ml-auto">{badge}</div>}
       </div>
     </div>
   );
 }
+
+// Canonical name for the same primitive used across dashboards.
+export { StatCard as MetricCard };

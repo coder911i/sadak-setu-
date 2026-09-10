@@ -97,13 +97,13 @@ export function RoadsPage() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* 1. Page Header: "Road Monitoring" */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-            <Route className="w-6 h-6 text-brand-400" />
+          <h1 className="text-title3 sm:text-title2 font-semibold text-ink-900 tracking-tight flex items-center gap-2">
+            <Route className="w-6 h-6 text-brand-600" />
             <span>Road Monitoring</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-footnote sm:text-subhead text-ink-500 mt-1 max-w-2xl">
             Comprehensive PMGSY rural connectors, district networks, and national highway condition registry.
           </p>
         </div>
@@ -111,13 +111,13 @@ export function RoadsPage() {
         {/* View Toggle & Add Road Button */}
         <div className="flex items-center gap-3 flex-wrap">
           {/* Map/List/Grid Toggle */}
-          <div className="flex items-center p-1 bg-slate-950/80 rounded-xl border border-slate-800">
+          <div className="flex items-center p-1 bg-surface-50 rounded-xl border border-line">
             <button
               onClick={() => setViewMode('grid')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 viewMode === 'grid'
                   ? 'bg-brand-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  : 'text-ink-500 hover:text-ink-900'
               }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
@@ -129,7 +129,7 @@ export function RoadsPage() {
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 viewMode === 'table'
                   ? 'bg-brand-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  : 'text-ink-500 hover:text-ink-900'
               }`}
             >
               <List className="w-3.5 h-3.5" />
@@ -141,7 +141,7 @@ export function RoadsPage() {
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 viewMode === 'map'
                   ? 'bg-brand-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  : 'text-ink-500 hover:text-ink-900'
               }`}
             >
               <Map className="w-3.5 h-3.5" />
@@ -173,8 +173,8 @@ export function RoadsPage() {
             />
           </div>
 
-          <div className="text-xs text-slate-400 font-mono">
-            Showing <strong className="text-slate-200">{filteredRoads.length}</strong> of {roads.length} Roads
+          <div className="text-xs text-ink-500 font-mono">
+            Showing <strong className="text-ink-900">{filteredRoads.length}</strong> of {roads.length} Roads
           </div>
         </div>
 
@@ -253,7 +253,7 @@ export function RoadsPage() {
             <RoadCard key={road.id} road={road} />
           ))}
           {filteredRoads.length === 0 && (
-            <div className="col-span-full p-12 text-center text-slate-400 bg-slate-900 rounded-xl border border-slate-800">
+            <div className="col-span-full p-12 text-center text-ink-500 bg-white rounded-xl border border-line">
               No roads match your current search and filter criteria.
             </div>
           )}

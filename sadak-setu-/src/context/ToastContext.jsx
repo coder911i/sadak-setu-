@@ -26,14 +26,21 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
-      {/* Toast floating container */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-md w-full pointer-events-none px-4">
+      {/* Toast stack: top on mobile (clear of the tab bar), bottom-right on desktop */}
+      <div
+        role="region"
+        aria-live="polite"
+        aria-label="Notifications"
+        className="fixed z-[70] flex flex-col gap-2.5 pointer-events-none
+                   top-3 left-3 right-3 items-center
+                   sm:top-auto sm:left-auto sm:bottom-5 sm:right-5 sm:items-end sm:max-w-sm sm:w-full"
+      >
         {toasts.map((toast) => {
           const typeStyles = {
-            success: 'bg-emerald-950/90 border-emerald-500/50 text-emerald-100',
-            warning: 'bg-amber-950/90 border-amber-500/50 text-amber-100',
-            error: 'bg-rose-950/90 border-rose-500/50 text-rose-100',
-            info: 'bg-slate-900/90 border-brand-500/50 text-slate-100',
+            success: 'bg-white border-emerald-200 text-ink-900',
+            warning: 'bg-white border-amber-200 text-ink-900',
+            error: 'bg-white border-red-200 text-ink-900',
+            info: 'bg-white border-line text-ink-900',
           };
 
           const IconComponent = {
@@ -44,25 +51,25 @@ export function ToastProvider({ children }) {
           }[toast.type] || Info;
 
           const iconColor = {
-            success: 'text-emerald-400',
-            warning: 'text-amber-400',
-            error: 'text-rose-400',
-            info: 'text-brand-400',
+            success: 'text-emerald-600',
+            warning: 'text-amber-600',
+            error: 'text-red-600',
+            info: 'text-brand-600',
           }[toast.type];
 
           return (
             <div
               key={toast.id}
-              className={`pointer-events-auto flex items-start gap-3 p-4 rounded-lg border backdrop-blur-md shadow-2xl transition-all animate-slide-in ${typeStyles[toast.type]}`}
+              className={`pointer-events-auto w-full sm:w-auto flex items-start gap-3 p-3.5 rounded-2xl border shadow-elevated animate-slide-in ${typeStyles[toast.type] || typeStyles.info}`}
             >
-              <IconComponent className={`w-5 h-5 flex-shrink-0 mt-0.5 ${iconColor}`} />
+              <IconComponent className={`w-5 h-5 flex-shrink-0 mt-0.5 ${iconColor}`} aria-hidden="true" />
               <div className="flex-1 min-w-0">
-                {toast.title && <h4 className="font-semibold text-sm leading-tight">{toast.title}</h4>}
-                {toast.message && <p className="text-xs text-slate-300 mt-1 leading-relaxed">{toast.message}</p>}
+                {toast.title && <h4 className="font-semibold text-subhead leading-tight">{toast.title}</h4>}
+                {toast.message && <p className="text-footnote text-ink-600 mt-1 leading-relaxed">{toast.message}</p>}
               </div>
               <button
                 onClick={() => removeToast(toast.id)}
-                className="text-slate-400 hover:text-slate-200 transition-colors p-1"
+                className="text-ink-400 hover:text-ink-900 hover:bg-surface-100 rounded-lg transition-colors p-1"
                 aria-label="Dismiss"
               >
                 <X className="w-4 h-4" />

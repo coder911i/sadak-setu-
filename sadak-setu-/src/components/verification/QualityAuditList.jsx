@@ -44,8 +44,8 @@ export function QualityAuditList({
       label: 'Audit Assessment & Corridor',
       render: (val, row) => (
         <div className="space-y-0.5">
-          <div className="font-bold text-slate-100">{val}</div>
-          <div className="text-[11px] text-slate-400 font-mono">
+          <div className="font-bold text-ink-900">{val}</div>
+          <div className="text-[11px] text-ink-500 font-mono">
             {row.roadCode} ({row.chainage}) &bull; {row.workOrderId}
           </div>
         </div>
@@ -54,7 +54,7 @@ export function QualityAuditList({
     {
       key: 'contractorName',
       label: 'Contractor Agency',
-      render: (val) => <span className="text-slate-200 text-xs">{val}</span>,
+      render: (val) => <span className="text-ink-900 text-xs">{val}</span>,
     },
     {
       key: 'overallAiScore',
@@ -65,7 +65,7 @@ export function QualityAuditList({
           <div className="flex items-center gap-2">
             <span
               className={`text-xs font-mono font-bold ${
-                val >= 90 ? 'text-emerald-400' : 'text-rose-400'
+                val >= 90 ? 'text-emerald-600' : 'text-rose-600'
               }`}
             >
               {val}/100 Grade
@@ -73,14 +73,14 @@ export function QualityAuditList({
             <span
               className={`text-[10px] font-bold px-1.5 py-0.2 rounded border ${
                 row.status === 'passed'
-                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-800'
-                  : 'bg-rose-950/80 text-rose-300 border-rose-800'
+                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                  : 'bg-rose-50 text-rose-700 border-rose-200'
               }`}
             >
               {row.status === 'passed' ? 'PASSED' : 'REWORK'}
             </span>
           </div>
-          <div className="text-[10px] text-slate-400 font-mono">
+          <div className="text-[10px] text-ink-500 font-mono">
             Compaction: {row.metrics.compactionDensity}%
           </div>
         </div>
@@ -89,14 +89,14 @@ export function QualityAuditList({
     {
       key: 'auditorName',
       label: 'Quality Inspector',
-      render: (val) => <span className="text-slate-300 text-xs truncate max-w-[200px] block">{val}</span>,
+      render: (val) => <span className="text-ink-700 text-xs truncate max-w-[200px] block">{val}</span>,
     },
     {
       key: 'auditDate',
       label: 'Audit Timestamp',
       width: '130px',
       render: (val) => (
-        <span className="text-slate-400 font-mono text-xs">{formatDate(val)}</span>
+        <span className="text-ink-500 font-mono text-xs">{formatDate(val)}</span>
       ),
     },
     {

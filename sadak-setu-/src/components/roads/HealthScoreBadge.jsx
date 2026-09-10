@@ -24,13 +24,13 @@ export function HealthScoreBadge({ score = 0, size = 'md', showBar = false, clas
           <span>{score}</span>
           <span className="text-[10px] opacity-75">/ 100</span>
         </span>
-        <span className="text-[10px] font-medium text-slate-400 font-mono">
+        <span className="text-[10px] font-medium text-ink-500 font-mono">
           {meta.grade} Grade
         </span>
       </div>
 
       {showBar && (
-        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-surface-100 rounded-full overflow-hidden">
           <div
             className={cn('h-full transition-all duration-500', meta.barColor)}
             style={{ width: `${Math.min(100, Math.max(0, score))}%` }}
