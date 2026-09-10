@@ -149,5 +149,4 @@ export class SadakSetuSdk {
     override: (caseId: string, data: { action: 'APPROVE' | 'REJECT' | 'RETURN_TO_TEAM'; reason: string }) =>
       this.client.post<VerificationResult>(`/verification/${caseId}/override`, data),
   };
-  };
 }

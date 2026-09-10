@@ -35,7 +35,7 @@ services:
       - key: STORAGE_PROVIDER
         value: local   # Change to r2 or s3 when cloud bucket is ready
       - key: CORS_ORIGIN
-        sync: false   # Set to frontend Vercel URL
+        value: https://sadak-setu.vercel.app,https://sadak-setu-*.vercel.app
       # Scoring weights — configurable, not hardcoded
       - key: SCORE_WEIGHT_SEVERITY
         value: "0.40"

@@ -1,52 +1,94 @@
-import { MOCK_WORK_ORDERS } from '../data/mockWorkOrders';
+import { apiService } from './apiService';
 
 export const maintenanceService = {
-  getWorkOrders: async () => {
-    await new Promise((r) => setTimeout(r, 150));
-    const saved = localStorage.getItem('sadak_setu_work_orders');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error(e);
-      }
+  getCases: async (params = {}) => {
+    try {
+      const response = await apiService.maintenance.listCases(params);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching maintenance cases:', error);
+      throw error;
     }
-    return MOCK_WORK_ORDERS;
   },
 
-  getWorkOrderById: async (id) => {
-    const list = await maintenanceService.getWorkOrders();
-    return list.find((wo) => wo.id === id) || null;
+  getCaseById: async (id) => {
+    try {
+      const response = await apiService.maintenance.getCaseById(id);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching maintenance case:', error);
+      throw error;
+    }
   },
 
-  createWorkOrder: async (newOrder) => {
-    const list = await maintenanceService.getWorkOrders();
-    const created = {
-      ...newOrder,
-      id: `WO-2026-${Math.floor(1000 + Math.random() * 9000)}`,
-      createdAt: new Date().toISOString(),
-      status: newOrder.status || 'triage',
-      progressPercentage: 0,
-    };
-    const updated = [created, ...list];
-    localStorage.setItem('sadak_setu_work_orders', JSON.stringify(updated));
-    return created;
+  createCase: async (data) => {
+    try {
+      const response = await apiService.maintenance.createCase(data);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating maintenance case:', error);
+      throw error;
+    }
   },
 
-  updateWorkOrderStatus: async (id, status, progressPercentage = null) => {
-    const list = await maintenanceService.getWorkOrders();
-    const updated = list.map((wo) => {
-      if (wo.id === id) {
-        return {
-          ...wo,
-          status,
-          progressPercentage: progressPercentage !== null ? progressPercentage : wo.progressPercentage,
-        };
-      }
-      return wo;
-    });
-    localStorage.setItem('sadak_setu_work_orders', JSON.stringify(updated));
-    return updated.find((wo) => wo.id === id);
+  assignTeam: async (caseId, data) => {
+    try {
+      const response = await apiService.maintenance.assignTeam(caseId, data);
+      return response.data;
+    } catch (error) {
+      console.error('Error assigning team:', error);
+      throw error;
+    }
+  },
+
+  acceptCase: async (caseId) => {
+    try {
+      const response = await apiService.maintenance.acceptCase(caseId);
+      return response.data;
+    } catch (error) {
+      console.error('Error accepting case:', error);
+      throw error;
+    }
+  },
+
+  startWork: async (caseId) => {
+    try {
+      const response = await apiService.maintenance.startWork(caseId);
+      return response.data;
+    } catch (error) {
+      console.error('Error starting work:', error);
+      throw error;
+    }
+  },
+
+  submitRepair: async (caseId, data) => {
+    try {
+      const response = await apiService.maintenance.submitRepair(caseId, data);
+      return response.data;
+    } catch (error) {
+      console.error('Error submitting repair:', error);
+      throw error;
+    }
+  },
+
+  closeCase: async (caseId) => {
+    try {
+      const response = await apiService.maintenance.closeCase(caseId);
+      return response.data;
+    } catch (error) {
+      console.error('Error closing case:', error);
+      throw error;
+    }
+  },
+
+  overrideVerification: async (caseId, data) => {
+    try {
+      const response = await apiService.maintenance.overrideVerification(caseId, data);
+      return response.data;
+    } catch (error) {
+      console.error('Error overriding verification:', error);
+      throw error;
+    }
   },
 
   calculateEstimates: ({ areaSqM = 1, depthCm = 5, layerType = 'hot_mix' }) => {

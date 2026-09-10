@@ -1,38 +1,83 @@
-import { MOCK_ROADS } from '../data/mockRoads';
+import { apiService } from './apiService';
 
 export const roadService = {
-  getRoads: async () => {
-    // Simulated realistic client fetch delay
-    await new Promise((r) => setTimeout(r, 150));
-    const saved = localStorage.getItem('sadak_setu_roads');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error(e);
-      }
+  getRoads: async (params = {}) => {
+    try {
+      const response = await apiService.roads.list(params);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching roads:', error);
+      throw error;
     }
-    return MOCK_ROADS;
   },
 
   getRoadById: async (id) => {
-    const roads = await roadService.getRoads();
-    return roads.find((r) => r.id === id || r.code === id) || null;
+    try {
+      const response = await apiService.roads.getById(id);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching road:', error);
+      throw error;
+    }
+  },
+
+  getRoadHealth: async (id) => {
+    try {
+      const response = await apiService.roads.getHealth(id);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching road health:', error);
+      throw error;
+    }
+  },
+
+  getRoadHistory: async (id) => {
+    try {
+      const response = await apiService.roads.getHistory(id);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching road history:', error);
+      throw error;
+    }
+  },
+
+  getRoadInspections: async (id) => {
+    try {
+      const response = await apiService.roads.getInspections(id);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching road inspections:', error);
+      throw error;
+    }
+  },
+
+  getRoadMaintenance: async (id) => {
+    try {
+      const response = await apiService.roads.getMaintenance(id);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching road maintenance:', error);
+      throw error;
+    }
   },
 
   getCorridorStats: async () => {
-    const roads = await roadService.getRoads();
-    const totalKm = roads.reduce((acc, r) => acc + r.totalLengthKm, 0);
-    const avgPci = Math.round(roads.reduce((acc, r) => acc + r.pciScore, 0) / roads.length);
-    const totalDefects = roads.reduce((acc, r) => acc + r.activeDefectsCount, 0);
-    const criticalDefects = roads.reduce((acc, r) => acc + r.criticalDefectsCount, 0);
-
-    return {
-      totalKm: Math.round(totalKm),
-      avgPci,
-      totalCorridors: roads.length,
-      totalDefects,
-      criticalDefects,
-    };
+    try {
+      const response = await apiService.analytics.overview();
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching corridor stats:', error);
+      throw error;
+    }
   },
+
+  createRoad: async (data) => {
+    try {
+      const response = await apiService.roads.create(data);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating road:', error);
+      throw error;
+    }
+  }
 };

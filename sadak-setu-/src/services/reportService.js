@@ -1,34 +1,53 @@
-import { MOCK_AUDITS } from '../data/mockAudits';
-import { MOCK_ANALYTICS } from '../data/mockAnalytics';
+import { apiService } from './apiService';
 
 export const reportService = {
-  getAudits: async () => {
-    await new Promise((r) => setTimeout(r, 150));
-    const saved = localStorage.getItem('sadak_setu_audits');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    return MOCK_AUDITS;
-  },
-
-  getAuditById: async (id) => {
-    const list = await reportService.getAudits();
-    return list.find((a) => a.id === id) || null;
-  },
-
-  updateAuditStatus: async (id, status, notes = '') => {
-    const list = await reportService.getAudits();
-    const updated = list.map((a) => (a.id === id ? { ...a, status, verificationNotes: notes } : a));
-    localStorage.setItem('sadak_setu_audits', JSON.stringify(updated));
-    return updated.find((a) => a.id === id);
-  },
-
   getAnalytics: async () => {
-    await new Promise((r) => setTimeout(r, 100));
-    return MOCK_ANALYTICS;
+    try {
+      const response = await apiService.analytics.overview();
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching analytics:', error);
+      throw error;
+    }
   },
+
+  getRoadAnalytics: async () => {
+    try {
+      const response = await apiService.analytics.roads();
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching road analytics:', error);
+      throw error;
+    }
+  },
+
+  getDamageAnalytics: async () => {
+    try {
+      const response = await apiService.analytics.damage();
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching damage analytics:', error);
+      throw error;
+    }
+  },
+
+  getMaintenanceAnalytics: async () => {
+    try {
+      const response = await apiService.analytics.maintenance();
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching maintenance analytics:', error);
+      throw error;
+    }
+  },
+
+  getVerificationAnalytics: async () => {
+    try {
+      const response = await apiService.analytics.verification();
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching verification analytics:', error);
+      throw error;
+    }
+  }
 };

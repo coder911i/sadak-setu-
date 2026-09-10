@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useRoads } from '../../hooks/useRoads';
 import { useToast } from '../../hooks/useToast';
+import { useAuth } from '../../context/AuthContext';
 import { ROAD_DIVISIONS } from '../../utils/constants';
 import {
   Menu,
@@ -33,8 +34,10 @@ const ROUTE_TITLES = {
 
 export function Header({ onOpenSearch, onToggleMobileSidebar }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { selectedZone, setSelectedZone } = useRoads();
   const { info, success } = useToast();
+  const { user, logout } = useAuth();
 
   const [timeStr, setTimeStr] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
@@ -88,9 +91,17 @@ export function Header({ onOpenSearch, onToggleMobileSidebar }) {
     },
   ];
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setShowProfileMenu(false);
-    info('Session Terminated', 'Logged out from Sadak Setu Central Command Portal.');
+    try {
+      await logout();
+      info('Session Terminated', 'Logged out from Sadak Setu Central Command Portal.');
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Force logout even if API call fails
+      navigate('/login');
+    }
   };
 
   return (
@@ -260,11 +271,11 @@ export function Header({ onOpenSearch, onToggleMobileSidebar }) {
               aria-label="User profile menu"
             >
               <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white font-bold text-xs shadow-sm">
-                AS
+                {user ? user.fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'AS'}
               </div>
               <div className="hidden md:block text-left">
-                <div className="text-xs font-bold text-[#1a3825] leading-tight">Er. Alok Sharma</div>
-                <div className="text-[10px] text-[#7a9a83]">Chief Engineer</div>
+                <div className="text-xs font-bold text-[#1a3825] leading-tight">{user ? user.fullName : 'Loading...'}</div>
+                <div className="text-[10px] text-[#7a9a83]">{user ? user.role.replace('_', ' ') : 'Loading...'}</div>
               </div>
             </button>
 
@@ -272,10 +283,10 @@ export function Header({ onOpenSearch, onToggleMobileSidebar }) {
             {showProfileMenu && (
               <div className="absolute right-0 mt-2 w-64 bg-white border border-[#ddeae0] rounded-2xl shadow-elevated z-50 overflow-hidden animate-fade-in text-xs">
                 <div className="p-3.5 bg-surface-50 border-b border-[#ddeae0]">
-                  <div className="font-bold text-[#1a3825]">Er. Alok Sharma</div>
-                  <div className="text-[#7a9a83] text-[11px]">Chief Engineer, MoRTH PIU</div>
+                  <div className="font-bold text-[#1a3825]">{user ? user.fullName : 'Loading...'}</div>
+                  <div className="text-[#7a9a83] text-[11px]">{user ? user.email : 'Loading...'}</div>
                   <div className="text-[10px] font-mono text-brand-600 mt-1 flex items-center gap-1">
-                    <Shield className="w-3 h-3" /> Security Clearance: LEVEL-1
+                    <Shield className="w-3 h-3" /> Role: {user ? user.role.replace('_', ' ') : 'Loading...'}
                   </div>
                 </div>
 
@@ -283,12 +294,12 @@ export function Header({ onOpenSearch, onToggleMobileSidebar }) {
                   <button
                     onClick={() => {
                       setShowProfileMenu(false);
-                      success('Profile Verified', 'MoRTH Credentials active & digitally signed.');
+                      success('Profile Verified', 'Sadak Setu credentials active & digitally signed.');
                     }}
                     className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#4a6b55] hover:text-brand-700 hover:bg-brand-50 text-left transition-colors cursor-pointer"
                   >
                     <User className="w-3.5 h-3.5 text-brand-600" />
-                    <span>Officer Credentials</span>
+                    <span>Profile Information</span>
                   </button>
 
                   <button

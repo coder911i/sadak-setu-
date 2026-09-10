@@ -19,9 +19,10 @@ describe('Frontend ↔ Backend Contract & Route Mapping', () => {
     expect((sdk.client as any).baseUrl).toBe('http://localhost:5000/api/v1');
   });
 
-  it('throws error when no base URL or NEXT_PUBLIC_API_URL is configured', () => {
+  it('defaults to /api/v1 when no base URL or NEXT_PUBLIC_API_URL is configured', () => {
     delete process.env.NEXT_PUBLIC_API_URL;
-    expect(() => new ApiClient()).toThrowError(/API base URL is required/);
+    const client = new ApiClient();
+    expect((client as any).baseUrl).toBe('/api/v1');
   });
 
   it('has all required frontend SDK modules wired to backend route contracts', () => {
