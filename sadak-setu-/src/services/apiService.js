@@ -22,9 +22,13 @@ const sdk = new SadakSetuSdk({
   getToken: () => localStorage.getItem('sadak_setu_token'),
   setToken: (token) => localStorage.setItem('sadak_setu_token', token),
   onUnauthorized: () => {
-    // Handle unauthorized - redirect to login or clear auth
     localStorage.removeItem('sadak_setu_token');
-    window.location.href = '/login';
+    localStorage.removeItem('sadak_setu_refresh_token');
+    localStorage.removeItem('sadak_setu_user');
+    // Redirecting while already on /login would reload the page in a loop.
+    if (window.location.pathname !== '/login') {
+      window.location.replace('/login');
+    }
   }
 });
 
