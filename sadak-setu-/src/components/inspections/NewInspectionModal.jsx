@@ -29,6 +29,10 @@ export function NewInspectionModal({ isOpen, onClose, onSubmit }) {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const originCoord = Array.isArray(selectedRoad.coordinates) ? selectedRoad.coordinates[0] : null;
+    const originLat = originCoord ? originCoord[0] : selectedRoad.latitude ?? 0;
+    const originLng = originCoord ? originCoord[1] : selectedRoad.longitude ?? 0;
+
     const newDefect = {
       defectType: formData.defectType,
       severity: formData.severity,
@@ -37,8 +41,8 @@ export function NewInspectionModal({ isOpen, onClose, onSubmit }) {
       roadName: selectedRoad.name,
       chainage: formData.chainage,
       lane: formData.lane,
-      lat: selectedRoad.coordinates[0][0] + (Math.random() - 0.5) * 0.1,
-      lng: selectedRoad.coordinates[0][1] + (Math.random() - 0.5) * 0.1,
+      lat: originLat + (Math.random() - 0.5) * 0.1,
+      lng: originLng + (Math.random() - 0.5) * 0.1,
       dimensions: {
         lengthCm: Number(formData.lengthCm),
         widthCm: Number(formData.widthCm),

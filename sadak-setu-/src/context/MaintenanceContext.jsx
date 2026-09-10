@@ -16,8 +16,8 @@ export function MaintenanceProvider({ children }) {
   const fetchWorkOrders = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await maintenanceService.getWorkOrders();
-      setWorkOrders(data);
+      const data = await maintenanceService.getCases();
+      setWorkOrders(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to load work orders:', err);
     } finally {

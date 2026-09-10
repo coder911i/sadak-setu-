@@ -124,11 +124,14 @@ export function RoadMapView({ onSelectRoad }) {
 
           {roads.map((road) => {
             const isSelected = activeRoad?.id === road.id;
+            const coordinates = Array.isArray(road.coordinates) ? road.coordinates : [];
+
+            if (coordinates.length < 2) return null;
 
             return (
               <Polyline
                 key={road.id}
-                positions={road.coordinates}
+                positions={coordinates}
                 pathOptions={{
                   color: getCorridorColor(road.pciScore),
                   weight: isSelected ? 8 : 4,

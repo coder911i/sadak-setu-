@@ -119,26 +119,35 @@ export function CommandCenterMap({ onSelectRoad }) {
           {filteredRoads.map((road) => {
             const isSelected = activeRoad?.id === road.id;
             const polyColor = getPriorityPolylineColor(road.priority);
-            const midCoord = road.coordinates[Math.floor(road.coordinates.length / 2)] || road.coordinates[0];
+            const coordinates = Array.isArray(road.coordinates) ? road.coordinates : [];
+            const fallbackPoint =
+              Number.isFinite(road.latitude) && Number.isFinite(road.longitude)
+                ? [road.latitude, road.longitude]
+                : null;
+            const midCoord = coordinates[Math.floor(coordinates.length / 2)] || fallbackPoint;
+
+            if (!midCoord) return null;
 
             return (
               <React.Fragment key={road.id}>
                 {/* Corridor Polyline */}
-                <Polyline
-                  positions={road.coordinates}
-                  pathOptions={{
-                    color: polyColor,
-                    weight: isSelected ? 8 : 4.5,
-                    opacity: isSelected ? 1 : 0.8,
-                    dashArray: isSelected ? undefined : '3, 2',
-                  }}
-                  eventHandlers={{
-                    click: () => {
-                      setSelectedRoadId(road.id);
-                      if (onSelectRoad) onSelectRoad(road);
-                    },
-                  }}
-                />
+                {coordinates.length > 1 && (
+                  <Polyline
+                    positions={coordinates}
+                    pathOptions={{
+                      color: polyColor,
+                      weight: isSelected ? 8 : 4.5,
+                      opacity: isSelected ? 1 : 0.8,
+                      dashArray: isSelected ? undefined : '3, 2',
+                    }}
+                    eventHandlers={{
+                      click: () => {
+                        setSelectedRoadId(road.id);
+                        if (onSelectRoad) onSelectRoad(road);
+                      },
+                    }}
+                  />
+                )}
 
                 {/* Marker with Rich Popup */}
                 <Marker
