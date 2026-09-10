@@ -1,22 +1,55 @@
 import { ApiResponse } from './types';
 
+declare const process: any;
+
+export function getDefaultApiBaseUrl(): string {
+  // 1. Next.js / Node environment variable
+  if (typeof process !== 'undefined' && process?.env?.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  // 2. Browser window global fallback
+  if (typeof window !== 'undefined' && (window as any).NEXT_PUBLIC_API_URL) {
+    return (window as any).NEXT_PUBLIC_API_URL;
+  }
+  // 3. Vite / bundler ESM environment variable
+  try {
+    // @ts-ignore
+    if (typeof import.meta !== 'undefined' && import.meta.env?.NEXT_PUBLIC_API_URL) {
+      // @ts-ignore
+      return import.meta.env.NEXT_PUBLIC_API_URL;
+    }
+  } catch {
+    // ignore if import.meta not supported in execution runtime
+  }
+  return '';
+}
+
 export class ApiClient {
   private baseUrl: string;
   private tokenGetter: () => string | null;
   private tokenSetter: (token: string) => void;
   private onUnauthorized?: () => void;
 
-  constructor(options: {
+  constructor(options?: {
     baseUrl?: string;
-    getToken: () => string | null;
-    setToken: (token: string) => void;
+    getToken?: () => string | null;
+    setToken?: (token: string) => void;
     onUnauthorized?: () => void;
   }) {
-    const envBaseUrl = typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_API_URL;
-    this.baseUrl = options.baseUrl || envBaseUrl || '/api/v1';
-    this.tokenGetter = options.getToken;
-    this.tokenSetter = options.setToken;
-    this.onUnauthorized = options.onUnauthorized;
+    const rawUrl = options?.baseUrl || getDefaultApiBaseUrl() || '/api/v1';
+    this.baseUrl = rawUrl.replace(/\/+$/, '');
+    this.tokenGetter = options?.getToken || (() => {
+      if (typeof localStorage !== 'undefined') {
+        return localStorage.getItem('sadak_setu_token');
+      }
+      return null;
+    });
+    this.tokenSetter = options?.setToken || ((token: string) => {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('sadak_setu_token', token);
+      }
+    });
+    this.onUnauthorized = options?.onUnauthorized;
   }
 
   async request<T>(

@@ -27,11 +27,22 @@ export const createApp = (): Express => {
           callback(null, true);
         } else if (config.env === 'development') {
           callback(null, true);
+        } else if (config.env !== 'production') {
+          callback(null, true); // Allow all local development origins
         } else {
-          callback(new Error(`CORS policy: Origin ${origin} is not allowed`), false);
+          callback(new Error(`CORS policy: Origin ${origin} is not allowed`));
         }
       },
       credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Device-Id',
+        'X-Device-Secret',
+        'X-Request-Id',
+      ],
+      exposedHeaders: ['X-Request-Id'],
     })
   );
 

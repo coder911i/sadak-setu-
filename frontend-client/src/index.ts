@@ -17,10 +17,10 @@ export * from './api-client';
 export class SadakSetuSdk {
   public client: ApiClient;
 
-  constructor(options: {
+  constructor(options?: {
     baseUrl?: string;
-    getToken: () => string | null;
-    setToken: (token: string) => void;
+    getToken?: () => string | null;
+    setToken?: (token: string) => void;
     onUnauthorized?: () => void;
   }) {
     this.client = new ApiClient(options);
@@ -130,10 +130,24 @@ export class SadakSetuSdk {
     }) => this.client.post<DeviceTelemetry[]>(`/devices/${deviceId}/simulate`, data || {}),
   };
 
+  // IoT Hardware Telemetry Pipeline
+  iot = {
+    ingestTelemetry: (data: any, deviceId: string, deviceSecret: string) =>
+      this.client.request<any>('/iot/telemetry', {
+        method: 'POST',
+        headers: {
+          'X-Device-Id': deviceId,
+          'X-Device-Secret': deviceSecret,
+        },
+        body: JSON.stringify(data),
+      }),
+  };
+
   // Verification (Before/After Repair Check)
   verification = {
     getByCaseId: (caseId: string) => this.client.get<VerificationResult>(`/verification/${caseId}`),
     override: (caseId: string, data: { action: 'APPROVE' | 'REJECT' | 'RETURN_TO_TEAM'; reason: string }) =>
-      this.client.post<MaintenanceCase>(`/verification/${caseId}/override`, data),
+      this.client.post<VerificationResult>(`/verification/${caseId}/override`, data),
+  };
   };
 }
