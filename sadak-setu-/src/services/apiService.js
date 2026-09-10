@@ -30,14 +30,23 @@ const sdk = new SadakSetuSdk({
 
 export const apiService = sdk;
 
+// The SDK resolves to the raw envelope { success, data }, so unwrap before use.
+const unwrap = (response) => response?.data ?? response;
+
 // Authentication helpers
 export const authService = {
   login: async (email, password) => {
-    const result = await sdk.auth.login({ email, password });
+    const result = unwrap(await sdk.auth.login({ email, password }));
     localStorage.setItem('sadak_setu_token', result.accessToken);
     localStorage.setItem('sadak_setu_refresh_token', result.refreshToken);
     localStorage.setItem('sadak_setu_user', JSON.stringify(result.user));
     return result;
+  },
+
+  me: async () => {
+    const user = unwrap(await sdk.auth.me());
+    localStorage.setItem('sadak_setu_user', JSON.stringify(user));
+    return user;
   },
 
   logout: async () => {
@@ -66,7 +75,7 @@ export const authService = {
     const refreshToken = localStorage.getItem('sadak_setu_refresh_token');
     if (!refreshToken) throw new Error('No refresh token available');
 
-    const result = await sdk.auth.refresh(refreshToken);
+    const result = unwrap(await sdk.auth.refresh(refreshToken));
     localStorage.setItem('sadak_setu_token', result.accessToken);
     localStorage.setItem('sadak_setu_refresh_token', result.refreshToken);
     return result;

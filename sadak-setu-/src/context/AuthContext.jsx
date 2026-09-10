@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
           // Optionally verify token with backend
           try {
             const verifiedUser = await authService.me();
-            setUser(verifiedUser.data);
+            setUser(verifiedUser);
           } catch (tokenError) {
             // Token might be expired, clear local auth
             console.warn('Token verification failed:', tokenError);
@@ -63,9 +63,9 @@ export const AuthProvider = ({ children }) => {
 
   const refreshUser = async () => {
     try {
-      const result = await authService.me();
-      setUser(result.data);
-      return result.data;
+      const user = await authService.me();
+      setUser(user);
+      return user;
     } catch (err) {
       console.error('User refresh error:', err);
       throw err;
