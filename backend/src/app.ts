@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
-import { config } from './config';
+import { config, isOriginAllowed } from './config';
 import { prisma } from './config/database';
 import { swaggerSpec } from './config/swagger';
 import apiRouter from './routes';
@@ -21,16 +21,12 @@ export const createApp = (): Express => {
   app.use(
     cors({
       origin: (origin, callback) => {
-        const allowedAll = config.corsOrigin.includes('*');
-        const isAllowed = !origin || allowedAll || config.corsOrigin.includes(origin);
-        if (isAllowed) {
+        if (!origin || isOriginAllowed(origin, config.corsOrigin) || config.env !== 'production') {
           callback(null, true);
-        } else if (config.env === 'development') {
-          callback(null, true);
-        } else if (config.env !== 'production') {
-          callback(null, true); // Allow all local development origins
         } else {
-          callback(new Error(`CORS policy: Origin ${origin} is not allowed`));
+          // Omit CORS headers instead of throwing: the browser blocks the call
+          // with a real CORS message and the server does not 500.
+          callback(null, false);
         }
       },
       credentials: true,
