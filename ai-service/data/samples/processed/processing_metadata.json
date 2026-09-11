@@ -1,0 +1,53 @@
+{
+  "processing_info": {
+    "input_file": "data/samples/sample_sensor_data.csv",
+    "output_directory": "data/samples/processed",
+    "original_rows": 1000,
+    "cleaned_rows": 1000,
+    "feature_rows": 1000,
+    "processing_timestamp": "2026-09-11T14:48:27.175077"
+  },
+  "feature_statistics": {
+    "total_features": 24,
+    "numeric_features": 16,
+    "categorical_features": 8,
+    "feature_names": [
+      "accel_magnitude",
+      "gyro_magnitude",
+      "vertical_acceleration",
+      "speed_kmph",
+      "vibration_rms",
+      "vibration_peak",
+      "jerk_rms",
+      "frequency_dominant_hz",
+      "accel_std",
+      "gyro_std",
+      "accel_peak_to_peak",
+      "speed_adjusted_impact",
+      "event_duration_ms",
+      "road_type",
+      "weather",
+      "event_class",
+      "severity",
+      "pothole_depth_cm",
+      "device_id",
+      "route_id",
+      "event_id",
+      "timestamp",
+      "latitude",
+      "longitude"
+    ]
+  },
+  "data_quality": {
+    "missing_values_after_cleaning": 0,
+    "duplicate_rows": 0,
+    "event_class_distribution": {
+      "NORMAL": 744,
+      "ROUGH_PATCH": 90,
+      "SPEED_BREAKER": 88,
+      "POTHOLE": 54,
+      "SEVERE_POTHOLE": 15,
+      "OTHER_ANOMALY": 9
+    }
+  }
+}

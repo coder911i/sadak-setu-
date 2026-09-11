@@ -3,9 +3,12 @@ import { auditRepository } from '../repositories/audit.repository';
 import { DeviceAdapter, RawTelemetryPayload } from '../integrations/iot/device-adapter';
 import { IotMockGenerator } from '../integrations/iot/iot-mock';
 import { DeviceStatus, DeviceType, Prisma } from '@prisma/client';
-import { FeatureExtractor } from '../services/telemetry/feature-extractor';
+import { FeatureExtractor } from './telemetry/feature-extractor';
 import { telemetryProcessedRepository } from '../repositories/telemetry-processed.repository';
 import { PasswordUtil } from '../utils/password';
+import { sensorMLService } from './sensor-ml.service';
+import { SensorInferenceRequest } from '../integrations/ai/sensor-client';
+import { config } from '../config';
 
 export class DeviceService {
   async registerDevice(
@@ -100,6 +103,40 @@ export class DeviceService {
       // Prisma Json? rejects JS null; use DbNull for SQL NULL
       windowStats: extracted.windowStats ?? Prisma.DbNull,
     });
+
+    // Optional: Trigger sensor ML analysis if conditions are met
+    // This is a simplified integration - in production, you'd want proper windowing
+    try {
+      if (config.sensor.autoComplaintEnabled && 
+          normalized.latitude !== 0 && 
+          normalized.longitude !== 0) {
+        
+        // Create sensor window for ML analysis (simplified - uses single reading)
+        const sensorRequest: SensorInferenceRequest = {
+          device_id: deviceId,
+          timestamp: normalized.timestamp.toISOString(),
+          latitude: normalized.latitude,
+          longitude: normalized.longitude,
+          speed_kmph: normalized.speed,
+          sensor_window: [{
+            accel_x: normalized.accelerometerX,
+            accel_y: normalized.accelerometerY,
+            accel_z: normalized.accelerometerZ,
+            gyro_x: normalized.gyroX,
+            gyro_y: normalized.gyroY,
+            gyro_z: normalized.gyroZ
+          }]
+        };
+
+        // Process asynchronously to not block telemetry ingestion
+        sensorMLService.processSensorTelemetry(sensorRequest).catch(error => {
+          console.error('Sensor ML processing failed:', error);
+        });
+      }
+    } catch (error) {
+      console.error('Failed to trigger sensor ML analysis:', error);
+      // Don't block telemetry ingestion if ML fails
+    }
 
     return {
       ...rawTelemetry,

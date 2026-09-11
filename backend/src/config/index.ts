@@ -24,6 +24,16 @@ export const config = {
     mode: (process.env.IOT_MODE || 'mock') as 'mock' | 'live',
   },
 
+  sensor: {
+    mode: (process.env.SENSOR_ML_MODE || 'mock') as 'mock' | 'live',
+    serviceUrl: process.env.SENSOR_ML_SERVICE_URL || 'http://localhost:8000',
+    timeoutMs: parseInt(process.env.SENSOR_ML_TIMEOUT_MS || '20000', 10),
+    confidenceThreshold: parseFloat(process.env.SENSOR_ML_CONFIDENCE_THRESHOLD || '0.85'),
+    autoComplaintEnabled: process.env.SENSOR_ML_AUTO_COMPLAINT_ENABLED === 'true',
+    dedupRadiusMeters: parseFloat(process.env.SENSOR_ML_DEDUP_RADIUS_METERS || '10.0'),
+    dedupWindowSeconds: parseInt(process.env.SENSOR_ML_DEDUP_WINDOW_SECONDS || '300', 10),
+  },
+
   storage: {
     provider: (process.env.STORAGE_PROVIDER || 'local') as 'local' | 's3' | 'r2',
     localUploadDir: process.env.LOCAL_UPLOAD_DIR || './uploads',

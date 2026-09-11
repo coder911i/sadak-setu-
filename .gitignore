@@ -12,3 +12,12 @@ uploads/
 *.pt
 *.onnx
 firmware/config.h
+
+# ML Pipeline Data Files (keep samples and README, ignore large datasets)
+ai-service/data/raw/synthetic_sensor_data.csv
+ai-service/data/processed/*.csv
+ai-service/data/metadata/dataset_metadata.json
+
+# ML Model Files (large binary files)
+ai-service/models/sensor_anomaly/*.pkl
+ai-service/models/sensor_anomaly/*.json

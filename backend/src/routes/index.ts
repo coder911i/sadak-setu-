@@ -13,6 +13,7 @@ import reportRoutes from './report.routes';
 import notificationRoutes from './notification.routes';
 import adminRoutes from './admin.routes';
 import iotRoutes from './iot.routes';
+import sensorMLRoutes from './sensor-ml.routes';
 
 const apiRouter = Router();
 
@@ -30,6 +31,7 @@ apiRouter.use('/reports', reportRoutes);
 apiRouter.use('/notifications', notificationRoutes);
 apiRouter.use('/admin', adminRoutes);
 apiRouter.use('/iot', iotRoutes);
+apiRouter.use('/sensor', sensorMLRoutes);
 
 export default apiRouter;
 

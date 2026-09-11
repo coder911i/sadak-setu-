@@ -9,6 +9,13 @@ pillow==11.1.0
 python-multipart==0.0.20
 requests==2.32.3
 
+# ML/Data Science dependencies for sensor-based anomaly detection
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+scikit-learn>=1.3.0
+joblib>=1.3.0
+
 # Test dependencies
 httpx>=0.28.1
 pytest-asyncio>=1.4.0

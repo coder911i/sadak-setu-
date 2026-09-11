@@ -1,0 +1,177 @@
+{
+  "training_info": {
+    "timestamp": "2026-09-11T14:53:19.658024",
+    "random_state": 42,
+    "features_path": "data/processed/features.csv",
+    "output_directory": "ai-service/models/sensor_anomaly",
+    "model_version": "1.0.0"
+  },
+  "data_splitting": {
+    "grouping_strategy": "event_id",
+    "train_samples": 65000,
+    "val_samples": 15000,
+    "test_samples": 20000
+  },
+  "feature_info": {
+    "num_features": 13,
+    "feature_names": [
+      "accel_magnitude",
+      "gyro_magnitude",
+      "vertical_acceleration",
+      "speed_kmph",
+      "vibration_rms",
+      "vibration_peak",
+      "jerk_rms",
+      "frequency_dominant_hz",
+      "accel_std",
+      "gyro_std",
+      "accel_peak_to_peak",
+      "speed_adjusted_impact",
+      "event_duration_ms"
+    ]
+  },
+  "model_results": {
+    "event_classification": {
+      "model_type": "RandomForestClassifier",
+      "train_accuracy": 0.9999076923076923,
+      "validation_accuracy": 0.9998,
+      "classification_report": {
+        "NORMAL": {
+          "precision": 0.9999111269107714,
+          "recall": 1.0,
+          "f1-score": 0.9999555614806914,
+          "support": 11251.0
+        },
+        "OTHER_ANOMALY": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 75.0
+        },
+        "POTHOLE": {
+          "precision": 0.9986504723346828,
+          "recall": 0.9986504723346828,
+          "f1-score": 0.9986504723346828,
+          "support": 741.0
+        },
+        "ROUGH_PATCH": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1499.0
+        },
+        "SEVERE_POTHOLE": {
+          "precision": 0.995475113122172,
+          "recall": 0.995475113122172,
+          "f1-score": 0.995475113122172,
+          "support": 221.0
+        },
+        "SPEED_BREAKER": {
+          "precision": 1.0,
+          "recall": 0.9991755976916735,
+          "f1-score": 0.9995876288659794,
+          "support": 1213.0
+        },
+        "accuracy": 0.9998,
+        "macro avg": {
+          "precision": 0.9990061187279377,
+          "recall": 0.9988835305247546,
+          "f1-score": 0.9989447959672543,
+          "support": 15000.0
+        },
+        "weighted avg": {
+          "precision": 0.9998000059248727,
+          "recall": 0.9998,
+          "f1-score": 0.9997999877355795,
+          "support": 15000.0
+        }
+      },
+      "feature_importance": {
+        "accel_magnitude": 0.024489885431696425,
+        "gyro_magnitude": 0.0003987547406621126,
+        "vertical_acceleration": 0.012166653953777588,
+        "speed_kmph": 0.01179719192517927,
+        "vibration_rms": 0.07085400456615605,
+        "vibration_peak": 0.0954090279906582,
+        "jerk_rms": 0.14319609457333746,
+        "frequency_dominant_hz": 0.08301740446035417,
+        "accel_std": 0.060902679700767244,
+        "gyro_std": 0.049031332304134596,
+        "accel_peak_to_peak": 0.06425420727786359,
+        "speed_adjusted_impact": 0.10656927568822439,
+        "event_duration_ms": 0.2779134873871889
+      },
+      "classes": [
+        "NORMAL",
+        "OTHER_ANOMALY",
+        "POTHOLE",
+        "ROUGH_PATCH",
+        "SEVERE_POTHOLE",
+        "SPEED_BREAKER"
+      ]
+    },
+    "severity_classification": {
+      "model_type": "GradientBoostingClassifier",
+      "train_accuracy": 0.9995167914955303,
+      "validation_accuracy": 0.8804573804573804,
+      "classification_report": {
+        "CRITICAL": {
+          "precision": 0.9759615384615384,
+          "recall": 0.9806763285024155,
+          "f1-score": 0.9783132530120482,
+          "support": 414.0
+        },
+        "HIGH": {
+          "precision": 0.7567567567567568,
+          "recall": 0.691358024691358,
+          "f1-score": 0.7225806451612903,
+          "support": 81.0
+        },
+        "LOW": {
+          "precision": 0.8509615384615384,
+          "recall": 0.8082191780821918,
+          "f1-score": 0.8290398126463701,
+          "support": 219.0
+        },
+        "MEDIUM": {
+          "precision": 0.7878787878787878,
+          "recall": 0.8387096774193549,
+          "f1-score": 0.8125,
+          "support": 248.0
+        },
+        "accuracy": 0.8804573804573804,
+        "macro avg": {
+          "precision": 0.8428896553896554,
+          "recall": 0.8297408021738301,
+          "f1-score": 0.8356084277049272,
+          "support": 962.0
+        },
+        "weighted avg": {
+          "precision": 0.8805612167748342,
+          "recall": 0.8804573804573804,
+          "f1-score": 0.8800524303270348,
+          "support": 962.0
+        }
+      },
+      "classes": [
+        "CRITICAL",
+        "HIGH",
+        "LOW",
+        "MEDIUM"
+      ],
+      "train_samples": 4139,
+      "val_samples": 962
+    },
+    "depth_regression": {
+      "model_type": "RandomForestRegressor",
+      "train_mae": 0.46664038160043964,
+      "val_mae": 0.6175696107041317,
+      "train_rmse": 0.6374260408412774,
+      "val_rmse": 0.8095858614381471,
+      "train_r2": 0.990463330035273,
+      "val_r2": 0.9843740548813525,
+      "train_samples": 4139,
+      "val_samples": 962
+    }
+  }
+}

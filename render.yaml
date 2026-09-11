@@ -32,6 +32,20 @@ services:
         value: "20000"
       - key: IOT_MODE
         value: live
+      - key: SENSOR_ML_MODE
+        value: mock    # Set to live when sensor ML models are deployed
+      - key: SENSOR_ML_SERVICE_URL
+        sync: false   # Set to deployed AI service URL (same as AI_SERVICE_URL)
+      - key: SENSOR_ML_TIMEOUT_MS
+        value: "20000"
+      - key: SENSOR_ML_CONFIDENCE_THRESHOLD
+        value: "0.85"
+      - key: SENSOR_ML_AUTO_COMPLAINT_ENABLED
+        value: "false"  # Set to true after field validation
+      - key: SENSOR_ML_DEDUP_RADIUS_METERS
+        value: "10.0"
+      - key: SENSOR_ML_DEDUP_WINDOW_SECONDS
+        value: "300"
       - key: STORAGE_PROVIDER
         value: local   # Change to r2 or s3 when cloud bucket is ready
       - key: CORS_ORIGIN
