@@ -1,11 +1,38 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+const DEV_ORIGINS = ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'];
+
+// Origins of the project's own deployed frontends. Always allowed so the app
+// keeps working when CORS_ORIGIN is unset or misconfigured on the host.
+const BUILT_IN_ORIGINS = ['https://sadak-setu.vercel.app', 'https://sadak-setu-*.vercel.app'];
+
+export const normalizeOrigin = (origin: string): string =>
+  origin.trim().replace(/\/+$/, '').toLowerCase();
+
+export const parseCorsOrigins = (raw?: string, env = 'development'): string[] => {
+  const configured = (raw || '').split(',').map(normalizeOrigin).filter(Boolean);
+  const defaults = env === 'production' ? BUILT_IN_ORIGINS : [...BUILT_IN_ORIGINS, ...DEV_ORIGINS];
+  return Array.from(new Set([...configured, ...defaults.map(normalizeOrigin)]));
+};
+
+export const isOriginAllowed = (origin: string, allowed: string[]): boolean => {
+  const candidate = normalizeOrigin(origin);
+  return allowed.some((entry) => {
+    if (entry === '*') return true;
+    if (!entry.includes('*')) return entry === candidate;
+    const pattern = new RegExp(
+      `^${entry.split('*').map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^./]*')}$`
+    );
+    return pattern.test(candidate);
+  });
+};
+
 export const config = {
   env: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT || '5000', 10),
   apiPrefix: process.env.API_PREFIX || '/api/v1',
-  corsOrigin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'],
+  corsOrigin: parseCorsOrigins(process.env.CORS_ORIGIN, process.env.NODE_ENV || 'development'),
 
   jwt: {
     secret: process.env.JWT_SECRET || 'sadak-setu-super-secret-production-jwt-key-2026',
