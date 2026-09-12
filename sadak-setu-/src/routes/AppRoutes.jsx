@@ -1,31 +1,39 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
 import { DashboardPage } from '../pages/DashboardPage';
-import { RoadsPage } from '../pages/RoadsPage';
-import { RoadDetailPage } from '../pages/RoadDetailPage';
-import { InspectionsPage } from '../pages/InspectionsPage';
-import { DamageIntelligencePage } from '../pages/DamageIntelligencePage';
-import { MaintenancePage } from '../pages/MaintenancePage';
-import { VerificationPage } from '../pages/VerificationPage';
-import { ReportsPage } from '../pages/ReportsPage';
-import { SettingsPage } from '../pages/SettingsPage';
-import { NotFoundPage } from '../pages/NotFoundPage';
 import { LoginPage } from '../pages/LoginPage';
+import { NotFoundPage } from '../pages/NotFoundPage';
+import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { useAuth } from '../context/AuthContext';
 
-// Protected Route Component
+// Map- and chart-heavy screens load on demand to keep the first paint light.
+const RoadsPage = lazy(() => import('../pages/RoadsPage').then((m) => ({ default: m.RoadsPage })));
+const RoadDetailPage = lazy(() => import('../pages/RoadDetailPage').then((m) => ({ default: m.RoadDetailPage })));
+const InspectionsPage = lazy(() => import('../pages/InspectionsPage').then((m) => ({ default: m.InspectionsPage })));
+const DamageIntelligencePage = lazy(() =>
+  import('../pages/DamageIntelligencePage').then((m) => ({ default: m.DamageIntelligencePage }))
+);
+const MaintenancePage = lazy(() => import('../pages/MaintenancePage').then((m) => ({ default: m.MaintenancePage })));
+const VerificationPage = lazy(() => import('../pages/VerificationPage').then((m) => ({ default: m.VerificationPage })));
+const ReportsPage = lazy(() => import('../pages/ReportsPage').then((m) => ({ default: m.ReportsPage })));
+const SettingsPage = lazy(() => import('../pages/SettingsPage').then((m) => ({ default: m.SettingsPage })));
+
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
-  
+
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[100dvh] bg-canvas">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
   }
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-  
+
   return children;
 }
 

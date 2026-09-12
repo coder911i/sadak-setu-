@@ -23,7 +23,7 @@ export function AnalyticsTrends() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* Monthly Defect Discovery vs Repair Velocity */}
-      <Card className="border-slate-800 bg-slate-900/90">
+      <Card className="border-line bg-white">
         <CardHeader className="py-3 px-4">
           <CardTitle icon={Activity}>
             Monthly Defect Discovery vs Repair Velocity (2026)
@@ -55,13 +55,13 @@ export function AnalyticsTrends() {
       </Card>
 
       {/* 5-Year Pavement Degradation Forecasting */}
-      <Card className="border-slate-800 bg-slate-900/90">
+      <Card className="border-line bg-white">
         <CardHeader className="py-3 px-4">
           <div className="flex items-center justify-between w-full">
             <CardTitle icon={TrendingUp}>
               5-Year Pavement Health Forecast (AI vs Traditional)
             </CardTitle>
-            <span className="text-[10px] text-emerald-400 font-mono bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">
+            <span className="text-[10px] text-emerald-600 font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
               +46% Lifecycle Boost
             </span>
           </div>
@@ -82,7 +82,7 @@ export function AnalyticsTrends() {
       </Card>
 
       {/* Regional Maintenance Budget Allocation */}
-      <Card className="border-slate-800 bg-slate-900/90 lg:col-span-2">
+      <Card className="border-line bg-white lg:col-span-2">
         <CardHeader className="py-3 px-4">
           <CardTitle icon={Coins}>
             Regional Zone Maintenance Budget Deployment (₹ Crores)

@@ -30,7 +30,7 @@ const createPriorityMarkerIcon = (priority) => {
     className: `relative ${pulseClass}`,
     html: `
       <div class="relative flex items-center justify-center w-6 h-6">
-        <div class="w-4 h-4 rounded-full border-2 border-slate-900 shadow-xl flex items-center justify-center text-[9px] font-bold text-white" style="background-color: ${color}">
+        <div class="w-4 h-4 rounded-full border-2 border-line shadow-xl flex items-center justify-center text-[9px] font-bold text-white" style="background-color: ${color}">
           ●
         </div>
       </div>
@@ -60,7 +60,7 @@ export function CommandCenterMap({ onSelectRoad }) {
   });
 
   return (
-    <Card className="flex flex-col h-full border-slate-800 bg-slate-900/90 overflow-hidden">
+    <Card className="flex flex-col h-full border-line bg-white overflow-hidden">
       <CardHeader className="py-3 px-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
           <CardTitle icon={Navigation}>
@@ -69,13 +69,13 @@ export function CommandCenterMap({ onSelectRoad }) {
 
           <div className="flex items-center gap-2">
             {/* Filter Toggle */}
-            <div className="flex items-center p-1 bg-slate-950/80 rounded-lg border border-slate-800 text-[11px]">
+            <div className="flex items-center p-1 bg-surface-50 rounded-lg border border-line text-[11px]">
               <button
                 onClick={() => setFilterPriority('all')}
                 className={`px-2.5 py-1 rounded transition-colors ${
                   filterPriority === 'all'
                     ? 'bg-brand-600 text-white font-semibold'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-ink-500 hover:text-ink-900'
                 }`}
               >
                 All Roads ({roads.length})
@@ -85,7 +85,7 @@ export function CommandCenterMap({ onSelectRoad }) {
                 className={`px-2.5 py-1 rounded transition-colors ${
                   filterPriority === 'immediate'
                     ? 'bg-rose-600 text-white font-semibold'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-ink-500 hover:text-ink-900'
                 }`}
               >
                 Immediate Action
@@ -148,18 +148,18 @@ export function CommandCenterMap({ onSelectRoad }) {
                   <Popup>
                     <div className="p-2 space-y-2 text-xs min-w-[220px]">
                       {/* Title & Priority Badge */}
-                      <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-1.5">
+                      <div className="flex items-center justify-between gap-2 border-b border-line pb-1.5">
                         <div>
-                          <span className="font-mono font-bold text-brand-400 text-sm">{road.code}</span>
-                          <div className="text-[10px] text-slate-400">{road.category}</div>
+                          <span className="font-mono font-bold text-brand-600 text-sm">{road.code}</span>
+                          <div className="text-[10px] text-ink-500">{road.category}</div>
                         </div>
                         <span
                           className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase font-mono ${
                             road.priority === 'Immediate'
-                              ? 'bg-rose-950 text-rose-300 border border-rose-800'
+                              ? 'bg-rose-50 text-rose-700 border border-rose-200'
                               : road.priority === 'High'
-                              ? 'bg-orange-950 text-orange-300 border border-orange-800'
-                              : 'bg-emerald-950 text-emerald-300 border border-emerald-800'
+                              ? 'bg-orange-50 text-orange-700 border border-orange-200'
+                              : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           }`}
                         >
                           {road.priority}
@@ -167,28 +167,28 @@ export function CommandCenterMap({ onSelectRoad }) {
                       </div>
 
                       {/* Road Name & Location */}
-                      <p className="text-slate-200 font-semibold">{road.name}</p>
-                      <div className="text-[11px] text-slate-400">
-                        <span>District: <strong className="text-slate-200">{road.district}, {road.state}</strong></span>
+                      <p className="text-ink-900 font-semibold">{road.name}</p>
+                      <div className="text-[11px] text-ink-500">
+                        <span>District: <strong className="text-ink-900">{road.district}, {road.state}</strong></span>
                       </div>
 
                       {/* Metric Grid */}
-                      <div className="grid grid-cols-2 gap-2 bg-slate-950/80 p-2 rounded-lg border border-slate-800 font-mono text-[11px]">
+                      <div className="grid grid-cols-2 gap-2 bg-surface-50 p-2 rounded-lg border border-line font-mono text-[11px]">
                         <div>
-                          <span className="text-slate-400 text-[10px] block">Health Score</span>
-                          <strong className="text-emerald-400 font-bold">{road.healthScore} / 100</strong>
+                          <span className="text-ink-500 text-[10px] block">Health Score</span>
+                          <strong className="text-emerald-600 font-bold">{road.healthScore} / 100</strong>
                         </div>
                         <div>
-                          <span className="text-slate-400 text-[10px] block">Damage Count</span>
-                          <strong className={road.damageCount > 10 ? 'text-rose-400 font-bold' : 'text-slate-200'}>
+                          <span className="text-ink-500 text-[10px] block">Damage Count</span>
+                          <strong className={road.damageCount > 10 ? 'text-rose-600 font-bold' : 'text-ink-900'}>
                             {road.damageCount} Defects
                           </strong>
                         </div>
                       </div>
 
                       {/* Latest Inspection */}
-                      <div className="text-[10px] text-slate-400">
-                        Latest Inspection: <span className="text-slate-300">{formatDate(road.latestInspection, true)}</span>
+                      <div className="text-[10px] text-ink-500">
+                        Latest Inspection: <span className="text-ink-700">{formatDate(road.latestInspection, true)}</span>
                       </div>
 
                       {/* Action buttons */}
@@ -212,11 +212,11 @@ export function CommandCenterMap({ onSelectRoad }) {
         </MapContainer>
 
         {/* Floating Priority Legend */}
-        <div className="absolute bottom-3 left-3 z-[400] p-3 rounded-xl bg-slate-900/90 border border-slate-750 backdrop-blur-md text-[11px] shadow-2xl space-y-1.5 hidden sm:block pointer-events-auto">
-          <div className="font-semibold text-slate-300 text-[10px] uppercase tracking-wider mb-1">
+        <div className="absolute bottom-3 left-3 z-[400] p-3 rounded-xl bg-white border border-line backdrop-blur-md text-[11px] shadow-elevated space-y-1.5 hidden sm:block pointer-events-auto">
+          <div className="font-semibold text-ink-700 text-[10px] uppercase tracking-wider mb-1">
             Road Priority &amp; Health Classification
           </div>
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex items-center gap-4 text-ink-500">
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
               <span>Immediate (0–45 Score)</span>

@@ -45,15 +45,15 @@ const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-white border border-[#ddeae0] p-3 rounded-xl shadow-elevated text-xs space-y-1">
-        <p className="font-bold text-[#1a3825] flex items-center gap-2">
+      <div className="bg-white border border-line p-3 rounded-xl shadow-elevated text-xs space-y-1">
+        <p className="font-bold text-ink-900 flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: data.color }} />
           {data.name}
         </p>
-        <p className="text-[#4a6b55] font-mono">
-          Corridors: <span className="font-bold text-[#1a3825]">{data.count}</span> ({data.percentage}%)
+        <p className="text-ink-600 font-mono">
+          Corridors: <span className="font-bold text-ink-900">{data.count}</span> ({data.percentage}%)
         </p>
-        <p className="text-[#7a9a83] text-[11px]">{data.description}</p>
+        <p className="text-ink-400 text-[11px]">{data.description}</p>
       </div>
     );
   }
@@ -68,7 +68,7 @@ export function PriorityDistributionChart() {
           <CardTitle icon={PieIcon}>
             Maintenance Priority Distribution
           </CardTitle>
-          <span className="text-[10px] font-mono text-[#7a9a83]">
+          <span className="text-[10px] font-mono text-ink-400">
             142 Total Corridors
           </span>
         </div>
@@ -98,21 +98,21 @@ export function PriorityDistributionChart() {
         </div>
 
         {/* Priority Legend Cards */}
-        <div className="space-y-2 pt-3 border-t border-[#ddeae0] text-xs">
+        <div className="space-y-2 pt-3 border-t border-line text-xs">
           {priorityData.map((item) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.name}
-                className="flex items-center justify-between p-2.5 rounded-xl bg-surface-50 border border-[#ddeae0]"
+                className="flex items-center justify-between p-2.5 rounded-xl bg-surface-50 border border-line"
               >
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
-                  <span className="font-semibold text-[#1a3825] truncate">{item.name}</span>
+                  <span className="font-semibold text-ink-900 truncate">{item.name}</span>
                 </div>
                 <div className="flex items-center gap-2 font-mono">
-                  <span className="text-[#1a3825] font-bold">{item.count} Roads</span>
-                  <span className="text-[10px] text-[#7a9a83]">({item.percentage}%)</span>
+                  <span className="text-ink-900 font-bold">{item.count} Roads</span>
+                  <span className="text-[10px] text-ink-400">({item.percentage}%)</span>
                 </div>
               </div>
             );

@@ -13,7 +13,7 @@ export function Badge({
   const baseStyles = 'inline-flex items-center font-semibold rounded-full border transition-colors';
 
   const variants = {
-    default:  'bg-surface-100 text-[#4a6b55] border-[#ddeae0]',
+    default:  'bg-surface-100 text-ink-600 border-line',
     primary:  'bg-brand-100 text-brand-700 border-brand-200',
     success:  'bg-green-100 text-green-700 border-green-200',
     warning:  'bg-amber-100 text-amber-700 border-amber-200',

@@ -52,13 +52,13 @@ export function AIInspectionFeed({
         const sev = SEVERITY_LEVELS[row.severity.toUpperCase()] || SEVERITY_LEVELS.MODERATE;
         return (
           <div className="space-y-1">
-            <div className="font-bold text-slate-100 flex items-center gap-2">
+            <div className="font-bold text-ink-900 flex items-center gap-2">
               <span>{val}</span>
               <span className={`text-[10px] font-semibold px-2 py-0.2 rounded border ${sev.badgeClass}`}>
                 {row.severity.toUpperCase()}
               </span>
             </div>
-            <div className="text-[11px] text-slate-400">{row.dimensions.lengthCm} &times; {row.dimensions.widthCm} &times; {row.dimensions.depthCm} cm</div>
+            <div className="text-[11px] text-ink-500">{row.dimensions.lengthCm} &times; {row.dimensions.widthCm} &times; {row.dimensions.depthCm} cm</div>
           </div>
         );
       },
@@ -68,9 +68,9 @@ export function AIInspectionFeed({
       label: 'Corridor & Chainage',
       render: (val, row) => (
         <div className="space-y-0.5">
-          <span className="font-mono font-bold text-brand-400">{val}</span>
-          <div className="text-slate-300 font-mono text-[11px]">{row.chainage}</div>
-          <div className="text-[10px] text-slate-500">{row.lane}</div>
+          <span className="font-mono font-bold text-brand-600">{val}</span>
+          <div className="text-ink-700 font-mono text-[11px]">{row.chainage}</div>
+          <div className="text-[10px] text-ink-400">{row.lane}</div>
         </div>
       ),
     },
@@ -80,10 +80,10 @@ export function AIInspectionFeed({
       width: '140px',
       render: (val, row) => (
         <div className="space-y-1">
-          <span className="text-xs font-mono font-bold text-emerald-400 flex items-center gap-1">
+          <span className="text-xs font-mono font-bold text-emerald-600 flex items-center gap-1">
             <Cpu className="w-3 h-3" /> {val}%
           </span>
-          <div className="text-[10px] text-slate-400 truncate">{row.source}</div>
+          <div className="text-[10px] text-ink-500 truncate">{row.source}</div>
         </div>
       ),
     },
@@ -92,7 +92,7 @@ export function AIInspectionFeed({
       label: 'Collision Risk',
       width: '110px',
       render: (val) => (
-        <div className="font-mono font-bold text-xs text-rose-400">
+        <div className="font-mono font-bold text-xs text-rose-600">
           {val}/100 Risk
         </div>
       ),
@@ -102,9 +102,9 @@ export function AIInspectionFeed({
       label: 'Detected',
       width: '120px',
       render: (val) => (
-        <div className="text-slate-400 text-xs">
+        <div className="text-ink-500 text-xs">
           <div>{formatRelativeTime(val)}</div>
-          <div className="text-[10px] text-slate-500 font-mono">{formatDate(val)}</div>
+          <div className="text-[10px] text-ink-400 font-mono">{formatDate(val)}</div>
         </div>
       ),
     },
@@ -167,11 +167,11 @@ export function AIInspectionFeed({
             />
           </FilterBar>
 
-          <div className="flex items-center p-1 bg-slate-950/80 rounded-xl border border-slate-850">
+          <div className="flex items-center p-1 bg-surface-50 rounded-xl border border-line">
             <button
               onClick={() => setViewMode('grid')}
               className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === 'grid' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
+                viewMode === 'grid' ? 'bg-brand-600 text-white' : 'text-ink-500 hover:text-ink-900'
               }`}
               aria-label="Grid view"
             >
@@ -180,7 +180,7 @@ export function AIInspectionFeed({
             <button
               onClick={() => setViewMode('table')}
               className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === 'table' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
+                viewMode === 'table' ? 'bg-brand-600 text-white' : 'text-ink-500 hover:text-ink-900'
               }`}
               aria-label="Table view"
             >
@@ -210,10 +210,10 @@ export function AIInspectionFeed({
               <div
                 key={defect.id}
                 onClick={() => onSelectDefect(defect)}
-                className="rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:shadow-lg transition-all cursor-pointer overflow-hidden flex flex-col group"
+                className="rounded-xl bg-white border border-line hover:border-line hover:shadow-lg transition-all cursor-pointer overflow-hidden flex flex-col group"
               >
                 {/* Simulated Thumbnail */}
-                <div className="relative aspect-[16/9] bg-slate-950 border-b border-slate-800 flex items-center justify-center overflow-hidden">
+                <div className="relative aspect-[16/9] bg-surface-50 border-b border-line flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-slate-900/30" />
                   
                   {/* Bounding box marker */}
@@ -231,7 +231,7 @@ export function AIInspectionFeed({
                     </span>
                   </div>
 
-                  <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-slate-950/80 border border-slate-750 font-mono text-[10px] text-brand-300">
+                  <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-surface-50 border border-line font-mono text-[10px] text-brand-700">
                     {defect.roadCode} ({defect.chainage})
                   </div>
 
@@ -243,21 +243,21 @@ export function AIInspectionFeed({
                 {/* Content */}
                 <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-100 group-hover:text-brand-300 transition-colors">
+                    <h4 className="text-sm font-bold text-ink-900 group-hover:text-brand-700 transition-colors">
                       {defect.defectType}
                     </h4>
-                    <p className="text-xs text-slate-400 mt-1 line-clamp-2">{defect.notes}</p>
+                    <p className="text-xs text-ink-500 mt-1 line-clamp-2">{defect.notes}</p>
                   </div>
 
-                  <div className="pt-2 border-t border-slate-800/80 space-y-2">
-                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-300">
+                  <div className="pt-2 border-t border-line space-y-2">
+                    <div className="flex items-center justify-between text-[11px] font-mono text-ink-700">
                       <span>Depth: <strong>{defect.dimensions.depthCm} cm</strong></span>
-                      <span className="text-rose-400 font-bold">{defect.riskScore}/100 Risk</span>
+                      <span className="text-rose-600 font-bold">{defect.riskScore}/100 Risk</span>
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] text-slate-500 font-mono">
+                    <div className="flex items-center justify-between text-[10px] text-ink-400 font-mono">
                       <span>{formatRelativeTime(defect.detectedAt)}</span>
-                      <span className="text-brand-400 group-hover:underline">Inspect Telemetry &rarr;</span>
+                      <span className="text-brand-600 group-hover:underline">Inspect Telemetry &rarr;</span>
                     </div>
                   </div>
                 </div>

@@ -13,11 +13,11 @@ export function EmptyState({
 }) {
   return (
     <div className={cn('flex flex-col items-center justify-center p-8 text-center', className)}>
-      <div className="w-12 h-12 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-slate-400 mb-3 shadow-inner">
+      <div className="w-12 h-12 rounded-2xl bg-surface-100 border border-line flex items-center justify-center text-ink-500 mb-3 shadow-inner">
         <Icon className="w-6 h-6" />
       </div>
-      <h4 className="text-sm font-semibold text-slate-200">{title}</h4>
-      <p className="text-xs text-slate-400 max-w-sm mt-1 leading-relaxed">{description}</p>
+      <h4 className="text-sm font-semibold text-ink-900">{title}</h4>
+      <p className="text-xs text-ink-500 max-w-sm mt-1 leading-relaxed">{description}</p>
       {actionLabel && onAction && (
         <div className="mt-4">
           <Button variant="secondary" size="sm" onClick={onAction}>

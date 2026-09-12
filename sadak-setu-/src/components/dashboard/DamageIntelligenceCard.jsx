@@ -62,29 +62,29 @@ export function DamageIntelligenceCard() {
           </div>
 
           {/* Other Damage */}
-          <div className="p-3 rounded-xl bg-surface-100 border border-[#ddeae0] space-y-1">
+          <div className="p-3 rounded-xl bg-surface-100 border border-line space-y-1">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase font-bold text-[#4a6b55]">Other</span>
+              <span className="text-[10px] uppercase font-bold text-ink-600">Other</span>
               <span className="w-2 h-2 rounded-full bg-[#7a9a83]" />
             </div>
-            <div className="text-xl font-extrabold font-mono text-[#1a3825]">
+            <div className="text-xl font-extrabold font-mono text-ink-900">
               {damageMetrics.otherDamage.count}
             </div>
-            <div className="text-[10px] text-[#7a9a83] truncate">
+            <div className="text-[10px] text-ink-400 truncate">
               Rutting & Edge Drops
             </div>
           </div>
         </div>
 
         {/* Severity Distribution */}
-        <div className="space-y-2 pt-2 border-t border-[#ddeae0]">
+        <div className="space-y-2 pt-2 border-t border-line">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-bold text-[#1a3825]">Severity Distribution:</span>
-            <span className="text-[10px] font-mono text-[#7a9a83]">296 Total Defects</span>
+            <span className="font-bold text-ink-900">Severity Distribution:</span>
+            <span className="text-[10px] font-mono text-ink-400">296 Total Defects</span>
           </div>
 
           {/* Multi-segment bar */}
-          <div className="h-2.5 w-full bg-surface-100 rounded-full overflow-hidden flex border border-[#ddeae0]">
+          <div className="h-2.5 w-full bg-surface-100 rounded-full overflow-hidden flex border border-line">
             {damageMetrics.severityBreakdown.map((item) => (
               <div
                 key={item.label}
@@ -100,7 +100,7 @@ export function DamageIntelligenceCard() {
             {damageMetrics.severityBreakdown.map((item) => (
               <div key={item.label} className="flex items-center gap-1.5">
                 <span className={`w-2 h-2 rounded-full flex-shrink-0 ${item.color}`} />
-                <span className="truncate text-[#4a6b55]">{item.label}</span>
+                <span className="truncate text-ink-600">{item.label}</span>
                 <span className={`font-mono text-[10px] font-bold ml-auto ${item.textColor}`}>{item.percentage}%</span>
               </div>
             ))}

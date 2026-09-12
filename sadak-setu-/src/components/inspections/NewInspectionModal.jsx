@@ -87,11 +87,11 @@ export function NewInspectionModal({ isOpen, onClose, onSubmit }) {
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         {/* Inspection Method */}
         <div>
-          <label className="block text-slate-300 font-semibold mb-1">Inspection Platform Source</label>
+          <label className="block text-ink-700 font-semibold mb-1">Inspection Platform Source</label>
           <select
             value={formData.source}
             onChange={(e) => setFormData({ ...formData, source: e.target.value })}
-            className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+            className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
           >
             {Object.entries(INSPECTION_SOURCES).map(([k, v]) => (
               <option key={k} value={v}>
@@ -104,11 +104,11 @@ export function NewInspectionModal({ isOpen, onClose, onSubmit }) {
         {/* Road and Chainage */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Highway Corridor</label>
+            <label className="block text-ink-700 font-semibold mb-1">Highway Corridor</label>
             <select
               value={formData.roadId}
               onChange={(e) => setFormData({ ...formData, roadId: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             >
               {roads.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -119,13 +119,13 @@ export function NewInspectionModal({ isOpen, onClose, onSubmit }) {
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Chainage Marker (Km + Meter)</label>
+            <label className="block text-ink-700 font-semibold mb-1">Chainage Marker (Km + Meter)</label>
             <input
               type="text"
               value={formData.chainage}
               onChange={(e) => setFormData({ ...formData, chainage: e.target.value })}
               placeholder="e.g. Km 104+250"
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono"
               required
             />
           </div>
@@ -134,11 +134,11 @@ export function NewInspectionModal({ isOpen, onClose, onSubmit }) {
         {/* Distress Type & Severity */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Pavement Distress Category</label>
+            <label className="block text-ink-700 font-semibold mb-1">Pavement Distress Category</label>
             <select
               value={formData.defectType}
               onChange={(e) => setFormData({ ...formData, defectType: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             >
               {Object.values(DEFECT_TYPES).map((t) => (
                 <option key={t} value={t}>
@@ -149,11 +149,11 @@ export function NewInspectionModal({ isOpen, onClose, onSubmit }) {
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Severity Rating</label>
+            <label className="block text-ink-700 font-semibold mb-1">Severity Rating</label>
             <select
               value={formData.severity}
               onChange={(e) => setFormData({ ...formData, severity: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             >
               <option value="critical">Critical (Immediate Road Safety Threat)</option>
               <option value="high">High (Accelerated Fatigue)</option>
@@ -166,42 +166,42 @@ export function NewInspectionModal({ isOpen, onClose, onSubmit }) {
         {/* Dimensions */}
         <div className="grid grid-cols-3 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Length (cm)</label>
+            <label className="block text-ink-700 font-semibold mb-1">Length (cm)</label>
             <input
               type="number"
               value={formData.lengthCm}
               onChange={(e) => setFormData({ ...formData, lengthCm: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 font-mono"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 font-mono"
             />
           </div>
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Width (cm)</label>
+            <label className="block text-ink-700 font-semibold mb-1">Width (cm)</label>
             <input
               type="number"
               value={formData.widthCm}
               onChange={(e) => setFormData({ ...formData, widthCm: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 font-mono"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 font-mono"
             />
           </div>
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Depth (cm)</label>
+            <label className="block text-ink-700 font-semibold mb-1">Depth (cm)</label>
             <input
               type="number"
               value={formData.depthCm}
               onChange={(e) => setFormData({ ...formData, depthCm: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 font-mono"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 font-mono"
             />
           </div>
         </div>
 
         {/* Field Notes */}
         <div>
-          <label className="block text-slate-300 font-semibold mb-1">Diagnostic Analysis &amp; Remarks</label>
+          <label className="block text-ink-700 font-semibold mb-1">Diagnostic Analysis &amp; Remarks</label>
           <textarea
             rows={2}
             value={formData.notes}
             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-            className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+            className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
         </div>
       </form>

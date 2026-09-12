@@ -13,7 +13,7 @@ export function CostEstimatorCalculator({ onApplyEstimate }) {
   const estimates = maintenanceService.calculateEstimates({ areaSqM, depthCm, layerType });
 
   return (
-    <Card className="border-slate-800 bg-slate-900/90">
+    <Card className="border-line bg-white">
       <CardHeader className="py-3 px-4">
         <CardTitle icon={Calculator}>
           AI Asphalt &amp; Repair Cost Estimator
@@ -23,35 +23,35 @@ export function CostEstimatorCalculator({ onApplyEstimate }) {
       <CardContent className="p-4 space-y-4 text-xs">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label className="block text-slate-400 font-medium mb-1">Patch Area (m²)</label>
+            <label className="block text-ink-500 font-medium mb-1">Patch Area (m²)</label>
             <input
               type="number"
               min="0.1"
               step="0.5"
               value={areaSqM}
               onChange={(e) => setAreaSqM(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2 text-slate-100 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2 text-ink-900 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
             />
           </div>
 
           <div>
-            <label className="block text-slate-400 font-medium mb-1">Overlay Depth (cm)</label>
+            <label className="block text-ink-500 font-medium mb-1">Overlay Depth (cm)</label>
             <input
               type="number"
               min="1"
               max="30"
               value={depthCm}
               onChange={(e) => setDepthCm(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2 text-slate-100 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2 text-ink-900 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
             />
           </div>
 
           <div>
-            <label className="block text-slate-400 font-medium mb-1">Asphalt Formulation</label>
+            <label className="block text-ink-500 font-medium mb-1">Asphalt Formulation</label>
             <select
               value={layerType}
               onChange={(e) => setLayerType(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2 text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500 cursor-pointer"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500 cursor-pointer"
             >
               <option value="hot_mix">Bituminous Concrete (VG-40 Hot Mix)</option>
               <option value="cold_mix">Cold-Mix Polymer Emulsion</option>
@@ -62,25 +62,25 @@ export function CostEstimatorCalculator({ onApplyEstimate }) {
         </div>
 
         {/* Calculated Output Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 border-t border-slate-800">
-          <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-mono">Volume</span>
-            <span className="text-sm font-bold text-white font-mono">{estimates.volumeM3} m³</span>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 border-t border-line">
+          <div className="p-2.5 rounded-lg bg-surface-50 border border-line">
+            <span className="text-[10px] text-ink-500 block font-mono">Volume</span>
+            <span className="text-sm font-bold text-ink-900 font-mono">{estimates.volumeM3} m³</span>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-mono">Asphalt Weight</span>
-            <span className="text-sm font-bold text-brand-400 font-mono">{estimates.weightTonnes} T</span>
+          <div className="p-2.5 rounded-lg bg-surface-50 border border-line">
+            <span className="text-[10px] text-ink-500 block font-mono">Asphalt Weight</span>
+            <span className="text-sm font-bold text-brand-600 font-mono">{estimates.weightTonnes} T</span>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-mono">Material Cost</span>
-            <span className="text-sm font-bold text-slate-200 font-mono">{formatCurrency(estimates.materialCost)}</span>
+          <div className="p-2.5 rounded-lg bg-surface-50 border border-line">
+            <span className="text-[10px] text-ink-500 block font-mono">Material Cost</span>
+            <span className="text-sm font-bold text-ink-900 font-mono">{formatCurrency(estimates.materialCost)}</span>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-slate-950 border border-brand-500/40 bg-brand-950/20">
-            <span className="text-[10px] text-brand-300 block font-mono font-semibold">Total Estimated Cost</span>
-            <span className="text-sm font-bold text-emerald-400 font-mono">{formatCurrency(estimates.estimatedTotal)}</span>
+          <div className="p-2.5 rounded-lg bg-surface-50 border border-brand-500/40 bg-brand-50">
+            <span className="text-[10px] text-brand-700 block font-mono font-semibold">Total Estimated Cost</span>
+            <span className="text-sm font-bold text-emerald-600 font-mono">{formatCurrency(estimates.estimatedTotal)}</span>
           </div>
         </div>
       </CardContent>

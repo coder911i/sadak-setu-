@@ -55,8 +55,8 @@ export function WorkOrderBoard({
       width: '130px',
       render: (val, row) => (
         <div className="space-y-0.5">
-          <span className="font-mono font-bold text-brand-400 text-xs">{val}</span>
-          <div className="font-mono text-[10px] text-slate-400">{row.roadCode}</div>
+          <span className="font-mono font-bold text-brand-600 text-xs">{val}</span>
+          <div className="font-mono text-[10px] text-ink-500">{row.roadCode}</div>
         </div>
       ),
     },
@@ -65,8 +65,8 @@ export function WorkOrderBoard({
       label: 'Scope & Chainage Section',
       render: (val, row) => (
         <div className="space-y-0.5">
-          <div className="font-semibold text-slate-100">{val}</div>
-          <div className="text-[11px] text-slate-400 font-mono">{row.chainageRange}</div>
+          <div className="font-semibold text-ink-900">{val}</div>
+          <div className="text-[11px] text-ink-500 font-mono">{row.chainageRange}</div>
         </div>
       ),
     },
@@ -78,10 +78,10 @@ export function WorkOrderBoard({
         <span
           className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
             val === 'CRITICAL'
-              ? 'bg-rose-950/80 text-rose-300 border-rose-800'
+              ? 'bg-rose-50 text-rose-700 border-rose-200'
               : val === 'HIGH'
-              ? 'bg-orange-950/80 text-orange-300 border-orange-800'
-              : 'bg-slate-800 text-slate-300 border-slate-700'
+              ? 'bg-orange-50 text-orange-700 border-orange-200'
+              : 'bg-surface-100 text-ink-700 border-line'
           }`}
         >
           {val}
@@ -93,7 +93,7 @@ export function WorkOrderBoard({
       label: 'Status',
       width: '150px',
       render: (val) => {
-        const meta = WORK_ORDER_STATUSES[val.toUpperCase()] || { label: val, color: 'bg-slate-800 text-slate-300' };
+        const meta = WORK_ORDER_STATUSES[val.toUpperCase()] || { label: val, color: 'bg-surface-100 text-ink-700' };
         return (
           <span className={`text-[10px] font-medium px-2.5 py-0.5 rounded-full border ${meta.color}`}>
             {meta.label}
@@ -108,8 +108,8 @@ export function WorkOrderBoard({
       render: (val, row) => (
         <div className="space-y-1">
           <div className="flex justify-between text-[10px] font-mono">
-            <span className="text-slate-400 truncate max-w-[100px]">{row.contractorName}</span>
-            <span className="text-slate-200 font-bold">{val}%</span>
+            <span className="text-ink-500 truncate max-w-[100px]">{row.contractorName}</span>
+            <span className="text-ink-900 font-bold">{val}%</span>
           </div>
           <ProgressBar value={val} size="xs" color={val >= 100 ? 'emerald' : 'brand'} />
         </div>
@@ -120,7 +120,7 @@ export function WorkOrderBoard({
       label: 'Sanctioned Budget',
       width: '130px',
       render: (val) => (
-        <div className="font-mono text-xs font-bold text-slate-200">
+        <div className="font-mono text-xs font-bold text-ink-900">
           {formatCurrency(val)}
         </div>
       ),
@@ -169,7 +169,7 @@ export function WorkOrderBoard({
             </Button>
           )}
           {row.status === 'verified_closed' && (
-            <span className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
+            <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5" /> Certified
             </span>
           )}
@@ -179,11 +179,11 @@ export function WorkOrderBoard({
   ];
 
   const kanbanColumns = [
-    { id: 'triage', label: 'In Triage / Review', color: 'border-slate-700' },
-    { id: 'budget_approved', label: 'Sanctioned & Ready', color: 'border-blue-700' },
-    { id: 'in_progress', label: 'Under Execution (In Progress)', color: 'border-amber-700' },
-    { id: 'audit_ready', label: 'Quality Audit Queue', color: 'border-purple-700' },
-    { id: 'verified_closed', label: 'Completed & Certified', color: 'border-emerald-700' },
+    { id: 'triage', label: 'In Triage / Review', color: 'border-line' },
+    { id: 'budget_approved', label: 'Sanctioned & Ready', color: 'border-blue-200' },
+    { id: 'in_progress', label: 'Under Execution (In Progress)', color: 'border-amber-200' },
+    { id: 'audit_ready', label: 'Quality Audit Queue', color: 'border-purple-200' },
+    { id: 'verified_closed', label: 'Completed & Certified', color: 'border-emerald-200' },
   ];
 
   return (
@@ -224,11 +224,11 @@ export function WorkOrderBoard({
             />
           </FilterBar>
 
-          <div className="flex items-center p-1 bg-slate-950/80 rounded-xl border border-slate-850">
+          <div className="flex items-center p-1 bg-surface-50 rounded-xl border border-line">
             <button
               onClick={() => setViewMode('board')}
               className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === 'board' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
+                viewMode === 'board' ? 'bg-brand-600 text-white' : 'text-ink-500 hover:text-ink-900'
               }`}
               aria-label="Kanban view"
             >
@@ -237,7 +237,7 @@ export function WorkOrderBoard({
             <button
               onClick={() => setViewMode('table')}
               className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === 'table' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
+                viewMode === 'table' ? 'bg-brand-600 text-white' : 'text-ink-500 hover:text-ink-900'
               }`}
               aria-label="Table view"
             >
@@ -267,13 +267,13 @@ export function WorkOrderBoard({
             return (
               <div
                 key={col.id}
-                className="bg-slate-950/70 border border-slate-800 rounded-xl flex flex-col min-h-[480px] overflow-hidden"
+                className="bg-surface-50 border border-line rounded-xl flex flex-col min-h-[480px] overflow-hidden"
               >
                 {/* Column Header */}
-                <div className={`px-3.5 py-3 border-b border-slate-800 bg-slate-900/80 flex items-center justify-between`}>
+                <div className={`px-3.5 py-3 border-b border-line bg-white flex items-center justify-between`}>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-200">{col.label}</span>
-                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 font-mono text-[10px] font-bold flex items-center justify-center">
+                    <span className="text-xs font-bold text-ink-900">{col.label}</span>
+                    <span className="w-5 h-5 rounded-full bg-surface-100 text-ink-700 font-mono text-[10px] font-bold flex items-center justify-center">
                       {colOrders.length}
                     </span>
                   </div>
@@ -287,15 +287,15 @@ export function WorkOrderBoard({
                     return (
                       <div
                         key={wo.id}
-                        className="p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all space-y-2.5 shadow-sm group"
+                        className="p-3 rounded-xl bg-white border border-line hover:border-line transition-all space-y-2.5 shadow-sm group"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="font-mono text-xs font-bold text-brand-400">{wo.id}</span>
+                          <span className="font-mono text-xs font-bold text-brand-600">{wo.id}</span>
                           <span
                             className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${
                               isCritical
-                                ? 'bg-rose-950/80 text-rose-300 border-rose-800'
-                                : 'bg-slate-800 text-slate-300 border-slate-700'
+                                ? 'bg-rose-50 text-rose-700 border-rose-200'
+                                : 'bg-surface-100 text-ink-700 border-line'
                             }`}
                           >
                             {wo.priority}
@@ -303,18 +303,18 @@ export function WorkOrderBoard({
                         </div>
 
                         <div>
-                          <div className="text-xs font-bold text-slate-100 group-hover:text-brand-300 transition-colors">
+                          <div className="text-xs font-bold text-ink-900 group-hover:text-brand-700 transition-colors">
                             {wo.title}
                           </div>
-                          <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                          <div className="text-[11px] text-ink-500 font-mono mt-0.5">
                             {wo.roadCode} ({wo.chainageRange})
                           </div>
                         </div>
 
-                        <div className="space-y-1 pt-1 border-t border-slate-800/80">
-                          <div className="flex justify-between text-[10px] text-slate-400">
+                        <div className="space-y-1 pt-1 border-t border-line">
+                          <div className="flex justify-between text-[10px] text-ink-500">
                             <span className="truncate max-w-[120px]">{wo.contractorName}</span>
-                            <span className="font-mono text-slate-200 font-bold">{wo.progressPercentage}%</span>
+                            <span className="font-mono text-ink-900 font-bold">{wo.progressPercentage}%</span>
                           </div>
                           <ProgressBar
                             value={wo.progressPercentage}
@@ -323,13 +323,13 @@ export function WorkOrderBoard({
                           />
                         </div>
 
-                        <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-1">
+                        <div className="flex items-center justify-between text-[10px] font-mono text-ink-500 pt-1">
                           <span>{formatCurrency(wo.sanctionedBudget)}</span>
-                          <span className="text-amber-400">{wo.slaRemainingHours}h SLA</span>
+                          <span className="text-amber-600">{wo.slaRemainingHours}h SLA</span>
                         </div>
 
                         {/* Quick progression buttons */}
-                        <div className="pt-2 border-t border-slate-800 flex items-center justify-end gap-1">
+                        <div className="pt-2 border-t border-line flex items-center justify-end gap-1">
                           {wo.status === 'triage' && (
                             <Button
                               variant="secondary"
@@ -376,7 +376,7 @@ export function WorkOrderBoard({
                   })}
 
                   {colOrders.length === 0 && (
-                    <div className="py-12 text-center text-slate-500 text-xs">
+                    <div className="py-12 text-center text-ink-400 text-xs">
                       No orders in this stage
                     </div>
                   )}

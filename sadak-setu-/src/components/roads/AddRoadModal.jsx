@@ -93,25 +93,25 @@ export function AddRoadModal({ isOpen, onClose, onAddRoad }) {
         {/* Road ID & Name */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Road ID / Code</label>
+            <label className="block text-ink-700 font-semibold mb-1">Road ID / Code</label>
             <input
               type="text"
               value={formData.code}
               onChange={(e) => setFormData({ ...formData, code: e.target.value })}
               placeholder="e.g. PMGSY VR-28"
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
               required
             />
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-slate-300 font-semibold mb-1">Road / Corridor Name</label>
+            <label className="block text-ink-700 font-semibold mb-1">Road / Corridor Name</label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="e.g. Alwar – Thanagazi Link"
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
               required
             />
           </div>
@@ -120,11 +120,11 @@ export function AddRoadModal({ isOpen, onClose, onAddRoad }) {
         {/* Category & Zone */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Road Hierarchy Category</label>
+            <label className="block text-ink-700 font-semibold mb-1">Road Hierarchy Category</label>
             <select
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             >
               <option value="Rural PMGSY (Pradhan Mantri Gram Sadak Yojana)">Rural PMGSY</option>
               <option value="Major District Road (MDR)">Major District Road (MDR)</option>
@@ -135,11 +135,11 @@ export function AddRoadModal({ isOpen, onClose, onAddRoad }) {
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Regional Zone</label>
+            <label className="block text-ink-700 font-semibold mb-1">Regional Zone</label>
             <select
               value={formData.zone}
               onChange={(e) => setFormData({ ...formData, zone: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             >
               <option value="north">Northern Zone</option>
               <option value="west">Western Zone</option>
@@ -153,23 +153,23 @@ export function AddRoadModal({ isOpen, onClose, onAddRoad }) {
         {/* District & State */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">District</label>
+            <label className="block text-ink-700 font-semibold mb-1">District</label>
             <input
               type="text"
               value={formData.district}
               onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">State</label>
+            <label className="block text-ink-700 font-semibold mb-1">State</label>
             <input
               type="text"
               value={formData.state}
               onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
               required
             />
           </div>
@@ -178,36 +178,36 @@ export function AddRoadModal({ isOpen, onClose, onAddRoad }) {
         {/* Length, Lanes & Surface */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Total Length (KM)</label>
+            <label className="block text-ink-700 font-semibold mb-1">Total Length (KM)</label>
             <input
               type="number"
               step="0.1"
               value={formData.totalLengthKm}
               onChange={(e) => setFormData({ ...formData, totalLengthKm: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Lane Count</label>
+            <label className="block text-ink-700 font-semibold mb-1">Lane Count</label>
             <input
               type="number"
               min="1"
               max="10"
               value={formData.lanes}
               onChange={(e) => setFormData({ ...formData, lanes: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Pavement Surface</label>
+            <label className="block text-ink-700 font-semibold mb-1">Pavement Surface</label>
             <select
               value={formData.surfaceType}
               onChange={(e) => setFormData({ ...formData, surfaceType: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             >
               <option value="Bituminous Macadam with Surface Dressing">Bituminous Surface Dressing</option>
               <option value="Bituminous Concrete (BC)">Bituminous Concrete</option>
@@ -220,11 +220,11 @@ export function AddRoadModal({ isOpen, onClose, onAddRoad }) {
         {/* Priority & Health Score */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Maintenance Priority</label>
+            <label className="block text-ink-700 font-semibold mb-1">Maintenance Priority</label>
             <select
               value={formData.priority}
               onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500 font-bold"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500 font-bold"
             >
               <option value="Immediate">Immediate Priority (Critical Action)</option>
               <option value="High">High Priority (Scheduled Repair)</option>
@@ -233,14 +233,14 @@ export function AddRoadModal({ isOpen, onClose, onAddRoad }) {
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Initial Health Score (0–100)</label>
+            <label className="block text-ink-700 font-semibold mb-1">Initial Health Score (0–100)</label>
             <input
               type="number"
               min="0"
               max="100"
               value={formData.healthScore}
               onChange={(e) => setFormData({ ...formData, healthScore: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-100 font-mono font-bold text-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 font-mono font-bold text-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-500"
               required
             />
           </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TopKPICards } from '../components/dashboard/TopKPICards';
 import { RoadHealthOverview } from '../components/dashboard/RoadHealthOverview';
 import { PriorityDistributionChart } from '../components/dashboard/PriorityDistributionChart';
@@ -8,75 +9,88 @@ import { MaintenancePipelineTracker } from '../components/dashboard/MaintenanceP
 import { RecentInspectionsTable } from '../components/dashboard/RecentInspectionsTable';
 import { RecentAlertsFeed } from '../components/dashboard/RecentAlertsFeed';
 import { RoadDetailDrawer } from '../components/roads/RoadDetailDrawer';
-import { InspectionTelemetryModal } from '../components/inspections/InspectionTelemetryModal';
 import { WorkOrderModal } from '../components/maintenance/WorkOrderModal';
 import { useRoads } from '../hooks/useRoads';
 import { useMaintenance } from '../hooks/useMaintenance';
-import { Alert } from '../components/ui/Alert';
-import {
-  Sparkles,
-  Radio,
-  Zap,
-  Award,
-  ShieldCheck,
-  TrendingUp,
-} from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { Button } from '../components/ui/Button';
+import { AlertTriangle, ArrowRight, Radio, Sparkles } from 'lucide-react';
+
+const greetingFor = (hour) => {
+  if (hour < 12) return 'Good morning';
+  if (hour < 17) return 'Good afternoon';
+  return 'Good evening';
+};
 
 export function DashboardPage() {
-  const { roads } = useRoads();
+  const { roads, stats } = useRoads();
   const { addWorkOrder } = useMaintenance();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [selectedRoadDetail, setSelectedRoadDetail] = useState(null);
-  const [selectedDefect, setSelectedDefect] = useState(null);
   const [isWorkOrderModalOpen, setIsWorkOrderModalOpen] = useState(false);
   const [initialWorkOrderData, setInitialWorkOrderData] = useState(null);
 
-  const handleOpenWorkOrder = (road) => {
-    setInitialWorkOrderData({
-      title: `Emergency Repair for ${road.code} (${road.name})`,
-      roadId: road.id,
-      chainageRange: `Km 0+000 – Km ${road.totalLengthKm}`,
-      priority: road.priority === 'Immediate' ? 'CRITICAL' : 'HIGH',
-      sanctionedBudget: 650000,
-      materialSpec: 'Bituminous Concrete (VG-40 DBM + BC)',
-    });
-    setIsWorkOrderModalOpen(true);
-  };
+  const firstName = (user?.fullName || '').split(' ')[0];
+  const greeting = greetingFor(new Date().getHours());
+  const criticalCount = stats.criticalDefects || 0;
+  const today = new Date().toLocaleDateString('en-IN', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Top Banner: Smart India Hackathon & MoRTH Command Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-[#07172e] border border-slate-800 shadow-xl relative overflow-hidden">
-        {/* Glow backdrop */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="space-y-1 z-10">
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1">
-              <Award className="w-3 h-3 text-amber-400" /> Smart India Hackathon &bull; MoRTH &amp; PMGSY Edition
-            </span>
-            <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-mono font-bold flex items-center gap-1">
-              <Radio className="w-3 h-3 text-emerald-400 animate-pulse" /> Live Telemetry
-            </span>
-          </div>
-
-          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-            Central Road Health &amp; Maintenance Command Center
+      {/* Greeting & network context */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+        <div>
+          <p className="text-footnote text-ink-400">{today}</p>
+          <h1 className="text-title1 font-semibold text-ink-900 tracking-tight">
+            {greeting}{firstName ? `, ${firstName}` : ''}
           </h1>
-          <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
-            AI-driven pavement distress triage, real-time International Roughness telemetry, and automated maintenance work orders across rural and highway networks.
+          <p className="text-subhead text-ink-500 mt-1">
+            {stats.totalCorridors || roads.length} corridors monitored · {Math.round(stats.totalKm || 0)} km under watch
           </p>
         </div>
 
-        <div className="flex items-center gap-3 z-10 font-mono text-xs">
-          <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-750 text-right">
-            <span className="text-[10px] text-slate-400 block">AI Neural Model</span>
-            <span className="font-bold text-emerald-400 flex items-center gap-1">
-              <Sparkles className="w-3 h-3" /> PavementNet v4.8
-            </span>
-          </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-caption font-medium">
+            <Radio className="w-3 h-3 animate-pulse" aria-hidden="true" /> Live telemetry
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 border border-brand-100 text-caption font-medium">
+            <Sparkles className="w-3 h-3" aria-hidden="true" /> PavementNet v4.8
+          </span>
         </div>
       </div>
+
+      {/* Critical alert strip */}
+      {criticalCount > 0 && (
+        <div className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-red-50 border border-red-100">
+          <span className="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
+            <AlertTriangle className="w-[18px] h-[18px]" aria-hidden="true" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-subhead font-semibold text-red-800">
+              {criticalCount} critical defect{criticalCount === 1 ? '' : 's'} need attention
+            </p>
+            <p className="text-caption text-red-700/80 truncate">
+              Raise work orders before these corridors degrade further.
+            </p>
+          </div>
+          <Button
+            size="sm"
+            variant="danger"
+            icon={ArrowRight}
+            iconPosition="right"
+            onClick={() => navigate('/maintenance')}
+            className="flex-shrink-0"
+          >
+            <span className="hidden sm:inline">Review</span>
+          </Button>
+        </div>
+      )}
 
       {/* 1. TOP 5 KPI CARDS */}
       <TopKPICards />

@@ -18,18 +18,18 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-slate-900 border border-slate-750 p-3 rounded-lg shadow-xl text-xs space-y-1">
-        <p className="font-bold text-slate-100 font-mono">{label} Corridor</p>
-        <p className="text-brand-400 font-mono">
-          PCI Health Score: <span className="font-bold text-white">{data.pci}/100</span>
+      <div className="bg-white border border-line p-3 rounded-lg shadow-xl text-xs space-y-1">
+        <p className="font-bold text-ink-900 font-mono">{label} Corridor</p>
+        <p className="text-brand-600 font-mono">
+          PCI Health Score: <span className="font-bold text-ink-900">{data.pci}/100</span>
         </p>
-        <p className="text-slate-400">
-          Roughness (IRI): <span className="text-slate-200">{data.iri} m/km</span>
+        <p className="text-ink-500">
+          Roughness (IRI): <span className="text-ink-900">{data.iri} m/km</span>
         </p>
-        <p className="text-slate-400">
-          Defect Density: <span className="text-slate-200">{data.defectsPer100Km} / 100km</span>
+        <p className="text-ink-500">
+          Defect Density: <span className="text-ink-900">{data.defectsPer100Km} / 100km</span>
         </p>
-        <p className="text-emerald-400">
+        <p className="text-emerald-600">
           SLA Compliance: <span className="font-bold">{data.complianceRate}%</span>
         </p>
       </div>
@@ -49,13 +49,13 @@ export function PavementIndexChart() {
   };
 
   return (
-    <Card className="flex flex-col h-full border-slate-800">
+    <Card className="flex flex-col h-full border-line">
       <CardHeader className="py-3 px-4">
         <div className="flex items-center justify-between w-full">
           <CardTitle icon={BarChart3}>
             Corridor Pavement Index (PCI) Comparison
           </CardTitle>
-          <span className="text-[10px] text-slate-400 font-mono">
+          <span className="text-[10px] text-ink-500 font-mono">
             Target Threshold: &ge; 70 PCI
           </span>
         </div>

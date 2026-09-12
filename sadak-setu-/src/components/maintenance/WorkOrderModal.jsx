@@ -84,12 +84,12 @@ export function WorkOrderModal({ isOpen, onClose, onSubmit, initialData = null }
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         {/* Title */}
         <div>
-          <label className="block text-slate-300 font-semibold mb-1">Work Order Scope / Title</label>
+          <label className="block text-ink-700 font-semibold mb-1">Work Order Scope / Title</label>
           <input
             type="text"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+            className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             required
           />
         </div>
@@ -97,11 +97,11 @@ export function WorkOrderModal({ isOpen, onClose, onSubmit, initialData = null }
         {/* Corridor and Chainage */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Highway Corridor</label>
+            <label className="block text-ink-700 font-semibold mb-1">Highway Corridor</label>
             <select
               value={formData.roadId}
               onChange={(e) => setFormData({ ...formData, roadId: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             >
               {roads.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -112,13 +112,13 @@ export function WorkOrderModal({ isOpen, onClose, onSubmit, initialData = null }
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Chainage Section Span</label>
+            <label className="block text-ink-700 font-semibold mb-1">Chainage Section Span</label>
             <input
               type="text"
               value={formData.chainageRange}
               onChange={(e) => setFormData({ ...formData, chainageRange: e.target.value })}
               placeholder="e.g. Km 62+000 – Km 66+500"
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono"
               required
             />
           </div>
@@ -127,11 +127,11 @@ export function WorkOrderModal({ isOpen, onClose, onSubmit, initialData = null }
         {/* Contractor & Priority */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Assigned Maintenance Contractor</label>
+            <label className="block text-ink-700 font-semibold mb-1">Assigned Maintenance Contractor</label>
             <select
               value={formData.contractorId}
               onChange={(e) => setFormData({ ...formData, contractorId: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             >
               {CONTRACTORS.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -142,11 +142,11 @@ export function WorkOrderModal({ isOpen, onClose, onSubmit, initialData = null }
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Priority / Emergency Level</label>
+            <label className="block text-ink-700 font-semibold mb-1">Priority / Emergency Level</label>
             <select
               value={formData.priority}
               onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 font-bold"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500 font-bold"
             >
               <option value="CRITICAL">CRITICAL (Emergency 24-48h SLA)</option>
               <option value="HIGH">HIGH (72h SLA)</option>
@@ -159,35 +159,35 @@ export function WorkOrderModal({ isOpen, onClose, onSubmit, initialData = null }
         {/* Budget & Material */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Sanctioned Budget (₹ INR)</label>
+            <label className="block text-ink-700 font-semibold mb-1">Sanctioned Budget (₹ INR)</label>
             <input
               type="number"
               value={formData.sanctionedBudget}
               onChange={(e) => setFormData({ ...formData, sanctionedBudget: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Material Specification</label>
+            <label className="block text-ink-700 font-semibold mb-1">Material Specification</label>
             <input
               type="text"
               value={formData.materialSpec}
               onChange={(e) => setFormData({ ...formData, materialSpec: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
             />
           </div>
         </div>
 
         {/* Notes */}
         <div>
-          <label className="block text-slate-300 font-semibold mb-1">Execution Directives &amp; Traffic Plan</label>
+          <label className="block text-ink-700 font-semibold mb-1">Execution Directives &amp; Traffic Plan</label>
           <textarea
             rows={2}
             value={formData.notes}
             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-            className="w-full bg-slate-950 border border-slate-750 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500"
+            className="w-full bg-surface-50 border border-line rounded-lg p-2.5 text-ink-900 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
         </div>
       </form>

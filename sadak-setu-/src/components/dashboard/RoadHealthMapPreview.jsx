@@ -20,7 +20,7 @@ const createDefectMarkerIcon = (severity) => {
     className: `relative ${pulseClass}`,
     html: `
       <div class="relative flex items-center justify-center w-5 h-5">
-        <div class="w-3.5 h-3.5 rounded-full ${colorClass} border-2 border-slate-900 shadow-md"></div>
+        <div class="w-3.5 h-3.5 rounded-full ${colorClass} border-2 border-line shadow-md"></div>
       </div>
     `,
     iconSize: [20, 20],
@@ -44,7 +44,7 @@ export function RoadHealthMapPreview({ onSelectRoad }) {
   };
 
   return (
-    <Card className="flex flex-col h-full overflow-hidden border-slate-800">
+    <Card className="flex flex-col h-full overflow-hidden border-line">
       <CardHeader className="py-3 px-4">
         <div className="flex items-center justify-between w-full">
           <CardTitle icon={Navigation}>
@@ -52,13 +52,13 @@ export function RoadHealthMapPreview({ onSelectRoad }) {
           </CardTitle>
 
           <div className="flex items-center gap-2">
-            <div className="hidden sm:flex items-center gap-1.5 p-1 bg-slate-950/70 rounded-lg border border-slate-800 text-[11px]">
+            <div className="hidden sm:flex items-center gap-1.5 p-1 bg-surface-50 rounded-lg border border-line text-[11px]">
               <button
                 onClick={() => setActiveLayer('all')}
                 className={`px-2.5 py-1 rounded-md transition-colors ${
                   activeLayer === 'all'
                     ? 'bg-brand-600 text-white font-semibold'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-ink-500 hover:text-ink-900'
                 }`}
               >
                 All Corridors
@@ -68,7 +68,7 @@ export function RoadHealthMapPreview({ onSelectRoad }) {
                 className={`px-2.5 py-1 rounded-md transition-colors ${
                   activeLayer === 'critical'
                     ? 'bg-rose-600 text-white font-semibold'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-ink-500 hover:text-ink-900'
                 }`}
               >
                 Critical Hazards Only
@@ -124,7 +124,7 @@ export function RoadHealthMapPreview({ onSelectRoad }) {
                 <Popup>
                   <div className="p-2 space-y-2 text-xs">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-bold text-sm text-white font-mono">{road.code}</span>
+                      <span className="font-bold text-sm text-ink-900 font-mono">{road.code}</span>
                       <span
                         className="px-2 py-0.5 rounded text-[10px] font-bold"
                         style={{ backgroundColor: `${getCorridorColor(road.pciScore)}33`, color: getCorridorColor(road.pciScore) }}
@@ -132,11 +132,11 @@ export function RoadHealthMapPreview({ onSelectRoad }) {
                         PCI: {road.pciScore}/100
                       </span>
                     </div>
-                    <p className="text-slate-300 font-medium">{road.name}</p>
-                    <div className="text-[11px] text-slate-400">
-                      <div>Length: <span className="text-slate-200">{road.totalLengthKm} KM</span> ({road.lanes} Lanes)</div>
-                      <div>Roughness (IRI): <span className="text-slate-200">{road.iriScore} m/km</span></div>
-                      <div>Active Defects: <span className="text-rose-400 font-bold">{road.activeDefectsCount}</span></div>
+                    <p className="text-ink-700 font-medium">{road.name}</p>
+                    <div className="text-[11px] text-ink-500">
+                      <div>Length: <span className="text-ink-900">{road.totalLengthKm} KM</span> ({road.lanes} Lanes)</div>
+                      <div>Roughness (IRI): <span className="text-ink-900">{road.iriScore} m/km</span></div>
+                      <div>Active Defects: <span className="text-rose-600 font-bold">{road.activeDefectsCount}</span></div>
                     </div>
                     <button
                       onClick={() => navigate('/roads')}
@@ -162,21 +162,21 @@ export function RoadHealthMapPreview({ onSelectRoad }) {
               <Popup>
                 <div className="p-2 space-y-1.5 text-xs">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-bold text-rose-400 flex items-center gap-1">
+                    <span className="font-bold text-rose-600 flex items-center gap-1">
                       <ShieldAlert className="w-3.5 h-3.5" /> {defect.defectType}
                     </span>
-                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 bg-rose-950 text-rose-300 rounded">
+                    <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 bg-rose-50 text-rose-700 rounded">
                       {defect.severity}
                     </span>
                   </div>
-                  <div className="text-slate-300 font-medium font-mono">
+                  <div className="text-ink-700 font-medium font-mono">
                     {defect.roadCode} ({defect.chainage})
                   </div>
-                  <div className="text-[11px] text-slate-400">
-                    Depth: <span className="text-slate-200">{defect.dimensions.depthCm} cm</span> |
-                    Confidence: <span className="text-emerald-400 font-semibold">{defect.confidenceScore}%</span>
+                  <div className="text-[11px] text-ink-500">
+                    Depth: <span className="text-ink-900">{defect.dimensions.depthCm} cm</span> |
+                    Confidence: <span className="text-emerald-600 font-semibold">{defect.confidenceScore}%</span>
                   </div>
-                  <p className="text-[10px] text-slate-400 italic">{defect.notes}</p>
+                  <p className="text-[10px] text-ink-500 italic">{defect.notes}</p>
                 </div>
               </Popup>
             </Marker>
@@ -184,11 +184,11 @@ export function RoadHealthMapPreview({ onSelectRoad }) {
         </MapContainer>
 
         {/* Floating Legend */}
-        <div className="absolute bottom-3 left-3 z-[400] p-2.5 rounded-xl bg-slate-900/90 border border-slate-750 backdrop-blur-md text-[11px] shadow-lg space-y-1.5 hidden sm:block pointer-events-auto">
-          <div className="font-semibold text-slate-300 text-[10px] uppercase tracking-wider mb-1">
+        <div className="absolute bottom-3 left-3 z-[400] p-2.5 rounded-xl bg-white border border-line backdrop-blur-md text-[11px] shadow-lg space-y-1.5 hidden sm:block pointer-events-auto">
+          <div className="font-semibold text-ink-700 text-[10px] uppercase tracking-wider mb-1">
             Corridor Condition Index (PCI)
           </div>
-          <div className="flex items-center gap-3 text-slate-400">
+          <div className="flex items-center gap-3 text-ink-500">
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
               <span>Good (85+)</span>

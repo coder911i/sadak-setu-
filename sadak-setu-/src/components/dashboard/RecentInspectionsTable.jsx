@@ -52,10 +52,10 @@ export function RecentInspectionsTable({ roads = [], onSelectRoad }) {
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
             <span className="font-mono font-bold text-brand-600 text-xs">{val}</span>
-            <span className="text-[10px] text-[#7a9a83] font-mono">({row.category})</span>
+            <span className="text-[10px] text-ink-400 font-mono">({row.category})</span>
           </div>
-          <div className="font-semibold text-[#1a3825]">{row.roadName}</div>
-          <div className="text-[11px] text-[#7a9a83]">{row.district}</div>
+          <div className="font-semibold text-ink-900">{row.roadName}</div>
+          <div className="text-[11px] text-ink-400">{row.district}</div>
         </div>
       ),
     },
@@ -64,9 +64,9 @@ export function RecentInspectionsTable({ roads = [], onSelectRoad }) {
       label: 'Inspection Date',
       width: '140px',
       render: (val) => (
-        <div className="text-xs text-[#4a6b55]">
+        <div className="text-xs text-ink-600">
           <div>{formatRelativeTime(val)}</div>
-          <div className="text-[10px] text-[#7a9a83] font-mono">{formatDate(val)}</div>
+          <div className="text-[10px] text-ink-400 font-mono">{formatDate(val)}</div>
         </div>
       ),
     },
@@ -75,8 +75,8 @@ export function RecentInspectionsTable({ roads = [], onSelectRoad }) {
       label: 'Damage Detected',
       render: (val, row) => (
         <div className="space-y-1">
-          <span className="text-xs font-semibold text-[#1a3825] block">{val}</span>
-          <span className="text-[10px] font-mono text-[#7a9a83]">Total: {row.rawRoad.damageCount} Distress Spots</span>
+          <span className="text-xs font-semibold text-ink-900 block">{val}</span>
+          <span className="text-[10px] font-mono text-ink-400">Total: {row.rawRoad.damageCount} Distress Spots</span>
         </div>
       ),
     },
@@ -92,7 +92,7 @@ export function RecentInspectionsTable({ roads = [], onSelectRoad }) {
               <span className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold border ${meta.badgeClass}`}>
                 {val} / 100
               </span>
-              <span className="text-[10px] text-slate-400 font-medium">{meta.grade}</span>
+              <span className="text-[10px] text-ink-500 font-medium">{meta.grade}</span>
             </div>
             <div className="h-1.5 w-full bg-surface-100 rounded-full overflow-hidden">
               <div className={`h-full ${meta.barColor}`} style={{ width: `${val}%` }} />
