@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { roadService } from '../services/roadService';
+import { useAuth } from './AuthContext';
 
 const RoadContext = createContext(null);
 
 export function RoadProvider({ children }) {
+  const { isAuthenticated } = useAuth();
   const [roads, setRoads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedZone, setSelectedZone] = useState('all');
@@ -25,8 +27,12 @@ export function RoadProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
     fetchRoads();
-  }, [fetchRoads]);
+  }, [fetchRoads, isAuthenticated]);
 
   const filteredRoads = roads.filter((r) => {
     if (selectedZone === 'all') return true;

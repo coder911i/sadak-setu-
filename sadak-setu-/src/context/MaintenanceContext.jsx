@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { maintenanceService } from '../services/maintenanceService';
 import { useToast } from '../hooks/useToast';
+import { useAuth } from './AuthContext';
 
 const MaintenanceContext = createContext(null);
 
 export function MaintenanceProvider({ children }) {
+  const { isAuthenticated } = useAuth();
   const [workOrders, setWorkOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
@@ -14,8 +16,8 @@ export function MaintenanceProvider({ children }) {
   const fetchWorkOrders = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await maintenanceService.getWorkOrders();
-      setWorkOrders(data);
+      const data = await maintenanceService.getCases();
+      setWorkOrders(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to load work orders:', err);
     } finally {
@@ -24,8 +26,12 @@ export function MaintenanceProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
     fetchWorkOrders();
-  }, [fetchWorkOrders]);
+  }, [fetchWorkOrders, isAuthenticated]);
 
   const addWorkOrder = async (orderData) => {
     const created = await maintenanceService.createWorkOrder(orderData);

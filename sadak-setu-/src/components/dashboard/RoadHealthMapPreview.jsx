@@ -103,11 +103,14 @@ export function RoadHealthMapPreview({ onSelectRoad }) {
           {roads.map((road) => {
             const isSelected = activeRoad?.id === road.id;
             const pciMeta = getPCIRating(road.pciScore);
+            const coordinates = Array.isArray(road.coordinates) ? road.coordinates : [];
+
+            if (coordinates.length < 2) return null;
 
             return (
               <Polyline
                 key={road.id}
-                positions={road.coordinates}
+                positions={coordinates}
                 pathOptions={{
                   color: getCorridorColor(road.pciScore),
                   weight: isSelected ? 7 : 4,
